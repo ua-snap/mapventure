@@ -60,16 +60,26 @@ angular.module('mapventureApp')
 
     $scope.addLayers = function() {
       angular.forEach($scope.map.layers, function(layer) {
-        var layerName = layer.name.replace('geonode:','');
-        $scope.layers[layerName] = L.tileLayer.wms(geoserverUrl,
+
+        // Strip the 'geonode:' prefix, not sure how that's used in
+        // GeoExplorer or MapLoom's versions of things.
+        layer.name = layer.name.replace('geonode:','');
+        $scope.layers[layer.name] = L.tileLayer.wms(geoserverUrl,
           {
             continuousWorld: true,
-            layers: layerName,
+            layers: layer.name,
+            name: layer.name,
             transparent: true,
             format: 'image/png',
-            version: '1.3'
+            version: '1.3',
+            visible: false
           }
-        ).addTo($scope.mapObj);
+        );
       });
+    };
+
+    $scope.toggleLayer = function(layerName) {
+      $scope.layers[layerName].addTo($scope.mapObj);
+      $scope.layers[layerName].removeFrom($scope.mapObj);
     };
   }]);
