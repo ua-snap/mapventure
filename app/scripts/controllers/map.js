@@ -79,7 +79,10 @@ angular.module('mapventureApp')
     };
 
     $scope.toggleLayer = function(layerName) {
-      $scope.layers[layerName].addTo($scope.mapObj);
-      $scope.layers[layerName].removeFrom($scope.mapObj);
+      if( false === $scope.mapObj.hasLayer( $scope.layers[layerName])) {
+        $scope.layers[layerName].addTo($scope.mapObj);
+      } else {
+        $scope.mapObj.removeLayer($scope.layers[layerName]);
+      }
     };
   }]);
