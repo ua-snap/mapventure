@@ -11,7 +11,8 @@ angular.module('mapventureApp')
   .controller('MapCtrl', [
     '$scope',
     '$http',
-    function ($scope, $http) {
+    '$routeParams',
+    function ($scope, $http, $routeParams) {
 
     var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
@@ -46,9 +47,8 @@ angular.module('mapventureApp')
 
     $scope.layers = {};
 
-    $http.get('http://localhost:8000/api/maplayers/13/')
+    $http.get('http://localhost:8000/api/maplayers/' + $routeParams.mapId)
       .success(function(data) {
-        console.log(data);
         $scope.map = data;
 
         // Remove the OSM layers until we learn how to remove
