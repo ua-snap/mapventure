@@ -1,7 +1,7 @@
 <h2>{{ map.title }}</h2>
 <div class="btn-group" data-toggle="buttons">
   <label class="btn btn-primary" ng-click="$parent.toggleLayer(layer.name)" ng-repeat="layer in map.layers">
-    {{ layer.title }}
+    <input type="checkbox" autocomplete="off"> {{ layer.title }}
   </label>
 </div>
 <div id="snapmapapp" height="480px" width="100%" style="height: 480px; width: 100%"></div>
