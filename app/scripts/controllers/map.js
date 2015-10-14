@@ -50,11 +50,6 @@ angular.module('mapventureApp')
       .success(function(data) {
         console.log(data);
         $scope.map = data;
-
-        // Remove the OSM layers until we learn how to remove
-        // that from GeoNode
-        //$scope.map.layers.splice(0, 3);
-        console.log($scope.map);
         $scope.addLayers();
       });
 
