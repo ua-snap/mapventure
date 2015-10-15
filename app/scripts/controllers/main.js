@@ -8,10 +8,10 @@
  * Controller of the mapventureApp
  */
 angular.module('mapventureApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+  .controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
+    $http.get('http://localhost:8000/api/maps')
+      .success(function(data) {
+        $scope.maps = data.objects;
+        console.log($scope.maps);
+      });
+  }]);

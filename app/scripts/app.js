@@ -29,7 +29,7 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
-      .when('/map', {
+      .when('/map/:mapId', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
         controllerAs: 'map'
