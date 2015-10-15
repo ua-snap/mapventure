@@ -1,7 +1,12 @@
 <h2>{{ map.title }}</h2>
-<div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-primary" ng-click="$parent.toggleLayer(layer.name)" ng-repeat="layer in map.layers">
-    <input type="checkbox" autocomplete="off"> {{ layer.title }}
-  </label>
+<div class="layer-menu">
+  <div class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
+    <label class="btn btn-primary" ng-click="$parent.toggleLayer(layer.name)">
+      <span class="glyphicon glyphicon-eye-open" ng-hide="$parent.layers[layer.name].visible"></span>
+      <span class="glyphicon glyphicon-eye-close" ng-show="$parent.layers[layer.name].visible"></span>
+      <input type="checkbox" autocomplete="off">
+    </label>
+    {{ layer.title }}
+  </div>
 </div>
 <div id="snapmapapp" height="480px" width="100%" style="height: 480px; width: 100%"></div>
