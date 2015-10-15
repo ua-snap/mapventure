@@ -64,7 +64,8 @@ angular.module('mapventureApp')
         // Strip the 'geonode:' prefix, not sure how that's used in
         // GeoExplorer or MapLoom's versions of things.
         layer.name = layer.name.replace('geonode:','');
-        $scope.layers[layer.name] = L.tileLayer.wms(geoserverUrl,
+        $scope.layers[layer.name] = {};
+        $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverUrl,
           {
             continuousWorld: true,
             layers: layer.name,
@@ -79,10 +80,12 @@ angular.module('mapventureApp')
     };
 
     $scope.toggleLayer = function(layerName) {
-      if( false === $scope.mapObj.hasLayer( $scope.layers[layerName])) {
-        $scope.layers[layerName].addTo($scope.mapObj);
+      if( false === $scope.mapObj.hasLayer( $scope.layers[layerName].obj)) {
+        $scope.layers[layerName].obj.addTo($scope.mapObj);
+        $scope.layers[layerName].visible = true;
       } else {
-        $scope.mapObj.removeLayer($scope.layers[layerName]);
+        $scope.mapObj.removeLayer($scope.layers[layerName].obj);
+        $scope.layers[layerName].visible = false;
       }
     };
   }]);
