@@ -17,7 +17,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, MapProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -37,4 +37,6 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+      MapProvider.setGeonodeApiUrl('http://localhost:8000/api');
   });

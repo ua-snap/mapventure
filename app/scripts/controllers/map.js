@@ -12,7 +12,8 @@ angular.module('mapventureApp')
     '$scope',
     '$http',
     '$routeParams',
-    function ($scope, $http, $routeParams) {
+    'Map',
+    function ($scope, $http, $routeParams, Map) {
 
     var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
@@ -47,7 +48,7 @@ angular.module('mapventureApp')
 
     $scope.layers = {};
 
-    $http.get('http://localhost:8000/api/maplayers/' + $routeParams.mapId)
+    Map.layers($routeParams.mapId)
       .success(function(data) {
         $scope.map = data;
 
