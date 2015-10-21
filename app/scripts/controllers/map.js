@@ -45,6 +45,13 @@ angular.module('mapventureApp')
       ]
     });
 
+    $scope.sidebar = L.control.sidebar('info-sidebar',
+      {
+        position: 'left'
+      }
+    );
+    $scope.mapObj.addControl($scope.sidebar);
+
     $scope.layers = {};
 
     $http.get('http://localhost:8000/api/maplayers/' + $routeParams.mapId)
@@ -88,4 +95,14 @@ angular.module('mapventureApp')
         $scope.layers[layerName].visible = false;
       }
     };
+
+    $scope.showLayerInformation = function(layerName) {
+      $http.get('http://localhost:8000/api/layers/7')
+      .success(function(data) {
+        console.log(data);
+        var converter = new showdown.Converter();
+        $scope.sidebar.setContent(converter.makeHtml(data.abstract)).show();
+      });
+    };
+
   }]);

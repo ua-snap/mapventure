@@ -6,7 +6,11 @@
       <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].visible"></span>
       <input type="checkbox" autocomplete="off">
     </label>
+    <label class="btn btn-primary" ng-click="$parent.showLayerInformation(layer.name)">
+      <span class="glyphicon glyphicon-info-sign"></span>
+    </label>
     {{ layer.title }}
   </div>
 </div>
+<div id="info-sidebar"></div>
 <div id="snapmapapp" height="480px" width="100%" style="height: 480px; width: 100%"></div>
