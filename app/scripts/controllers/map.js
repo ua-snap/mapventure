@@ -53,11 +53,6 @@ angular.module('mapventureApp')
     $http.get('http://localhost:8000/api/maplayers/' + $routeParams.mapId)
       .success(function(data) {
         $scope.map = data;
-
-        // Remove the OSM layers until we learn how to remove
-        // that from GeoNode
-        //$scope.map.layers.splice(0, 3);
-        console.log($scope.map);
         $scope.addLayers();
       });
 
