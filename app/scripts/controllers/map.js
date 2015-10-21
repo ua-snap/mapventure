@@ -33,6 +33,7 @@ angular.module('mapventureApp')
       zoom: 1,
       crs: $scope.crs,
       scrollWheelZoom: false,
+      zoomControl: false,
       layers: [
         L.tileLayer.wms(geoserverUrl, {
           continuousWorld: true,
@@ -44,6 +45,8 @@ angular.module('mapventureApp')
         })
       ]
     });
+
+    new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
 
     $scope.layers = {};
 
