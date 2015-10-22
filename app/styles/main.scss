@@ -1,9 +1,17 @@
-@import 'layer_menu';
+@import 'map';
 
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+html, body {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+}
 
 .browsehappy {
   margin: 0.2em 0;
@@ -12,22 +20,20 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   padding: 0.2em 0;
 }
 
-body {
+.container-fluid {
   padding: 0;
-}
-
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+  margin: 0 15px;
 }
 
 /* Custom page header */
 .header {
+  margin: 0;
+
+  .navbar {
+    margin: 0;
+  }
+
   border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
 
   /* Make the masthead heading the same height as the navigation */
   h3 {
@@ -36,6 +42,21 @@ body {
     line-height: 40px;
     padding-bottom: 19px;
   }
+}
+
+/* Use nested flexboxes to fill remaining height with map */
+body, .middle, .middle .container-fluid {
+  display: flex;
+  flex-direction: column;
+}
+
+.middle, .middle .container-fluid, #snapmapapp {
+  flex: 1;
+}
+
+/* Formatting for plain text-based pages */
+.content {
+  margin-top: 30px;
 }
 
 /* Custom page footer */
@@ -53,6 +74,7 @@ body {
 .jumbotron {
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
+  margin: -30px -15px 15px -15px;
 
   .btn {
     font-size: 21px;
@@ -81,10 +103,6 @@ body {
   .footer {
     padding-left: 0;
     padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {

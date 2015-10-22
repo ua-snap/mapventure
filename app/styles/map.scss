@@ -1,0 +1,26 @@
+.layer-menu {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  max-width: 500px;
+  padding: 8px 15px 5px 15px;
+  margin: 15px 0 0 0;
+  z-index: 1;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.75;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .layer {
+    margin: 5px 0;
+    .btn {
+      margin: 0 5px 0 0;
+    }
+  }
+}
+
+#snapmapapp {
+  margin: 0 -15px;
+}

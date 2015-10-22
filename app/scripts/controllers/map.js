@@ -12,7 +12,8 @@ angular.module('mapventureApp')
     '$scope',
     '$http',
     '$routeParams',
-    function ($scope, $http, $routeParams) {
+    'Map',
+    function ($scope, $http, $routeParams, Map) {
 
     var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
@@ -33,6 +34,7 @@ angular.module('mapventureApp')
       zoom: 1,
       crs: $scope.crs,
       scrollWheelZoom: false,
+      zoomControl: false,
       layers: [
         L.tileLayer.wms(geoserverUrl, {
           continuousWorld: true,
@@ -52,16 +54,13 @@ angular.module('mapventureApp')
     );
     $scope.mapObj.addControl($scope.sidebar);
 
+    new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
+
     $scope.layers = {};
 
-    $http.get('http://localhost:8000/api/maplayers/' + $routeParams.mapId)
+    Map.layers($routeParams.mapId)
       .success(function(data) {
         $scope.map = data;
-
-        // Remove the OSM layers until we learn how to remove
-        // that from GeoNode
-        //$scope.map.layers.splice(0, 3);
-        console.log($scope.map);
         $scope.addLayers();
       });
 

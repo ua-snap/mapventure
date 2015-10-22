@@ -8,10 +8,9 @@
  * Controller of the mapventureApp
  */
 angular.module('mapventureApp')
-  .controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
-    $http.get('http://localhost:8000/api/maps')
+  .controller('MainCtrl', ['$scope', 'Map', function ($scope, Map) {
+    Map.all()
       .success(function(data) {
         $scope.maps = data.objects;
-        console.log($scope.maps);
       });
   }]);

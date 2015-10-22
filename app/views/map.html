@@ -1,5 +1,5 @@
-<h2>{{ map.title }}</h2>
 <div class="layer-menu">
+  <h2>{{ map.title }}</h2>
   <div class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
     <label class="btn btn-primary" ng-click="$parent.toggleLayer(layer.name)">
       <span class="glyphicon glyphicon-eye-close" ng-hide="$parent.layers[layer.name].visible"></span>
@@ -13,4 +13,4 @@
   </div>
 </div>
 <div id="info-sidebar"></div>
-<div id="snapmapapp" height="480px" width="100%" style="height: 480px; width: 100%"></div>
+<div id="snapmapapp"></div>

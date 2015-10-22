@@ -24,7 +24,7 @@
     <!-- Add your site or application content here -->
     <div class="header">
       <div class="navbar navbar-default" role="navigation">
-        <div class="container">
+        <div class="container-fluid">
           <div class="navbar-header">
 
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
@@ -49,12 +49,12 @@
       </div>
     </div>
 
-    <div class="container">
-    <div ng-view=""></div>
+    <div class="middle">
+      <div class="container-fluid" ng-view=""></div>
     </div>
 
     <div class="footer">
-      <div class="container">
+      <div class="container-fluid">
         <p>Built with <span class="glyphicon glyphicon-heart"></span> from the SNAP team</p>
       </div>
     </div>
@@ -96,6 +96,7 @@
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/map.js"></script>
         <script src="scripts/directives/maplist.js"></script>
+        <script src="scripts/services/map.js"></script>
         <!-- endbuild -->
 </body>
 </html>
