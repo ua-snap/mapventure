@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+    - "0.12"
+before_script:
+    - npm install -g bower grunt karma phantomjs
+    - bower install
+addons:
+    code_climate:
+        repo_token: 15170660f39d77c02b744769dcdd5272ae51cbf74435a772f182ec37f6f1aca5
