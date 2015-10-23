@@ -6,6 +6,7 @@ node_js:
 - '0.10'
 before_script:
 - npm install -g bower grunt-cli
+- gem install compass --version="1.0.3"
 - bower install
 notifications:
   slack:
