@@ -18,6 +18,10 @@ angular.module('mapventureApp')
       geonodeApiUrl = url;
     };
 
+    this.getGeonodeApiUrl = function() {
+      return geonodeApiUrl;
+    };
+
     // Method for instantiating
     this.$get = function ($http) {
       return {
