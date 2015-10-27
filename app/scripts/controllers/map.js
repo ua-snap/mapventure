@@ -13,21 +13,12 @@ angular.module('mapventureApp')
     '$http',
     '$routeParams',
     'Map',
-    function ($scope, $http, $routeParams, Map) {
+    'BaseMap',
+    function ($scope, $http, $routeParams, Map, BaseMap) {
 
     var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
-    $scope.crs = new L.Proj.CRS('EPSG:3338',
-      '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
-      {
-        // This bit of magic came from a guide I found online and should be considered suspicious.
-        // TODO, figure out what the resolutions mean in the context of this code.
-        // GH#65
-        resolutions: [
-          8192, 4096, 2048, 1024, 512, 256, 128
-        ],
-        origin: [0, 0]
-      });
+    $scope.crs = BaseMap.getProjCRS(3413);
 
     $scope.mapObj = L.map('snapmapapp', {
       center: [65, -150],
