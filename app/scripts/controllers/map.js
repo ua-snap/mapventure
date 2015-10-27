@@ -98,9 +98,9 @@ angular.module('mapventureApp')
     $scope.showLayerInformation = function(layerName) {
       $http.get('http://localhost:8000/api/layers/7')
       .success(function(data) {
-        console.log(data);
+        var legendGraphic = '<h1>Legend</h1><img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layerName+'" alt="legend" />';
         var converter = new showdown.Converter();
-        $scope.sidebar.setContent(converter.makeHtml(data.abstract)).show();
+        $scope.sidebar.setContent(legendGraphic + converter.makeHtml(data.abstract)).show();
       });
     };
 
