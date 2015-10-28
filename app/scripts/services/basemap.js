@@ -48,7 +48,6 @@ angular.module('mapventureApp')
       Output: Returns a new Leaflet WMS layer object created from the layerURL input.
     */
     service.getBaseLayer = function(epsg_code, layerUrl, maximumZoom) {
-      if (epsg_code === 'EPSG:3338' || epsg_code === 'EPSG:3413') {
         return new L.tileLayer.wms(layerUrl, {
               continuousWorld: true,
               maxZoom: maximumZoom, 
@@ -57,7 +56,6 @@ angular.module('mapventureApp')
               format: 'image/png',
               version: '1.3'
         });
-      }
     };
 
     return service;
