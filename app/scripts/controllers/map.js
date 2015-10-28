@@ -18,35 +18,32 @@ angular.module('mapventureApp')
 
     var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
-    $scope.crs = BaseMap.getProjCRS(3413);
-
-    $scope.mapObj = L.map('snapmapapp', {
-      center: [65, -150],
-      zoom: 1,
-      crs: $scope.crs,
-      scrollWheelZoom: false,
-      zoomControl: false,
-      layers: [
-        L.tileLayer.wms(geoserverUrl, {
-          continuousWorld: true,
-          maxZoom: $scope.crs.options.resolutions.length,
-          minZoom: 0,
-          layers: 'natural_earth_base',
-          format: 'image/png',
-          version: '1.3'
-        })
-      ]
-    });
-
-    new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
-
     $scope.layers = {};
 
     Map.layers($routeParams.mapId)
       .success(function(data) {
         $scope.map = data;
         $scope.addLayers();
-      });
+        console.log($scope.map.srid);
+
+        $scope.crs = BaseMap.getCRS($scope.map.srid);
+
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length); 
+
+        $scope.mapObj = L.map('snapmapapp', {
+          center: [65, -150],
+          zoom: 1,
+          crs: $scope.crs,
+          scrollWheelZoom: false,
+          zoomControl: false,
+          layers: [
+            $scope.baselayer
+          ]
+        });
+
+        new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
+
+    });
 
     $scope.addLayers = function() {
       angular.forEach($scope.map.layers, function(layer) {
