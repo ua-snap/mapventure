@@ -19,9 +19,9 @@ angular.module('mapventureApp')
       Output: Returns a new Leaflet CRS object using the correct options for the input EPSG code
     */
     service.getCRS = function(epsg_code) {
-      if (epsg_code === 'EPSG:3413') {
-          return new L.Proj.CRS('EPSG:3413',
-              '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+      if (epsg_code === 'EPSG:3572') {
+          return new L.Proj.CRS('EPSG:3572',
+              '+proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
               {
                   resolutions: [8192,4096, 2048, 1024, 512, 256, 128],
                   origin: [0, 0]
