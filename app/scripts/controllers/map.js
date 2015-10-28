@@ -24,7 +24,6 @@ angular.module('mapventureApp')
       .success(function(data) {
         $scope.map = data;
         $scope.addLayers();
-        console.log($scope.map.srid);
 
         $scope.crs = BaseMap.getCRS($scope.map.srid);
 
