@@ -96,7 +96,10 @@ angular.module('mapventureApp')
     };
 
     $scope.showLayerInformation = function(layerName) {
-      $http.get('http://localhost:8000/api/layers/7')
+      var layer = _.find($scope.map.layers, function(layer) {
+        return layer.name === layerName;
+      });
+      $http.get('http://localhost:8000/api/layers/' + layer.id)
       .success(function(data) {
         var legendGraphic = '<h1>Legend</h1><img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layerName+'" alt="legend" />';
         var converter = new showdown.Converter();

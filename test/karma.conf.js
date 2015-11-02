@@ -37,6 +37,7 @@ module.exports = function(config) {
       'bower_components/leaflet/dist/leaflet-src.js',
       'bower_components/leaflet-sidebar/src/L.Control.Sidebar.js',
       'bower_components/showdown/dist/showdown.js',
+      'bower_components/underscore/underscore.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
