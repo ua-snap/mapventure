@@ -1,12 +1,13 @@
 sudo: false
 language: node_js
 node_js:
-- iojs
 - '0.12'
-- '0.10'
 before_script:
-- npm install -g bower grunt-cli
+- npm install -g bower grunt-cli karma phantomjs
 - bower install
+- gem install compass --version "=1.0.3"
 notifications:
   slack:
     secure: fsA3JZQVyiPKy63PwYd15ZKVCie4spSvhXOnLMJcUbIYlIgbjZrlBQVXZP+Cr8bBEq9gERp4iQzRs3Nye5lbJYyl+0TPifbn9vJmYuyOsGY51Fvo6WaYtA+KI9rK+R0oj/+dgpy7jWpwTak4wAbj40vUN5E57mT0QBDcroU7uJEkAhxqcZzYlrKkApm5KkbDTLA65TGbstFKjPNRH751PtYwOrimXCRezqJ7ec9ximPjd0rE7/lQdL1FcGhPSPH3TCrwq06F3RaCqexziWc6oZYhYamdWkH1bARRnFh6pPV0DUSCZ+Ezlmjtbi1EnvUdU7d8cD1YHp4M6j3+Nw5+bVl4G9WCzkkCMrexr7FglE6CF+oDU/Qje3jXpn74RpoUZYnI1GBcskxNZyJxI+rWQu7qxMnfiy6yZS+//swJ/xWz1Y7KdwlFp1fxClWlUsuU5oyfJS+KtBBDF3J7ZMBahX821Gw3Yq2P5j3YGQCSFtpLnZ16UGUNR3d/vGgt89UOLnMftGUaN8HT6ZssC9w6uDkZhzGTKST70KKjMcXeWVDU4yDYCCCXbStDJEsss5OjCFXFVuIll6KIcwNKcBwxuxVRNWST1kxdZeZ4TTH640WbCCxgKOw9kFFMIAxWdekjQnZdihhgHcLVcfRnv9LpRdqea1sZcE2avMC6vKz2CdM=
+  code_climate:
+    repo_token: 15170660f39d77c02b744769dcdd5272ae51cbf74435a772f182ec37f6f1aca5
