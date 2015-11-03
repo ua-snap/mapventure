@@ -57,17 +57,37 @@ angular.module('mapventureApp')
     */
     service.getBaseLayer = function(epsg_code, layerUrl, maximumZoom) {
 
-      var layerName = (epsg_code === 'EPSG:3572') ? 'ne_10m_coastline' : 'natural_earth_base';
+      // Real cheap for the moment.
+      // The `epsg_code` comes from the `SRS` field of the map object
+      // we get back from the MapLayers API endpoint.  It defaults
+      // to 4326, and you need to use the Django admin to change it,
+      // this is just a safety catch.
+      if(epsg_code === 'EPSG:4326') { epsg_code = 'EPSG:3338'; }
+
+      // When we add a 3rd map, we'll need to figure
+      // out where to refactor this logic.
+      var layerConfiguration = {
+        'EPSG:3572': {
+          baseLayerName: 'ne_10m_coastline',
+          zIndex: 10000,
+          transparent: true
+        },
+        'EPSG:3338': {
+          baseLayerName: 'natural_earth_base',
+          zIndex: 0,
+          transparent: false
+        }
+      };
 
       return new L.tileLayer.wms(layerUrl, {
             continuousWorld: true,
             maxZoom: maximumZoom,
-            transparent: true,
+            transparent: layerConfiguration[epsg_code].transparent,
             minZoom: 0,
-            layers: layerName,
+            layers: layerConfiguration[epsg_code].baseLayerName,
             format: 'image/png',
             version: '1.3',
-            zIndex: 10000
+            zIndex: layerConfiguration[epsg_code].zIndex
       });
     };
 
