@@ -32,7 +32,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/proj4/dist/proj4.js',
-      'bower_components/leaflet-dist/leaflet.js',
+      'bower_components/leaflet/dist/leaflet-src.js',
       'bower_components/proj4leaflet/src/proj4leaflet.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
