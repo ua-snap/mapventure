@@ -12,11 +12,12 @@ angular.module('mapventureApp')
     '$scope',
     '$http',
     '$routeParams',
+    '$timeout',
     'Map',
     'BaseMap',
-    function ($scope, $http, $routeParams, Map, BaseMap) {
-
-    var geoserverUrl = 'http://localhost:8080/geoserver/wms';
+    function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
+      $timeout(function() {
+        var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
     $scope.layers = {};
 
@@ -51,34 +52,34 @@ angular.module('mapventureApp')
         };
     });
 
-    $scope.addLayers = function() {
-      angular.forEach($scope.map.layers, function(layer) {
+        $scope.addLayers = function() {
+          angular.forEach($scope.map.layers, function(layer) {
+            // Strip the 'geonode:' prefix, not sure how that's used in
+            // GeoExplorer or MapLoom's versions of things.
+            layer.name = layer.name.replace('geonode:','');
+            $scope.layers[layer.name] = {};
+            $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverUrl,
+              {
+                continuousWorld: true,
+                layers: layer.name,
+                name: layer.name,
+                transparent: true,
+                format: 'image/png',
+                version: '1.3',
+                visible: false
+              }
+            );
+          });
+        };
 
-        // Strip the 'geonode:' prefix, not sure how that's used in
-        // GeoExplorer or MapLoom's versions of things.
-        layer.name = layer.name.replace('geonode:','');
-        $scope.layers[layer.name] = {};
-        $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverUrl,
-          {
-            continuousWorld: true,
-            layers: layer.name,
-            name: layer.name,
-            transparent: true,
-            format: 'image/png',
-            version: '1.3',
-            visible: false
+        $scope.toggleLayer = function(layerName) {
+          if( false === $scope.mapObj.hasLayer( $scope.layers[layerName].obj)) {
+            $scope.layers[layerName].obj.addTo($scope.mapObj);
+            $scope.layers[layerName].visible = true;
+          } else {
+            $scope.mapObj.removeLayer($scope.layers[layerName].obj);
+            $scope.layers[layerName].visible = false;
           }
-        );
-      });
-    };
-
-    $scope.toggleLayer = function(layerName) {
-      if( false === $scope.mapObj.hasLayer( $scope.layers[layerName].obj)) {
-        $scope.layers[layerName].obj.addTo($scope.mapObj);
-        $scope.layers[layerName].visible = true;
-      } else {
-        $scope.mapObj.removeLayer($scope.layers[layerName].obj);
-        $scope.layers[layerName].visible = false;
-      }
-    };
-  }]);
+        };
+      })
+    }]);
