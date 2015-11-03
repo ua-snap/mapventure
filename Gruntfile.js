@@ -184,7 +184,6 @@ module.exports = function (grunt) {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//,
-        exclude: ['bower_components/leaflet/'],
         overrides: {
           'proj4': {
             main: 'dist/proj4-src.js'
