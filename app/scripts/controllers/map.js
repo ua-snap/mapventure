@@ -14,21 +14,21 @@ angular.module('mapventureApp')
     '$routeParams',
     '$timeout',
     'Map',
-    function ($scope, $http, $routeParams, $timeout, Map) {
+    'BaseMap',
+    function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
       $timeout(function() {
         var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
-        $scope.crs = new L.Proj.CRS('EPSG:3338',
-          '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
-          {
-            // This bit of magic came from a guide I found online and should be considered suspicious.
-            // TODO, figure out what the resolutions mean in the context of this code.
-            // GH#65
-            resolutions: [
-              8192, 4096, 2048, 1024, 512, 256, 128
-            ],
-            origin: [0, 0]
-          });
+    $scope.layers = {};
+
+    Map.layers($routeParams.mapId)
+      .success(function(data) {
+        $scope.map = data;
+        $scope.crs = BaseMap.getCRS($scope.map.srid);
+
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length); 
+
+        $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
           center: [65, -150],
@@ -37,30 +37,23 @@ angular.module('mapventureApp')
           scrollWheelZoom: false,
           zoomControl: false,
           layers: [
-            L.tileLayer.wms(geoserverUrl, {
-              continuousWorld: true,
-              maxZoom: $scope.crs.options.resolutions.length,
-              minZoom: 0,
-              layers: 'natural_earth_base',
-              format: 'image/png',
-              version: '1.3'
-            })
+            $scope.baselayer
           ]
         });
 
         new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
-
-        $scope.layers = {};
-
-        Map.layers($routeParams.mapId)
-          .success(function(data) {
-            $scope.map = data;
-            $scope.addLayers();
-          });
+     
+        $scope.sortableOptions = {
+          stop: function() {
+            for(var i = 0; i < $scope.map.layers.length; i++) {
+              $scope.layers[$scope.map.layers[i].name].obj.setZIndex(i);
+            }
+          }    
+        };
+    });
 
         $scope.addLayers = function() {
           angular.forEach($scope.map.layers, function(layer) {
-
             // Strip the 'geonode:' prefix, not sure how that's used in
             // GeoExplorer or MapLoom's versions of things.
             layer.name = layer.name.replace('geonode:','');

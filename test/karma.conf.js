@@ -22,7 +22,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
-      'bower_components/jquery/dist/jquery.js',
+      'bower_components/jquery/jquery.js',
       'bower_components/angular/angular.js',
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/angular-animate/angular-animate.js',
@@ -34,6 +34,8 @@ module.exports = function(config) {
       'bower_components/proj4/dist/proj4.js',
       'bower_components/leaflet/dist/leaflet-src.js',
       'bower_components/proj4leaflet/src/proj4leaflet.js',
+      'bower_components/jquery-ui/jquery-ui.js',
+      'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
