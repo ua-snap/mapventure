@@ -25,11 +25,11 @@ angular.module('mapventureApp')
     Map.layers($routeParams.mapId)
       .success(function(data) {
         $scope.map = data;
-        $scope.addLayers();
-
         $scope.crs = BaseMap.getCRS($scope.map.srid);
 
         $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl);
+
+        $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
           center: [65, -150],
@@ -43,7 +43,14 @@ angular.module('mapventureApp')
         });
 
         new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
-
+     
+        $scope.sortableOptions = {
+          stop: function() {
+            for(var i = 0; i < $scope.map.layers.length; i++) {
+              $scope.layers[$scope.map.layers[i].name].obj.setZIndex(i);
+            }
+          }    
+        };
     });
 
         $scope.addLayers = function() {
