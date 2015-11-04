@@ -17,6 +17,7 @@ angular.module('mapventureApp')
     'BaseMap',
     function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
       $timeout(function() {
+
         var geoserverUrl = 'http://localhost:8080/geoserver/wms';
 
     $scope.layers = {};
@@ -26,7 +27,7 @@ angular.module('mapventureApp')
         $scope.map = data;
         $scope.crs = BaseMap.getCRS($scope.map.srid);
 
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length); 
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl);
 
         $scope.addLayers();
 

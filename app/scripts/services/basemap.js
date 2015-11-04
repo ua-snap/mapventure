@@ -20,13 +20,21 @@ angular.module('mapventureApp')
     */
     service.getCRS = function(epsg_code) {
       if (epsg_code === 'EPSG:3572') {
-          return new L.Proj.CRS('EPSG:3572',
+          var proj = new L.Proj.CRS('EPSG:3572',
               '+proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
               {
-                  resolutions: [8192,4096, 2048, 1024, 512, 256, 128],
+                  resolutions: [8192, 4096, 2048, 1024, 512, 256, 128],
                   origin: [0, 0]
               }
           );
+
+          // trust me.
+          // Without this (= pi/2), proj4js returns an undefined
+          // value for tiles requested at the North Pole and
+          // it causes a runtime exception.
+          proj.projection._proj.oProj.phi0 = 1.5708;
+          return proj;
+
       } else {
           return new L.Proj.CRS('EPSG:3338',
               '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
@@ -35,7 +43,7 @@ angular.module('mapventureApp')
                   origin: [0, 0]
               }
           );
-      } 
+      }
     };
 
     /**
@@ -48,14 +56,39 @@ angular.module('mapventureApp')
       Output: Returns a new Leaflet WMS layer object created from the layerURL input.
     */
     service.getBaseLayer = function(epsg_code, layerUrl, maximumZoom) {
-        return new L.tileLayer.wms(layerUrl, {
-              continuousWorld: true,
-              maxZoom: maximumZoom, 
-              minZoom: 0,
-              layers: 'natural_earth_base',
-              format: 'image/png',
-              version: '1.3'
-        });
+
+      // Real cheap for the moment.
+      // The `epsg_code` comes from the `SRS` field of the map object
+      // we get back from the MapLayers API endpoint.  It defaults
+      // to 4326, and you need to use the Django admin to change it,
+      // this is just a safety catch.
+      if(epsg_code === 'EPSG:4326') { epsg_code = 'EPSG:3338'; }
+
+      // When we add a 3rd map, we'll need to figure
+      // out where to refactor this logic.
+      var layerConfiguration = {
+        'EPSG:3572': {
+          baseLayerName: 'ne_10m_coastline',
+          zIndex: 10000,
+          transparent: true
+        },
+        'EPSG:3338': {
+          baseLayerName: 'natural_earth_base',
+          zIndex: 0,
+          transparent: false
+        }
+      };
+
+      return new L.tileLayer.wms(layerUrl, {
+            continuousWorld: true,
+            maxZoom: maximumZoom,
+            transparent: layerConfiguration[epsg_code].transparent,
+            minZoom: 0,
+            layers: layerConfiguration[epsg_code].baseLayerName,
+            format: 'image/png',
+            version: '1.3',
+            zIndex: layerConfiguration[epsg_code].zIndex
+      });
     };
 
     return service;

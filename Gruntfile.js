@@ -183,7 +183,12 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath:  /\.\.\//,
+        overrides: {
+          'proj4': {
+            main: 'dist/proj4-src.js'
+          }
+        }
       },
       test: {
         devDependencies: true,
