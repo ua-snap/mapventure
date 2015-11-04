@@ -8,7 +8,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/leaflet-sidebar/src/L.Control.Sidebar.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -82,12 +82,14 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/proj4/dist/proj4.js"></script>
-    <script src="bower_components/leaflet-dist/leaflet.js"></script>
+    <script src="bower_components/proj4/dist/proj4-src.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="bower_components/proj4leaflet/src/proj4leaflet.js"></script>
     <script src="bower_components/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
     <script src="bower_components/showdown/dist/showdown.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -98,6 +100,7 @@
         <script src="scripts/controllers/map.js"></script>
         <script src="scripts/directives/maplist.js"></script>
         <script src="scripts/services/map.js"></script>
+        <script src="scripts/services/basemap.js"></script>
         <!-- endbuild -->
 </body>
 </html>
