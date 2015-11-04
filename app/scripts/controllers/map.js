@@ -48,7 +48,7 @@ app.controller('MapCtrl', [
         $scope.sortableOptions = {
           stop: function() {
             for(var i = 0; i < $scope.map.layers.length; i++) {
-              $scope.layers[$scope.map.layers[i].name].obj.setZIndex(i);
+              $scope.layers[$scope.map.layers[i].name].obj.setZIndex($scope.map.layers.length - i);
             }
           }
         };
