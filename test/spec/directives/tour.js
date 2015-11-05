@@ -12,9 +12,19 @@ describe('Directive: tour', function () {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<tour></tour>');
-    element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the tour directive');
+  it('should instantiate a tour object', inject(function ($compile) {
+    var tour = new Tour({
+      steps: [
+        {
+          element: ".class",
+          title: "Map",
+          content: "Content",
+          onShow: function() {
+            scope.$broadcast('show-layers', [ 'layer_name' ]);
+          }
+        }
+      ]
+    });
+    expect(tour).toBeDefined();
   }));
 });
