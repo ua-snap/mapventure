@@ -70,6 +70,7 @@ app.controller('MapCtrl', [
             visible: false
           });
         });
+        Map.setReady(true);
       };
 
       $scope.toggleLayer = function(layerName) {
@@ -92,6 +93,10 @@ app.controller('MapCtrl', [
           $scope.sidebar.setContent(legendGraphic + converter.makeHtml(data.abstract)).show();
         });
       };
+
+      $scope.$on('toggle-layer', function(event, layer) {
+        $scope.toggleLayer(layer.name);
+      });
     });
   }
 ]);

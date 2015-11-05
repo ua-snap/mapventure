@@ -10,6 +10,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/leaflet-sidebar/src/L.Control.Sidebar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-tour/build/css/bootstrap-tour.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -22,6 +23,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
+    <tour></tour>
     <div class="header">
       <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
@@ -90,6 +92,8 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.js"></script>
+    <script src="bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -101,6 +105,7 @@
         <script src="scripts/directives/maplist.js"></script>
         <script src="scripts/services/map.js"></script>
         <script src="scripts/services/basemap.js"></script>
+        <script src="scripts/directives/tour.js"></script>
         <!-- endbuild -->
 </body>
 </html>

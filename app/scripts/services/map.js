@@ -13,6 +13,9 @@ angular.module('mapventureApp')
     // Default URL for Geonode API
     var geonodeApiUrl = 'http://localhost:8000/api';
 
+    // Map is populated with layers
+    var ready = false;
+
     // Public API for configuration
     this.setGeonodeApiUrl = function (url) {
       geonodeApiUrl = url;
@@ -30,6 +33,12 @@ angular.module('mapventureApp')
         },
         layers: function(mapId) {
           return $http.get(geonodeApiUrl + '/maplayers/' + mapId);
+        },
+        setReady: function(isReady) {
+          ready = isReady;
+        },
+        ready: function() {
+          return ready;
         }
       };
     };
