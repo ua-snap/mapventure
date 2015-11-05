@@ -35,6 +35,20 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             onShow: function() {
               scope.$broadcast('show-layers', [ 'ncep_daily_sea_surface_temperature' ]);
             }
+          },
+          {
+            element: "#ncep_air_temperature_current_month_forecast_average",
+            content: "This is the projected air temperature.",
+            onShow: function() {
+              scope.$broadcast('show-layers', [ 'ncep_air_temperature_current_month_forecast_average' ]);
+            }
+          },
+          {
+            element: "#ncep_air_temperature_current_month_forecast_average .info",
+            content: "Click this button to see more information about this layer.",
+            onShow: function() {
+              scope.$broadcast('show-layers', [ 'ncep_air_temperature_current_month_forecast_average' ]);
+            }
           }
         ]
       });
