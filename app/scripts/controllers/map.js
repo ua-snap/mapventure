@@ -82,6 +82,12 @@ app.controller('MapCtrl', [
         }
       };
 
+      $scope.splashShow = function() {
+        var start = new Date().getTime();
+        //while (new Date().getTime() < start + delay); 
+        return true;
+      };
+
       $scope.showLayerInformation = function(layerName) {
         var layer = _.find($scope.map.layers, function(layer) {
           return layer.name === layerName;

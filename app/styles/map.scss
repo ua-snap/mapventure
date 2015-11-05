@@ -2,7 +2,7 @@
   position: absolute;
   left: 15px;
   right: 15px;
-  max-width: 500px;
+  max-width: 550px;
   padding: 8px 15px 5px 15px;
   margin: 15px 0 0 0;
   z-index: 1;
@@ -25,4 +25,11 @@
 
 #snapmapapp {
   margin: 0 -15px;
+}
+
+.splash-screen {
+  position: relative;
+  top:0; 
+  left: 0; 
+  z-index:9999;
 }

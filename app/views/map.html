@@ -1,3 +1,7 @@
+<div ng-hide="$parent.splashShow" class="splash-screen">
+  <h2>{{$parent.splashShow}}</h2>
+  <img src="images/loading.png" height="100%" width="100%" />
+</div>
 <div class="layer-menu">
   <h2>{{ map.title }}</h2>
   <div ui-sortable="sortableOptions" ng-model="map.layers">
