@@ -36,6 +36,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "prepublish": "npm install bower && rm -rf ./bower_components && bower install && grunt build"
+    "prepublish": "npm install bower && rm -rf ./bower_components && bower install"
   }
 }
