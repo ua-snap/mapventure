@@ -7,7 +7,7 @@
  * # MapCtrl
  * Controller of the mapventureApp
  */
-var app = angular.module('mapventureApp')
+var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
   '$scope',
@@ -70,17 +70,40 @@ app.controller('MapCtrl', [
             visible: false
           });
         });
+        Map.setReady(true);
+      };
+
+      $scope.showLayer = function(layerName) {
+          $scope.layers[layerName].obj.addTo($scope.mapObj);
+          $scope.layers[layerName].visible = true;
+      };
+
+      $scope.hideLayer = function(layerName) {
+          $scope.mapObj.removeLayer($scope.layers[layerName].obj);
+          $scope.layers[layerName].visible = false;
       };
 
       $scope.toggleLayer = function(layerName) {
-        if( false === $scope.mapObj.hasLayer( $scope.layers[layerName].obj)) {
-          $scope.layers[layerName].obj.addTo($scope.mapObj);
-          $scope.layers[layerName].visible = true;
+        if($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
+          $scope.showLayer(layerName);
         } else {
-          $scope.mapObj.removeLayer($scope.layers[layerName].obj);
-          $scope.layers[layerName].visible = false;
+          $scope.hideLayer(layerName);
         }
       };
+
+      $scope.$on('show-layers', function(event, showLayers) {
+        angular.forEach($scope.layers, function(value, layerName) {
+          if(showLayers.indexOf(layerName) !== -1) {
+            $scope.$apply(function() {
+              $scope.showLayer(layerName);
+            });
+          } else {
+            $scope.$apply(function() {
+              $scope.hideLayer(layerName);
+            });
+          }
+        });
+      });
 
       $scope.showLayerInformation = function(layerName) {
         var layer = _.find($scope.map.layers, function(layer) {
