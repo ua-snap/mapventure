@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec bower prune
+exec npm run-script prepublish
