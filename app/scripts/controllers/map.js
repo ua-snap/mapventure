@@ -66,15 +66,6 @@ app.controller('MapCtrl', [
         };
       });
 
-      $scope.hideSplashScreen = function() {
-        $scope.splashHide = true;
-        /*if ($scope.splashHide) {
-          return true;
-        } else {
-          return false;
-        }*/
-      };
-
       $scope.addLayers = function() {
         angular.forEach($scope.map.layers, function(layer) {
           // Strip the 'geonode:' prefix, not sure how that's used in
