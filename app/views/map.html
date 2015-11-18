@@ -1,6 +1,7 @@
-<div ng-hide="$parent.splashShow" class="splash-screen">
-  <h2>{{$parent.splashShow}}</h2>
+<div ng-hide='splashHide' class="splash-screen">
   <img src="images/loading.png" height="100%" width="100%" />
+  <h2 id="loading-msg">=== LOADING MAP ===</h2>
+  <img id="loading-bar" src="images/ajax-loader.gif" />
 </div>
 <div class="layer-menu">
   <h2>{{ map.title }}</h2>

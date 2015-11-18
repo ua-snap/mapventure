@@ -25,6 +25,10 @@ app.controller('MapCtrl', [
         $scope.map = data;
         $scope.crs = BaseMap.getCRS($scope.map.srid);
         $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl);
+        $scope.splashHide = false;
+        $scope.$watch('splashHide');
+        console.log($scope.splashHide);
+        $scope.baselayer.on("load", function() { console.log("All tiles loaded."); $scope.splashHide = true; $scope.$apply(); });
         $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
@@ -54,6 +58,15 @@ app.controller('MapCtrl', [
         };
       });
 
+      $scope.hideSplashScreen = function() {
+        $scope.splashHide = true;
+        /*if ($scope.splashHide) {
+          return true;
+        } else {
+          return false;
+        }*/
+      };
+
       $scope.addLayers = function() {
         angular.forEach($scope.map.layers, function(layer) {
           // Strip the 'geonode:' prefix, not sure how that's used in
@@ -80,12 +93,6 @@ app.controller('MapCtrl', [
           $scope.mapObj.removeLayer($scope.layers[layerName].obj);
           $scope.layers[layerName].visible = false;
         }
-      };
-
-      $scope.splashShow = function() {
-        var start = new Date().getTime();
-        //while (new Date().getTime() < start + delay); 
-        return true;
       };
 
       $scope.showLayerInformation = function(layerName) {
