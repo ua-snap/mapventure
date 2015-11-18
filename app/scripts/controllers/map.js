@@ -25,10 +25,18 @@ app.controller('MapCtrl', [
         $scope.map = data;
         $scope.crs = BaseMap.getCRS($scope.map.srid);
         $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl);
+    
+        // The splash screen should be on until Map is loaded.
         $scope.splashHide = false;
+
+        // This variable must be set to be watched or else the Leaflet event does not update the 
+        // ngHide function properly.
         $scope.$watch('splashHide');
-        console.log($scope.splashHide);
-        $scope.baselayer.on("load", function() { console.log("All tiles loaded."); $scope.splashHide = true; $scope.$apply(); });
+
+        // This checks for the 'load' event from Leaflet which means that the basemap 
+        // has completely loaded.
+        $scope.baselayer.on("load", function() { $scope.splashHide = true; $scope.$apply(); });
+
         $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
