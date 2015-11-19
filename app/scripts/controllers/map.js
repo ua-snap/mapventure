@@ -24,7 +24,7 @@ app.controller('MapCtrl', [
       Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
         $scope.crs = BaseMap.getCRS($scope.map.srid);
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl);
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length);
         $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
