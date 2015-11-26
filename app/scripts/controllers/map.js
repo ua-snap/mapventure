@@ -105,14 +105,26 @@ app.controller('MapCtrl', [
         });
       });
 
+      $scope.showMapInformation = function(mapId) {
+        $http.get('http://localhost:8000/api/maps/' + mapId).success(function(data) {
+          var converter = new showdown.Converter();
+          var content = '<h3>' + data.title + '</h3>';
+          content = content.concat('<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>');
+          content = content.concat(converter.makeHtml(data.abstract));
+          $scope.sidebar.setContent(content).show();
+        });
+      };
+
       $scope.showLayerInformation = function(layerName) {
         var layer = _.find($scope.map.layers, function(layer) {
           return layer.name === layerName;
         });
         $http.get('http://localhost:8000/api/layers/' + layer.id).success(function(data) {
-          var legendGraphic = '<h1>Legend</h1><img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layerName+'" alt="legend" />';
           var converter = new showdown.Converter();
-          $scope.sidebar.setContent(legendGraphic + converter.makeHtml(data.abstract)).show();
+          var content = '<h3>' + data.title + '</h3>';
+          content = content.concat('<img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+          content = content.concat(converter.makeHtml(data.abstract));
+          $scope.sidebar.setContent(content).show();
         });
       };
     });

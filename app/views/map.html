@@ -1,5 +1,10 @@
 <div class="layer-menu">
-  <h2>{{ map.title }}</h2>
+  <div class="map">
+    <h2>{{ map.title }}</h2>
+    <label class="btn btn-primary info" ng-click="showMapInformation(map.id)">
+      <span class="glyphicon glyphicon-info-sign"></span>
+    </label>
+  </div>
   <div ui-sortable="sortableOptions" ng-model="map.layers">
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
       <label class="btn btn-primary visibility" ng-click="$parent.toggleLayer(layer.name)">
