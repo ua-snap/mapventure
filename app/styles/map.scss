@@ -24,5 +24,16 @@
 }
 
 #snapmapapp {
-  margin: 0 -15px;
+  position: absolute;
+  //margin: 0 -15px;
+  width: 50%;
+  height: 88%;
+  right: 50%;
+}
+
+#secondmap {
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  height: 88%;
 }
