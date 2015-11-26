@@ -23,10 +23,12 @@ app.controller('MapCtrl', [
 
       Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
+
         $scope.crs = BaseMap.getCRS($scope.map.srid);
         $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.crs.options.resolutions.length);
-        $scope.seccrs = BaseMap.getCRS($scope.map.srid);
-        $scope.secbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.seccrs.options.resolutions.length);
+
+        $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
+        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.secondcrs.options.resolutions.length);
         $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
@@ -40,14 +42,14 @@ app.controller('MapCtrl', [
           ]
         });
 
-        $scope.secMapObj = L.map('secondmap', {
+        $scope.secondMapObj = L.map('secondmap', {
           center: [65, -150],
           zoom: 1,
-          crs: $scope.seccrs,
+          crs: $scope.secondcrs,
           scrollWheelZoom: false,
           zoomControl: false,
           layers: [
-            $scope.secbaselayer
+            $scope.secondbaselayer
           ]
         });
 
@@ -65,8 +67,8 @@ app.controller('MapCtrl', [
             }
           }
         };
-        $scope.mapObj.sync($scope.secMapObj);
-        $scope.secMapObj.sync($scope.mapObj);
+        $scope.mapObj.sync($scope.secondMapObj);
+        $scope.secondMapObj.sync($scope.mapObj);
       });
 
       $scope.addLayers = function() {
