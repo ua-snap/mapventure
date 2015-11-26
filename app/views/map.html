@@ -7,6 +7,11 @@
         <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].visible"></span>
         <input type="checkbox" autocomplete="off">
       </label>
+      <label class="btn btn-primary visibility" ng-click="$parent.toggleSecondLayer(layer.name)">
+        <span class="glyphicon glyphicon-eye-close" ng-hide="$parent.layers[layer.name].secondvisible"></span>
+        <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].secondvisible"></span>
+        <input type="checkbox" autocomplete="off">
+      </label>
       <label class="btn btn-primary info" ng-click="$parent.showLayerInformation(layer.name)">
         <span class="glyphicon glyphicon-info-sign"></span>
       </label>

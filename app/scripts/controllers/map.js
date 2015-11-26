@@ -29,6 +29,7 @@ app.controller('MapCtrl', [
 
         $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
         $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.secondcrs.options.resolutions.length);
+
         $scope.addLayers();
 
         $scope.mapObj = L.map('snapmapapp', {
@@ -105,6 +106,24 @@ app.controller('MapCtrl', [
           $scope.showLayer(layerName);
         } else {
           $scope.hideLayer(layerName);
+        }
+      };
+
+      $scope.showSecondLayer = function(layerName) {
+          $scope.layers[layerName].obj.addTo($scope.secondMapObj);
+          $scope.layers[layerName].secondvisible = true;
+      };
+
+      $scope.hideSecondLayer = function(layerName) {
+          $scope.secondMapObj.removeLayer($scope.layers[layerName].obj);
+          $scope.layers[layerName].secondvisible = false;
+      };
+
+      $scope.toggleSecondLayer = function(layerName) {
+        if($scope.secondMapObj.hasLayer($scope.layers[layerName].obj) === false) {
+          $scope.showSecondLayer(layerName);
+        } else {
+          $scope.hideSecondLayer(layerName);
         }
       };
 
