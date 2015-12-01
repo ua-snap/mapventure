@@ -9,8 +9,15 @@
   background-color: rgb(255, 255, 255);
   opacity: 0.75;
 
-  h2 {
-    margin-top: 0;
+  .map {
+    margin-bottom: 10px;
+    h2 {
+      margin-top: 0;
+      display: inline;
+    }
+    .info {
+      float: right;
+    }
   }
 
   .layer {
@@ -25,4 +32,10 @@
 
 #snapmapapp {
   margin: 0 -15px;
+
+  #info-sidebar {
+    img, p {
+      margin: 10px 0;
+    }
+  }
 }
