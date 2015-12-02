@@ -119,13 +119,11 @@ app.controller('MapCtrl', [
         var layer = _.find($scope.map.layers, function(layer) {
           return layer.name === layerName;
         });
-        $http.get('http://localhost:8000/api/layers/' + layer.id).success(function(data) {
-          var converter = new showdown.Converter();
-          var content = '<h3>' + data.title + '</h3>';
-          content = content.concat('<img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
-          content = content.concat(converter.makeHtml(data.abstract));
-          $scope.sidebar.setContent(content).show();
-        });
+        var converter = new showdown.Converter();
+        var content = '<h3>' + layer.capability.title + '</h3>';
+        content = content.concat('<img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+        content = content.concat(converter.makeHtml(layer.capability.abstract));
+        $scope.sidebar.setContent(content).show();
       };
     });
   }
