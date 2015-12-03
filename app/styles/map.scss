@@ -27,23 +27,13 @@
   margin: 0 -15px;
 }
 
-#loading-bar {
-  position: absolute;
-  top: 20%;
-  left: 45%;
-} 
-
-#loading-msg {
-  position: absolute;
-  top: -10px;
-  left: 38%;
-  color: white;
-}
-
 .splash-screen {
   position: absolute;
-  height: 88%;
-  top: 50px; 
-  left: 0; 
+  left: 0;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  background-color: rgba(28, 82, 83, .9);
   z-index:9999;
 }

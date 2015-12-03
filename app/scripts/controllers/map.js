@@ -7,7 +7,7 @@
  * # MapCtrl
  * Controller of the mapventureApp
  */
-var app = angular.module('mapventureApp')
+var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
   '$scope',
@@ -25,17 +25,21 @@ app.controller('MapCtrl', [
         $scope.map = data;
         $scope.crs = BaseMap.getCRS($scope.map.srid);
         $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl);
-    
+
         // The splash screen should be on until Map is loaded.
         $scope.splashHide = false;
 
-        // This variable must be set to be watched or else the Leaflet event does not update the 
+        // This variable must be set to be watched or else the Leaflet event does not update the
         // ngHide function properly.
         $scope.$watch('splashHide');
 
-        // This checks for the 'load' event from Leaflet which means that the basemap 
+        // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
-        $scope.baselayer.on("load", function() { $scope.splashHide = true; $scope.$apply(); });
+        $scope.baselayer.on("load", function() {
+          $scope.splashHide = true;
+          $scope.$apply();
+          $('#mapLoadingOverlayText').html('&hellip;Splendid!');
+        });
 
         $scope.addLayers();
 
