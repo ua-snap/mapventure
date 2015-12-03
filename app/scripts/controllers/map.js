@@ -94,13 +94,9 @@ app.controller('MapCtrl', [
       $scope.$on('show-layers', function(event, showLayers) {
         angular.forEach($scope.layers, function(value, layerName) {
           if(showLayers.indexOf(layerName) !== -1) {
-            $scope.$apply(function() {
-              $scope.showLayer(layerName);
-            });
+            $scope.showLayer(layerName);
           } else {
-            $scope.$apply(function() {
-              $scope.hideLayer(layerName);
-            });
+            $scope.hideLayer(layerName);
           }
         });
       });
@@ -128,5 +124,9 @@ app.controller('MapCtrl', [
         });
       };
     });
+
+    $scope.startTour = function() {
+      $scope.$emit('start-tour');
+    }
   }
 ]);
