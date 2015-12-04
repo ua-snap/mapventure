@@ -94,9 +94,13 @@ app.controller('MapCtrl', [
       $scope.$on('show-layers', function(event, showLayers) {
         angular.forEach($scope.layers, function(value, layerName) {
           if(showLayers.indexOf(layerName) !== -1) {
-            $scope.showLayer(layerName);
+            $scope.$evalAsync(function() {
+              $scope.showLayer(layerName);
+            });
           } else {
-            $scope.hideLayer(layerName);
+            $scope.$evalAsync(function() {
+              $scope.hideLayer(layerName);
+            });
           }
         });
       });
