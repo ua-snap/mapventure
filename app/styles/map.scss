@@ -6,8 +6,7 @@
   padding: 8px 15px 5px 15px;
   margin: 15px 0 0 0;
   z-index: 1;
-  background-color: rgb(255, 255, 255);
-  opacity: 0.75;
+  background-color: rgba(255, 255, 255, .75);
 
   .map {
     margin-bottom: 10px;
@@ -28,6 +27,30 @@
       margin: 0 5px 0 0;
     }
   }
+}
+
+.zoom {
+  transform: scale(1.5, 1.5);
+  box-shadow: 10px 3px 3px black;
+  transition: 500ms;
+}
+
+.no-zoom {
+  transform: scale(1, 1);
+  box-shadow: none;
+  transition: 500ms;
+}
+
+.bling {
+  padding: 1em;
+  background-color: #F3FFC5;
+  transition: 500ms;
+}
+
+.no-bling {
+  padding: inherit;
+  background-color: inherit;
+  transition: 500ms;
 }
 
 #snapmapapp {
