@@ -22,6 +22,11 @@ app.controller('MapCtrl', [
 
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
+
+      // Reversing the layers makes the order
+      // match what we see in GeoNode's map editor.
+      $scope.map.layers.reverse();
+
       $scope.crs = BaseMap.getCRS($scope.map.srid);
       $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length);
       $scope.addLayers();
