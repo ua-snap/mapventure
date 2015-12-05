@@ -38,7 +38,7 @@ app.controller('MapCtrl', [
         $scope.baselayer.on("load", function() {
           $scope.splashHide = true;
           $scope.$apply();
-          $('#mapLoadingOverlayText').html('&hellip;Splendid!');
+          $('#mapLoadingOverlayText').html('&hellip;Enjoy!');
         });
 
         $scope.addLayers();
