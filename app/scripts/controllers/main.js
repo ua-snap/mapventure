@@ -14,6 +14,7 @@ angular.module('mapventureApp')
         $scope.maps = data.objects;
       })
       .error(function(err) {
+        console.log(err);
         throw('Unable to load map list!');
       });
   }]);

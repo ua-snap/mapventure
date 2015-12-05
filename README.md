@@ -5,6 +5,14 @@ version 0.12.1.
 
 ## Build & development
 
+After cloning this repo, you can build with:
+
+```
+npm install
+bower install
+grunt serve
+```
+
 Run `grunt` for building and `grunt serve` for preview.
 
 ## Testing
