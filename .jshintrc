@@ -13,5 +13,5 @@
   "globals": {
     "angular": false
   },
-  "predef": ["L", "$"]
+  "predef": ["L", "showdown", "_", "$"]
 }
