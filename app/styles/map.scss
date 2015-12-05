@@ -2,7 +2,7 @@
   position: absolute;
   left: 15px;
   right: 15px;
-  max-width: 500px;
+  max-width: 550px;
   padding: 8px 15px 5px 15px;
   margin: 15px 0 0 0;
   z-index: 1;
@@ -61,4 +61,15 @@
       margin: 10px 0;
     }
   }
+}
+
+.splash-screen {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  background-color: rgba(150, 168, 48, 1.0);
+  z-index:9999;
 }
