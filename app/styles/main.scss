@@ -22,7 +22,7 @@ body {
 
 .container-fluid {
   padding: 0;
-  margin: 0 15px;
+  margin: 0;
 }
 
 /* Custom page header */
@@ -108,4 +108,18 @@ body, .middle, .middle .container-fluid {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+.fade {
+  opacity: 1;
+}
+
+.fade.ng-hide {
+  opacity: 0;
+}
+
+.fade.ng-hide-remove,
+.fade.ng-hide-add {
+  transition: all linear 1000ms;
+  display: block !important;
 }

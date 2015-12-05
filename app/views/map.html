@@ -1,5 +1,14 @@
+<div ng-hide="splashHide" class="fade splash-screen">
+  <h2 id="mapLoadingOverlayText">Hang on while the map is loading&hellip;</h2>
+  <img src="images/ajax-loader.gif" />
+</div>
 <div class="layer-menu">
-  <h2>{{ map.title }}</h2>
+  <div class="map">
+    <h2 id="mapTitle">{{ map.title }}</h2>
+    <label id="showMapInformation" class="btn btn-primary info" ng-click="showMapInformation(map.id)">
+      <span class="glyphicon glyphicon-question-sign"></span>
+    </label>
+  </div>
   <div ui-sortable="sortableOptions" ng-model="map.layers">
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
       <label class="btn btn-primary visibility" ng-click="$parent.toggleLayer(layer.name)">
@@ -18,6 +27,11 @@
       {{ layer.title }}
     </div>
   </div>
+  <label class="btn btn-primary" ng-click="startTour()">
+    <span class="glyphicon glyphicon-question-sign"></span>
+    &nbsp;
+    Take a tour of this map&hellip;
+  </label>
 </div>
 <div id="info-sidebar"></div>
 <div id="snapmapapp"></div>

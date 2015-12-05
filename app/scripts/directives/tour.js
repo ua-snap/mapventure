@@ -26,28 +26,43 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             element: "#ncep_daily_air_temperature",
             content: "This is the most recent temperature data from NCEP.",
             onShow: function() {
+              $('#ncep_daily_air_temperature')
+                .addClass('bling')
+                .removeClass('no-bling');
               scope.$broadcast('show-layers', [ 'ncep_daily_air_temperature' ]);
-            }
-          },
-          {
-            element: "#ncep_daily_sea_surface_temperature",
-            content: "The source data set lets you choose the millibars at which you want the data, so this stuff is from sea level, the first is from 2 meters up.",
-            onShow: function() {
-              scope.$broadcast('show-layers', [ 'ncep_daily_sea_surface_temperature' ]);
-            }
-          },
-          {
-            element: "#ncep_air_temperature_current_month_forecast_average",
-            content: "This is the projected air temperature.",
-            onShow: function() {
-              scope.$broadcast('show-layers', [ 'ncep_air_temperature_current_month_forecast_average' ]);
+            },
+            onHide: function() {
+              $('#ncep_daily_air_temperature')
+                .removeClass('bling')
+                .addClass('no-bling');
             }
           },
           {
             element: "#ncep_air_temperature_current_month_forecast_average .info",
-            content: "Click this button to see more information about this layer.",
+            content: "Use this button to see more information about this layer, including the legend.",
             onShow: function() {
-              scope.$broadcast('show-layers', [ 'ncep_air_temperature_current_month_forecast_average' ]);
+              $('#ncep_air_temperature_current_month_forecast_average .info')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('#ncep_air_temperature_current_month_forecast_average .info')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: "#showMapInformation",
+            content: "Use this button to show detailed information about this map, including data sources and how to obtain this data.",
+            onShow: function() {
+              $('#showMapInformation')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('#showMapInformation')
+                .removeClass('zoom')
+                .addClass('no-zoom');
             }
           }
         ]
@@ -66,6 +81,10 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
           }
         }
       );
+
+      scope.$on('start-tour', function() {
+        scope.tour.restart();
+      });
     }
   };
 }]);
