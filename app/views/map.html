@@ -5,9 +5,16 @@
 <div class="layer-menu">
   <div class="map">
     <h2 id="mapTitle">{{ map.title }}</h2>
+    <div>
     <label id="showMapInformation" class="btn btn-primary info" ng-click="showMapInformation(map.id)">
       <span class="glyphicon glyphicon-question-sign"></span>
     </label>
+    <label id="showDualMaps" class="btn btn-primary info" ng-click="showDualMaps()">
+      <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
+      <span ng-hide="dualMaps">|</span>
+      <span class="glyphicon glyphicon-unchecked"></span>
+    </label>
+    </div>
   </div>
   <div ui-sortable="sortableOptions" ng-model="map.layers">
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
@@ -16,7 +23,7 @@
         <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].visible"></span>
         <input type="checkbox" autocomplete="off">
       </label>
-      <label class="btn btn-primary visibility" ng-click="$parent.toggleSecondLayer(layer.name)">
+      <label class="btn btn-primary visibility" ng-show="dualMaps" ng-click="$parent.toggleSecondLayer(layer.name)">
         <span class="glyphicon glyphicon-eye-close" ng-hide="$parent.layers[layer.name].secondvisible"></span>
         <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].secondvisible"></span>
         <input type="checkbox" autocomplete="off">
@@ -34,5 +41,5 @@
   </label>
 </div>
 <div id="info-sidebar"></div>
-<div id="snapmapapp"></div>
+<div id="snapmapapp" ng-class="{'half': dualMaps}"></div>
 <div id="secondmap"></div>
