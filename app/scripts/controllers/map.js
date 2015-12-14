@@ -104,6 +104,7 @@ app.controller('MapCtrl', [
 
       $scope.toggleSecondLayer = function(layerName) {
         if($scope.secondMapObj.hasLayer($scope.layers[layerName].obj) === false) {
+          $scope.hideLayer(layerName);
           $scope.showSecondLayer(layerName);
         } else {
           $scope.hideSecondLayer(layerName);
@@ -141,6 +142,7 @@ app.controller('MapCtrl', [
 
     $scope.toggleLayer = function(layerName) {
       if($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
+        $scope.hideSecondLayer(layerName);
         $scope.showLayer(layerName);
       } else {
         $scope.hideLayer(layerName);
