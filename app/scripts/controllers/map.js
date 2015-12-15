@@ -35,6 +35,9 @@ app.controller('MapCtrl', [
 
         // Dual maps
         $scope.dualMaps = false;
+
+        // Sync maps
+        $scope.syncMaps = false;
         //setInterval(function() { $scope.dualMaps = false; }, 500);
 
         // The splash screen should be on until Map is loaded.
@@ -176,10 +179,27 @@ app.controller('MapCtrl', [
     $scope.showDualMaps = function() {
       if ($scope.dualMaps === false) { 
         $scope.dualMaps = true;
-        $scope.mapObj.sync($scope.secondMapObj);
-        $scope.secondMapObj.sync($scope.mapObj); 
+        $timeout(function() {
+          $scope.mapObj.invalidateSize();
+          $scope.mapObj.panTo([65, -150]);
+          $scope.secondMapObj.panTo([65, -150]);
+        }, 5);
       } else {
         $scope.dualMaps = false;
+        $timeout(function() {
+          $scope.mapObj.invalidateSize();
+          $scope.mapObj.panTo([65, -150]);
+        }, 5);
+      }
+    };
+
+    $scope.syncDualMaps = function() {
+      if ($scope.syncMaps === false) {
+        $scope.syncMaps = true;
+        $scope.mapObj.sync($scope.secondMapObj);
+        $scope.secondMapObj.sync($scope.mapObj);
+      } else {
+        $scope.syncMaps = false;
         $scope.mapObj.unsync($scope.secondMapObj);
         $scope.secondMapObj.unsync($scope.mapObj);
       }

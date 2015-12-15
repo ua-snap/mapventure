@@ -14,6 +14,9 @@
       <span ng-hide="dualMaps">|</span>
       <span class="glyphicon glyphicon-unchecked"></span>
     </label>
+    <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="syncDualMaps()">
+      <span class="glyphicon glyphicon-flash"></span>
+    </label>
     </div>
   </div>
   <div ui-sortable="sortableOptions" ng-model="map.layers">
@@ -42,4 +45,4 @@
 </div>
 <div id="info-sidebar"></div>
 <div id="snapmapapp" ng-class="{'half': dualMaps}"></div>
-<div id="secondmap"></div>
+<div id="secondmap" ng-class="{'half': dualMaps}"></div>

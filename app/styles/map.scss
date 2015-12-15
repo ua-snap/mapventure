@@ -76,7 +76,15 @@
   z-index: -1;
 }
 
+#secondmap.half {
+  z-index: 0;
+}
+
 #showDualMaps {
+  margin-right: 3px;
+}
+
+#syncDualMaps {
   margin-right: 3px;
 }
 
