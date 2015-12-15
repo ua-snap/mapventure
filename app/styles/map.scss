@@ -29,6 +29,10 @@
   }
 }
 
+.layer-menu.clear {
+  background-color: rgba(255,255,255,0);
+}
+
 .zoom {
   transform: scale(1.5, 1.5);
   box-shadow: 10px 3px 3px black;

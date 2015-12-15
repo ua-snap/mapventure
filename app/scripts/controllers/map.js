@@ -33,6 +33,8 @@ app.controller('MapCtrl', [
       // The splash screen should be on until Map is loaded.
       $scope.splashHide = false;
 
+      $scope.minimized = false;
+
       // This variable must be set to be watched or else the Leaflet event does not update the
       // ngHide function properly.
       $scope.$watch('splashHide');
@@ -124,6 +126,14 @@ app.controller('MapCtrl', [
         }
       });
     });
+
+    $scope.minimize_menu = function() {
+      if ($scope.minimized == false) {
+        $scope.minimized = true;
+      } else {
+        $scope.minimized = false;
+      }
+    };
 
     $scope.showMapInformation = function(mapId) {
       $http.get('http://localhost:8000/api/maps/' + mapId).success(function(data) {
