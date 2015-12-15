@@ -33,12 +33,11 @@ app.controller('MapCtrl', [
         $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
         $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.secondcrs.options.resolutions.length);
 
-        // Dual maps
+        // Dual maps boolean
         $scope.dualMaps = false;
 
-        // Sync maps
+        // Sync maps boolean
         $scope.syncMaps = false;
-        //setInterval(function() { $scope.dualMaps = false; }, 500);
 
         // The splash screen should be on until Map is loaded.
         $scope.splashHide = false;
@@ -93,6 +92,7 @@ app.controller('MapCtrl', [
         };
 
       new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
+
       });
 
       $scope.showSecondLayer = function(layerName) {
@@ -186,6 +186,7 @@ app.controller('MapCtrl', [
         }, 5);
       } else {
         $scope.dualMaps = false;
+        if ($scope.syncMaps === true) $scope.syncDualMaps();
         $timeout(function() {
           $scope.mapObj.invalidateSize();
           $scope.mapObj.panTo([65, -150]);
