@@ -166,6 +166,33 @@ app.controller('MapCtrl', [
       });
     });
 
+    $scope.$on('show-second-layers', function(event, showLayers) {
+      angular.forEach($scope.layers, function(value, layerName) {
+        if(showLayers.indexOf(layerName) !== -1) {
+          $scope.$evalAsync(function() {
+            $scope.showSecondLayer(layerName);
+          });
+        } else {
+          $scope.$evalAsync(function() {
+            $scope.hideSecondLayer(layerName);
+          });
+        }
+      });
+    });
+
+
+    $scope.$on('show-dual-maps', function(event) {
+      $scope.$evalAsync(function() {
+        $scope.showDualMaps();
+      });
+    });
+
+    $scope.$on('show-sync-maps', function(event) {
+      $scope.$evalAsync(function() {
+        $scope.syncDualMaps();
+      });
+    });
+
     $scope.showMapInformation = function(mapId) {
       $http.get('http://localhost:8000/api/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();
@@ -183,14 +210,14 @@ app.controller('MapCtrl', [
           $scope.mapObj.invalidateSize();
           $scope.mapObj.panTo([65, -150]);
           $scope.secondMapObj.panTo([65, -150]);
-        }, 5);
+        }, 250);
       } else {
         $scope.dualMaps = false;
         if ($scope.syncMaps === true) $scope.syncDualMaps();
         $timeout(function() {
           $scope.mapObj.invalidateSize();
           $scope.mapObj.panTo([65, -150]);
-        }, 5);
+        }, 250);
       }
     };
 
