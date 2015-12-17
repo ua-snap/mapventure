@@ -57,14 +57,12 @@
   position: absolute;
   width: 100%;
   height: 87%;
-}
-
-#snapmapapp.half {
-  position: absolute;
-  width: 50%;
-  height: 87%;
-  right: 50%;
-  border: 2px solid black;
+  
+  .half {
+    width: 50%;
+    right: 50%;
+    border-right: 1px solid #aaa;
+  }
 }
 
 #secondmap {
@@ -72,12 +70,12 @@
   left: 50%;
   width: 50%;
   height: 87%;
-  border: 2px solid black;
+  border-right: 1px solid #aaa;
   z-index: -1;
-}
-
-#secondmap.half {
-  z-index: 0;
+  
+  .half {
+    z-index: 0;
+  }
 }
 
 #showDualMaps {
