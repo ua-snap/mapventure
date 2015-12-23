@@ -64,6 +64,76 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
                 .removeClass('zoom')
                 .addClass('no-zoom');
             }
+          },
+          {
+            element: "#showDualMaps",
+            content: "Use this button to split the map into two maps.",
+            onShow: function() {
+              $('#showDualMaps')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            }
+          },
+          {
+            element: "#showDualMaps",
+            content: "Once clicked, additional buttons are added to the layer menu.",
+            onShow: function() {
+              scope.$broadcast('show-dual-maps', []);
+            },
+            onHide: function() {
+              $('#showDualMaps')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: "#syncDualMaps",
+            content: "Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.",
+            onShow: function() {
+              $('#syncDualMaps')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+              scope.$broadcast('show-sync-maps', []);
+            },
+            onHide: function() {
+              $('#syncDualMaps')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: "#snapmapapp",
+            content: "Try moving either map around or zoom in to see both maps synchronized.",
+          },
+          {
+            element: "#ncep_yearly_air_temperature",
+            content: "This is the temperature data from NCEP for a year ago today. With two maps, we can choose which map to display the data on. The left map is controlled by the left buttons, and the right map is controller by the right buttons.",
+            onShow: function() {
+              $('#ncep_yearly_air_temperature')
+                .addClass('bling')
+                .removeClass('no-bling');
+              scope.$broadcast('show-second-layers', [ 'ncep_yearly_air_temperature' ]);
+            },
+            onHide: function() {
+              $('#ncep_yearly_air_temperature')
+                .removeClass('bling')
+                .addClass('no-bling');
+            }
+          },
+          {
+            element: "#showDualMaps",
+            content: "If wishing to return to a single map view, click on this button again.",
+            onShow: function() {
+              scope.$broadcast('show-dual-maps', []);
+              $('#showDualMaps')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('#showDualMaps')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
           }
         ]
       });
