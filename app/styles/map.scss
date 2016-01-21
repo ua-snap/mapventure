@@ -57,12 +57,14 @@
   position: absolute;
   width: 100%;
   height: 87%;
-  
-  .half {
-    width: 50%;
-    right: 50%;
-    border-right: 1px solid #aaa;
-  }
+}
+
+#snapmapapp.half {
+  position: absolute;
+  width: 50%;
+  height: 87%;
+  right: 50%;
+  border: 2px solid rgba(150, 168, 48, 1.0);
 }
 
 #secondmap {
@@ -70,15 +72,19 @@
   left: 50%;
   width: 50%;
   height: 87%;
-  border-right: 1px solid #aaa;
+  border: 2px solid rgba(150, 168, 48, 1.0);
   z-index: -1;
-  
-  .half {
-    z-index: 0;
-  }
 }
 
-#showDualMaps, #syncDualMaps {
+#secondmap.half {
+  z-index: 0;
+}
+
+#showDualMaps {
+  margin-right: 3px;
+}
+
+#syncDualMaps {
   margin-right: 3px;
 }
 
