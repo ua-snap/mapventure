@@ -12,7 +12,7 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
   return {
     restrict: 'E',
     link: function postLink(scope) {
-      scope.tour = new Tour({
+      scope.ncep_tour = new Tour({
         steps: [
           {
             element: ".layer-menu",
@@ -138,6 +138,98 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
         ]
       });
 
+      scope.iem_tour = new Tour({
+        steps: [
+          {
+            element: ".layer-menu",
+            title: "IEM Map",
+            content: "Hello! Welcome to the IEM map. This tour will show you around the IEM map.",
+            onShow: function() {
+              scope.$broadcast('show-layers', []);
+            }
+          },
+          {
+            element: "#pr_total_mm_iem_cru_ts31_06_2004_reproj",
+            content: "This is the Historical Monthly Precipitation for June 2004 in the State of Alaska. Clicking on the eye will turn on this layer.",
+            onShow: function() {
+              $('#pr_total_mm_iem_cru_ts31_06_2004_reproj')
+                .addClass('bling')
+                .removeClass('no-bling');
+              scope.$broadcast('show-layers', [ 'pr_total_mm_iem_cru_ts31_06_2004_reproj' ]);
+            },
+            onHide: function() {
+              $('#pr_total_mm_iem_cru_ts31_06_2004_reproj')
+                .removeClass('bling')
+                .addClass('no-bling');
+            }
+          },
+          {
+            element: "#pr_total_mm_iem_cru_ts31_06_2004_reproj .info",
+            content: "Use this button to see more information about this layer, including the legend.",
+            onShow: function() {
+              $('#pr_total_mm_iem_cru_ts31_06_2004_reproj .info')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('#pr_total_mm_iem_cru_ts31_06_2004_reproj .info')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: "#showMapInformation",
+            content: "Use this button to show detailed information about this map, including data sources and how to obtain this data.",
+            onShow: function() {
+              $('#showMapInformation')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('#showMapInformation')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: "#showDualMaps",
+            content: "Use this button to split the map into two maps.",
+            onShow: function() {
+              $('#showDualMaps')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            }
+          },
+          {
+            element: "#showDualMaps",
+            content: "Once clicked, additional buttons are added to the layer menu.",
+            onShow: function() {
+              scope.$broadcast('show-dual-maps', []);
+            },
+            onHide: function() {
+              $('#showDualMaps')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: "#syncDualMaps",
+            content: "Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.",
+            onShow: function() {
+              $('#syncDualMaps')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+              scope.$broadcast('show-sync-maps', []);
+            },
+            onHide: function() {
+              $('#syncDualMaps')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          }
+        ]
+      });
+
       scope.$watch(
         function() {
           return Map.ready();
@@ -145,15 +237,20 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
         function() {
           if(Map.ready() === true) {
             $timeout(function() {
-              scope.tour.init();
-              scope.tour.start();
+              scope.ncep_tour.init();
+              scope.iem_tour.init();
+              //scope.ncep_tour.start();
             });
           }
         }
       );
 
-      scope.$on('start-tour', function() {
-        scope.tour.restart();
+      scope.$on('iem-start-tour', function() {
+        scope.iem_tour.restart();
+      });
+
+      scope.$on('ncep-start-tour', function() {
+        scope.ncep_tour.restart();
       });
     }
   };
