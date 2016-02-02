@@ -33,6 +33,12 @@ app.controller('MapCtrl', [
         $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
         $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.secondcrs.options.resolutions.length);
 
+        $scope.minimized = false;
+
+        // This variable must be set to be watched or else the Leaflet event does not update the
+        // ngHide function properly.
+        $scope.$watch('splashHide');
+
         // Dual maps boolean
         $scope.dualMaps = false;
 
@@ -166,6 +172,14 @@ app.controller('MapCtrl', [
       });
     });
 
+    $scope.minimize_menu = function() {
+      if ($scope.minimized == false) {
+        $scope.minimized = true;
+      } else {
+        $scope.minimized = false;
+      }
+    };
+
     $scope.$on('show-second-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {
         if(showLayers.indexOf(layerName) !== -1) {
@@ -204,7 +218,7 @@ app.controller('MapCtrl', [
     };
 
     $scope.showDualMaps = function() {
-      if ($scope.dualMaps === false) { 
+      if ($scope.dualMaps === false) {
         $scope.dualMaps = true;
         $timeout(function() {
           $scope.mapObj.invalidateSize();

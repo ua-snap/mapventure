@@ -2,7 +2,14 @@
   <h2 id="mapLoadingOverlayText">Hang on while the map is loading&hellip;</h2>
   <img src="images/ajax-loader.gif" />
 </div>
-<div class="layer-menu">
+<div class="layer-menu" ng-class="{'clear': minimized}">
+  <div>
+    <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimize_menu()">
+      <span ng-hide="minimized" class="glyphicon glyphicon-minus"></span>
+      <span ng-show="minimized" class="glyphicon glyphicon-plus"></span>
+    </label>
+  </div>
+  <div ng-hide="minimized">
   <div class="map">
     <h2 id="mapTitle">{{ map.title }}</h2>
     <div>
@@ -21,16 +28,25 @@
   </div>
   <div ui-sortable="sortableOptions" ng-model="map.layers">
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
-      <label class="btn btn-primary visibility" ng-click="$parent.toggleLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-close" ng-hide="$parent.layers[layer.name].visible"></span>
-        <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].visible"></span>
+      <!-- Buttons for first map -->
+      <label class="btn btn-success visibility" ng-show="$parent.layers[layer.name].visible" ng-click="$parent.toggleLayer(layer.name)">
+        <span class="glyphicon glyphicon-eye-open" ></span>
         <input type="checkbox" autocomplete="off">
       </label>
-      <label class="btn btn-primary visibility" ng-show="dualMaps" ng-click="$parent.toggleSecondLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-close" ng-hide="$parent.layers[layer.name].secondvisible"></span>
-        <span class="glyphicon glyphicon-eye-open" ng-show="$parent.layers[layer.name].secondvisible"></span>
+      <label class="btn btn-primary visibility" ng-hide="$parent.layers[layer.name].visible" ng-click="$parent.toggleLayer(layer.name)">
+        <span class="glyphicon glyphicon-eye-close"></span>
         <input type="checkbox" autocomplete="off">
       </label>
+      <!-- Buttons for second map -->
+      <label class="btn btn-success visibility" ng-show="dualMaps && $parent.layers[layer.name].secondvisible" ng-click="$parent.toggleSecondLayer(layer.name)">
+        <span class="glyphicon glyphicon-eye-open"></span>
+        <input type="checkbox" autocomplete="off">
+      </label>
+      <label class="btn btn-primary visibility" ng-show="dualMaps && !$parent.layers[layer.name].secondvisible" ng-click="$parent.toggleSecondLayer(layer.name)">
+        <span class="glyphicon glyphicon-eye-close"></span>
+        <input type="checkbox" autocomplete="off">
+      </label>
+      <!-- Information about layer button -->
       <label class="btn btn-primary info" ng-click="$parent.showLayerInformation(layer.name)">
         <span class="glyphicon glyphicon-info-sign"></span>
       </label>
@@ -42,6 +58,7 @@
     &nbsp;
     Take a tour of this map&hellip;
   </label>
+</div>
 </div>
 <div id="info-sidebar"></div>
 <div id="snapmapapp" ng-class="{'half': dualMaps}"></div>
