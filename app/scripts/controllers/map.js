@@ -152,6 +152,11 @@ app.controller('MapCtrl', [
       }
     };
 
+    $scope.downloadMap = function(mapId) {
+      //$.post("http://localhost:8000/maps/2/download",{"csrfmiddlewaretoken": "grnMV9n4rj4QzMeo0aI9DgCCiaoaWc7d"});
+      window.location.href = "http://localhost:8000/maps/"+ mapId +"/download";
+    };
+
     $scope.$on('show-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {
         if(showLayers.indexOf(layerName) !== -1) {
