@@ -35,8 +35,12 @@ app.controller('MapCtrl', [
 
         $scope.minimized = false;
 
-        // This variable must be set to be watched or else the Leaflet event does not update the
-        // ngHide function properly.
+        // This variable must be watched to allow for the sidebar
+        // of Leaflet to hide and show the layer menu
+        $scope.$watch('minimized');
+
+        // This variable must be set to be watched or else the
+        // Leaflet event does not update the ngHide function properly.
         $scope.$watch('splashHide');
 
         // Dual maps boolean
@@ -47,10 +51,6 @@ app.controller('MapCtrl', [
 
         // The splash screen should be on until Map is loaded.
         $scope.splashHide = false;
-
-        // This variable must be set to be watched or else the Leaflet event does not update the
-        // ngHide function properly.
-        $scope.$watch('splashHide');
 
         // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
@@ -87,6 +87,16 @@ app.controller('MapCtrl', [
         $scope.sidebar = L.control.sidebar('info-sidebar', {
           position: 'left'
         });
+
+        $scope.sidebar.on('show', function() {
+          $scope.minimize_menu();
+        });
+
+        $scope.sidebar.on('hide', function() {
+          $scope.minimize_menu();
+          $scope.$apply();
+        });
+
         $scope.mapObj.addControl($scope.sidebar);
 
         $scope.sortableOptions = {
