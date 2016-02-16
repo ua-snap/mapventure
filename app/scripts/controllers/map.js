@@ -259,7 +259,14 @@ app.controller('MapCtrl', [
     };
 
     $scope.startTour = function() {
-      $scope.$emit('start-tour');
+      /* These map IDs will need to be changed based
+         upon the map ID of the system running the GeoNode
+         instance. */
+      if ($routeParams.mapId == 2) {
+        $scope.$emit('iem-start-tour');
+      } else if ($routeParams.mapId == 8) {
+        $scope.$emit('ncep-start-tour');
+      }
     }
   }
 ]);
