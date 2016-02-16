@@ -35,11 +35,11 @@ app.controller('MapCtrl', [
 
         $scope.minimized = false;
 
-        // This variable must be watched to allow for the sidebar 
+        // This variable must be watched to allow for the sidebar
         // of Leaflet to hide and show the layer menu
         $scope.$watch('minimized');
 
-        // This variable must be set to be watched or else the 
+        // This variable must be set to be watched or else the
         // Leaflet event does not update the ngHide function properly.
         $scope.$watch('splashHide');
 
@@ -87,9 +87,9 @@ app.controller('MapCtrl', [
         $scope.sidebar = L.control.sidebar('info-sidebar', {
           position: 'left'
         });
-        
+
         $scope.sidebar.on('show', function() {
-          $scope.minimize_menu();  
+          $scope.minimize_menu();
         });
 
         $scope.sidebar.on('hide', function() {
@@ -184,10 +184,8 @@ app.controller('MapCtrl', [
 
     $scope.minimize_menu = function() {
       if ($scope.minimized == false) {
-        console.log("Hiding now...");
         $scope.minimized = true;
       } else {
-        console.log("Showing now...");
         $scope.minimized = false;
       }
     };
