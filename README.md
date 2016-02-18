@@ -19,6 +19,18 @@ Run `grunt` for building and `grunt serve` for preview.
 
 Running `grunt test` will run the unit tests with karma.
 
+## Production configuration changes
+
+In the app/scripts/app.js document, change the following two lines to point at the production instances of GeoNode and GeoServer.
+
+```
+// Set the GeoNode URL here
+MapProvider.setGeonodeUrl('http://localhost:8000');
+
+// Set the Geoserver URL here
+MapProvider.setGeoserverUrl('http://localhost:8080/geoserver/wms');
+```
+
 ## Git-hooks Installation and Usage
 
 First, download the binary for your environment from: https://github.com/git-hooks/git-hooks/releases

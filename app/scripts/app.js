@@ -39,5 +39,9 @@ angular
         redirectTo: '/'
       });
 
-      MapProvider.setGeonodeApiUrl('http://localhost:8000/api');
+      // Set the GeoNode URL here
+      MapProvider.setGeonodeUrl('http://localhost:8000');
+
+      // Set the Geoserver URL here
+      MapProvider.setGeoserverUrl('http://localhost:8080/geoserver/wms');
   });

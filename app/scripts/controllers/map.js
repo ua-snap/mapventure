@@ -17,7 +17,7 @@ app.controller('MapCtrl', [
   'Map',
   'BaseMap',
   function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
-      var geoserverUrl = 'http://localhost:8080/geoserver/wms';
+      var geoserverUrl = Map.geoserverUrl();
       $scope.layers = {};
 
       Map.layers($routeParams.mapId).success(function(data) {
@@ -28,10 +28,10 @@ app.controller('MapCtrl', [
         $scope.map.layers.reverse();
 
         $scope.crs = BaseMap.getCRS($scope.map.srid);
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.crs.options.resolutions.length);
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length);
 
         $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
-        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.secondcrs.options.resolutions.length);
+        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.secondcrs.options.resolutions.length);
 
         $scope.minimized = false;
 

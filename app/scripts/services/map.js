@@ -10,19 +10,25 @@
 angular.module('mapventureApp')
   .provider('Map', function MapProvider() {
 
+    // Default URL for Geonode
+    var geonodeUrl = 'http://localhost:8000';
+
+    // Default URL for Geoserver
+    var geoserverUrl = 'http://localhost:8080/geoserver/wms';
+
     // Default URL for Geonode API
-    var geonodeApiUrl = 'http://localhost:8000/api';
+    var geonodeApiUrl = geonodeUrl + '/api';
 
     // Map is populated with layers
     var ready = false;
 
     // Public API for configuration
-    this.setGeonodeApiUrl = function (url) {
-      geonodeApiUrl = url;
+    this.setGeonodeUrl = function (url) {
+      geonodeUrl = url;
     };
 
-    this.getGeonodeApiUrl = function() {
-      return geonodeApiUrl;
+    this.setGeoserverUrl = function (url) {
+      geoserverUrl = url;
     };
 
     // Method for instantiating
@@ -33,6 +39,12 @@ angular.module('mapventureApp')
         },
         layers: function(mapId) {
           return $http.get(geonodeApiUrl + '/maplayers/' + mapId);
+        },
+        geonodeUrl: function() {
+          return geonodeUrl;
+        },
+        geoserverUrl: function() {
+          return geoserverUrl;
         },
         setReady: function(isReady) {
           ready = isReady;
