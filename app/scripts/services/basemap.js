@@ -74,7 +74,6 @@ angular.module('mapventureApp')
         },
         'EPSG:3338': {
           baseLayerName: 'ne_50m_ocean',
-          // zIndex: 10000,
           transparent: true
         }
       };
