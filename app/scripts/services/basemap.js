@@ -68,13 +68,12 @@ angular.module('mapventureApp')
       // out where to refactor this logic.
       var layerConfiguration = {
         'EPSG:3572': {
-          baseLayerName: 'ne_50m_ocean',
+          baseLayerName: 'ne_10m_coastline',
           zIndex: 10000,
           transparent: true
         },
         'EPSG:3338': {
           baseLayerName: 'ne_50m_ocean',
-          zIndex: 10000,
           transparent: true
         }
       };
