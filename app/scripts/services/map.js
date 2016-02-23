@@ -7,17 +7,11 @@
  * # Map
  * Handles API requests for maps.
  */
-angular.module('mapventureApp')
+angular.module('mapventureApp') 
   .provider('Map', function MapProvider() {
-
-    // Default URL for Geonode
-    var geonodeUrl = 'http://localhost:8000';
-
-    // Default URL for Geoserver
-    var geoserverUrl = 'http://localhost:8080/geoserver/wms';
-
-    // Default URL for Geonode API
-    var geonodeApiUrl = geonodeUrl + '/api';
+    // Creates the variables for holding the URL for
+    // Geonode, Geoserver, and Geonode API.
+    var geonodeUrl, geoserverUrl, geonodeApiUrl;
 
     // Map is populated with layers
     var ready = false;
@@ -25,6 +19,7 @@ angular.module('mapventureApp')
     // Public API for configuration
     this.setGeonodeUrl = function (url) {
       geonodeUrl = url;
+      geonodeApiUrl = geonodeUrl + '/api';
     };
 
     this.setGeoserverUrl = function (url) {

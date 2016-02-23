@@ -21,15 +21,26 @@ Running `grunt test` will run the unit tests with karma.
 
 ## Production configuration changes
 
-In the app/scripts/app.js document, change the following two lines to point at the production instances of GeoNode and GeoServer.
+For the production configuration of MapVenture, set two operating system environment variables to provide the production GeoNode and GeoServer URLs. The environment variables to set are GEONODE_URL and GEOSERVER_URL. Here is a development example of setting the environment variables:
 
 ```
-// Set the GeoNode URL here
-MapProvider.setGeonodeUrl('http://localhost:8000');
-
-// Set the Geoserver URL here
-MapProvider.setGeoserverUrl('http://localhost:8080/geoserver/wms');
+export GEONODE_URL="http://localhost:8000"
+export GEOSERVER_URL="http://localhost:8080/geoserver/wms"
 ```
+
+Once the URLs are set, run either:
+
+```
+grunt serve
+```
+
+or:
+
+```
+grunt build
+```
+
+Note: If the system variables are not set, it will default to using http://localhost:8000 for GeoNode and http://localhost:8080/geoserver/wms for GeoServer.
 
 ## Git-hooks Installation and Usage
 

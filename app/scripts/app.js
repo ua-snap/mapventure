@@ -16,9 +16,10 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.sortable'
+    'ui.sortable',
+    'config'
   ])
-  .config(function ($routeProvider, MapProvider) {
+  .config(function ($routeProvider, MapProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -38,10 +39,18 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+      
+      if (ENV.geonode_url === undefined) {
+        // Set the default GeoNode URL here if environment variable isn't set during Grunt build
+        MapProvider.setGeonodeUrl('http://localhost:8000');
+      } else {
+        MapProvider.setGeonodeUrl(ENV.geonode_url);
+      }
 
-      // Set the GeoNode URL here
-      MapProvider.setGeonodeUrl('http://localhost:8000');
-
-      // Set the Geoserver URL here
-      MapProvider.setGeoserverUrl('http://localhost:8080/geoserver/wms');
+      if (ENV.geoserver_url === undefined) {
+        // Set the default Geoserver URL here if environment variable isn't set during Grunt build
+        MapProvider.setGeoserverUrl('http://localhost:8080/geoserver/wms');
+      } else {
+        MapProvider.setGeoserverUrl(ENV.geoserver_url);
+      }
   });
