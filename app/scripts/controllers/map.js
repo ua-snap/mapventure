@@ -103,27 +103,28 @@ app.controller('MapCtrl', [
           stop: function() {
             for(var i = 0; i < $scope.map.layers.length; i++) {
               $scope.layers[$scope.map.layers[i].name].obj.setZIndex($scope.map.layers.length - i);
+              $scope.layers[$scope.map.layers[i].name].secondObj.setZIndex($scope.map.layers.length - i);
             }
           }
         };
 
       new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
+      new L.Control.Zoom({ position: 'topright' }).addTo($scope.secondMapObj);
 
       });
 
       $scope.showSecondLayer = function(layerName) {
-          $scope.layers[layerName].obj.addTo($scope.secondMapObj);
+          $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
           $scope.layers[layerName].secondvisible = true;
       };
 
       $scope.hideSecondLayer = function(layerName) {
-          $scope.secondMapObj.removeLayer($scope.layers[layerName].obj);
+          $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
           $scope.layers[layerName].secondvisible = false;
       };
 
       $scope.toggleSecondLayer = function(layerName) {
-        if($scope.secondMapObj.hasLayer($scope.layers[layerName].obj) === false) {
-          $scope.hideLayer(layerName);
+        if($scope.secondMapObj.hasLayer($scope.layers[layerName].secondObj) === false) {
           $scope.showSecondLayer(layerName);
         } else {
           $scope.hideSecondLayer(layerName);
@@ -137,6 +138,15 @@ app.controller('MapCtrl', [
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
         $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverUrl, {
+          continuousWorld: true,
+          layers: layer.name,
+          name: layer.name,
+          transparent: true,
+          format: 'image/png',
+          version: '1.3',
+          visible: false
+        });
+        $scope.layers[layer.name].secondObj = L.tileLayer.wms(geoserverUrl, {
           continuousWorld: true,
           layers: layer.name,
           name: layer.name,
@@ -161,7 +171,6 @@ app.controller('MapCtrl', [
 
     $scope.toggleLayer = function(layerName) {
       if($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
-        $scope.hideSecondLayer(layerName);
         $scope.showLayer(layerName);
       } else {
         $scope.hideLayer(layerName);
@@ -204,6 +213,14 @@ app.controller('MapCtrl', [
       });
     });
 
+
+    $scope.$on('start-tour-dual-maps', function(event) {
+      $scope.$evalAsync(function() {
+        if ($scope.dualMaps === true) {
+          $scope.showDualMaps();
+        }
+      });
+    });
 
     $scope.$on('show-dual-maps', function(event) {
       $scope.$evalAsync(function() {

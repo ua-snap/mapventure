@@ -20,6 +20,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             content: "Hello! Welcome to the NCEP map. This tour will show you around.",
             onShow: function() {
               scope.$broadcast('show-layers', []);
+              scope.$broadcast('show-second-layers', []);
+              scope.$broadcast('start-tour-dual-maps');
             }
           },
           {
@@ -78,6 +80,7 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             element: "#showDualMaps",
             content: "Once clicked, additional buttons are added to the layer menu.",
             onShow: function() {
+              scope.$broadcast('start-tour-dual-maps');
               scope.$broadcast('show-dual-maps', []);
             },
             onHide: function() {
@@ -146,6 +149,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             content: "Hello! Welcome to the IEM map. This tour will show you around the IEM map.",
             onShow: function() {
               scope.$broadcast('show-layers', []);
+              scope.$broadcast('show-second-layers', []);
+              scope.$broadcast('start-tour-dual-maps');
             }
           },
           {
@@ -204,6 +209,7 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             element: "#showDualMaps",
             content: "Once clicked, additional buttons are added to the layer menu.",
             onShow: function() {
+              scope.$broadcast('start-tour-dual-maps');
               scope.$broadcast('show-dual-maps', []);
             },
             onHide: function() {
