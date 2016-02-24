@@ -15,14 +15,14 @@ describe('Service: Map', function () {
 
   it('should provide a default URL for local dev', function() {
     module(function (MapProvider) {
-      expect(MapProvider.getGeonodeApiUrl()).toEqual('http://localhost:8000/api');
+      expect(MapProvider.getGeonodeUrl()).toEqual('http://localhost:8000');
     });
   });
 
   it('should allow you to configure the URL', function () {
     module(function (MapProvider) {
-      MapProvider.setGeonodeApiUrl('http://mapventure.com:8080');
-      expect(Map.getGeonodeApiUrl()).toEqual('http://mapventure.com:8080');
+      MapProvider.setGeonodeUrl('http://mapventure.com:8080');
+      expect(Map.getGeonodeUrl()).toEqual('http://mapventure.com:8080');
     });
   });
 
