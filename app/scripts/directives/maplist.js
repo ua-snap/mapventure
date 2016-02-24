@@ -9,7 +9,7 @@
 angular.module('mapventureApp')
   .directive('mapList', function () {
     return {
-      templateUrl: 'scripts/templates/mapList.html',
+      templateUrl: 'views/mapList.html',
       restrict: 'E',
       controller: ['$scope', '$location', function($scope, $location) {
         $scope.viewMap = function(mapId) {
