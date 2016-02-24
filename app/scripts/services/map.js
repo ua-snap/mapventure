@@ -38,6 +38,9 @@ angular.module('mapventureApp')
         geonodeUrl: function() {
           return geonodeUrl;
         },
+        geonodeApiUrl: function() {
+          return geonodeApiUrl;
+        },
         geoserverUrl: function() {
           return geoserverUrl;
         },

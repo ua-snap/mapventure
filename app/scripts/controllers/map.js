@@ -18,6 +18,7 @@ app.controller('MapCtrl', [
   'BaseMap',
   function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
       var geoserverUrl = Map.geoserverUrl();
+      var geonodeApiUrl = Map.geonodeApiUrl();
       $scope.layers = {};
 
       Map.layers($routeParams.mapId).success(function(data) {
@@ -218,7 +219,7 @@ app.controller('MapCtrl', [
     });
 
     $scope.showMapInformation = function(mapId) {
-      $http.get('http://localhost:8000/api/maps/' + mapId).success(function(data) {
+      $http.get(geonodeApiUrl + '/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();
         var content = '<h3>' + data.title + '</h3>';
         content = content.concat('<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>');
@@ -263,7 +264,7 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat('<img src="'+ geoserverUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
 
       var source = '<h3>Where can I get this data?</h3>';
