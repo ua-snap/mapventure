@@ -199,8 +199,32 @@ app.controller('MapCtrl', [
 
     $scope.downloadMap = function(mapId) {
       var csrftoken = getCookie('csrftoken');
-      $.post(geonodeUrl + "/maps/" + mapId + "/download", {'csrfmiddlewaretoken': csrftoken});
+      //$.get(geonodeUrl + "/maps/" + mapId + "/immeddownload", {'csrfmiddlewaretoken': csrftoken});
+      $.get(geonodeUrl + "/maps/" + mapId + "/immeddownload");
+      $scope.checkDownload(mapId);
+      //$.get("http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/1");
       //window.open("http://localhost:8000/maps/"+ mapId +"/download","_blank");
+    };
+
+    $scope.checkDownload = function(mapId) {
+      var processID;
+      var checkStatus = setInterval(function (){
+
+      $.ajax({
+        type: "GET",
+        url : "http://geonode.iarc.uaf.edu:8000/maps/check/"
+      })
+      .done(function(result){
+        var response = $.parseJSON(result);
+        processID = response.process.id;
+
+        if (response.process.status === "FINISHED") {
+          location.href = "http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/" +  processID;
+          clearInterval(checkStatus);
+        }
+      });
+      }, 1000);
+
     };
 
     $scope.$on('show-layers', function(event, showLayers) {
