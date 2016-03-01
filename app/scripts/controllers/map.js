@@ -7,6 +7,24 @@
  * # MapCtrl
  * Controller of the mapventureApp
  */
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
@@ -18,6 +36,7 @@ app.controller('MapCtrl', [
   'BaseMap',
   function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
       var geoserverUrl = Map.geoserverUrl();
+      var geonodeUrl = Map.geonodeUrl();
       var geonodeApiUrl = Map.geonodeApiUrl();
       $scope.layers = {};
 
@@ -179,10 +198,9 @@ app.controller('MapCtrl', [
     };
 
     $scope.downloadMap = function(mapId) {
-      //$.post("http://localhost:8000/maps/2/download",{"csrfmiddlewaretoken": "grnMV9n4rj4QzMeo0aI9DgCCiaoaWc7d"});
-      //$.post("http://localhost:8080/geoserver/rest/process/batchDownload/launch/", {"layers": [{"metadataURL": "", "service": "WCS", "name": "geonode:ncep_air_temperature_current_month_forecast_average", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_sea_surface_temperature_current_month_forecast_average", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_yearly_air_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_monthly_air_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_weekly_air_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_daily_air_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_yearly_sea_surface_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_monthly_sea_surface_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_weekly_sea_surface_temperature", "serviceURL": ""}, {"metadataURL": "", "service": "WCS", "name": "geonode:ncep_daily_sea_surface_temperature", "serviceURL": ""}], "map": {"readme": "Title: NCEP Temperature Data\nAuthor: admin\nAbstract: \n", "title": "NCEP Temperature Data"}});
-      //window.location.href = "http://localhost:8000/maps/"+ mapId +"/download";
-      window.open("http://localhost:8000/maps/"+ mapId +"/download","_blank");
+      var csrftoken = getCookie('csrftoken');
+      $.post(geonodeUrl + "/maps/" + mapId + "/download", {'csrfmiddlewaretoken': csrftoken});
+      //window.open("http://localhost:8000/maps/"+ mapId +"/download","_blank");
     };
 
     $scope.$on('show-layers', function(event, showLayers) {
