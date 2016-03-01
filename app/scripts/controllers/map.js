@@ -17,7 +17,8 @@ app.controller('MapCtrl', [
   'Map',
   'BaseMap',
   function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
-      var geoserverUrl = 'http://localhost:8080/geoserver/wms';
+      var geoserverUrl = Map.geoserverUrl();
+      var geonodeApiUrl = Map.geonodeApiUrl();
       $scope.layers = {};
 
       Map.layers($routeParams.mapId).success(function(data) {
@@ -28,15 +29,19 @@ app.controller('MapCtrl', [
         $scope.map.layers.reverse();
 
         $scope.crs = BaseMap.getCRS($scope.map.srid);
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.crs.options.resolutions.length);
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length);
 
         $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
-        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl,$scope.secondcrs.options.resolutions.length);
+        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.secondcrs.options.resolutions.length);
 
         $scope.minimized = false;
 
-        // This variable must be set to be watched or else the Leaflet event does not update the
-        // ngHide function properly.
+        // This variable must be watched to allow for the sidebar
+        // of Leaflet to hide and show the layer menu
+        $scope.$watch('minimized');
+
+        // This variable must be set to be watched or else the
+        // Leaflet event does not update the ngHide function properly.
         $scope.$watch('splashHide');
 
         // Dual maps boolean
@@ -47,10 +52,6 @@ app.controller('MapCtrl', [
 
         // The splash screen should be on until Map is loaded.
         $scope.splashHide = false;
-
-        // This variable must be set to be watched or else the Leaflet event does not update the
-        // ngHide function properly.
-        $scope.$watch('splashHide');
 
         // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
@@ -87,33 +88,44 @@ app.controller('MapCtrl', [
         $scope.sidebar = L.control.sidebar('info-sidebar', {
           position: 'left'
         });
+
+        $scope.sidebar.on('show', function() {
+          $scope.minimize_menu();
+        });
+
+        $scope.sidebar.on('hide', function() {
+          $scope.minimize_menu();
+          $scope.$apply();
+        });
+
         $scope.mapObj.addControl($scope.sidebar);
 
         $scope.sortableOptions = {
           stop: function() {
             for(var i = 0; i < $scope.map.layers.length; i++) {
               $scope.layers[$scope.map.layers[i].name].obj.setZIndex($scope.map.layers.length - i);
+              $scope.layers[$scope.map.layers[i].name].secondObj.setZIndex($scope.map.layers.length - i);
             }
           }
         };
 
       new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
+      new L.Control.Zoom({ position: 'topright' }).addTo($scope.secondMapObj);
 
       });
 
       $scope.showSecondLayer = function(layerName) {
-          $scope.layers[layerName].obj.addTo($scope.secondMapObj);
+          $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
           $scope.layers[layerName].secondvisible = true;
       };
 
       $scope.hideSecondLayer = function(layerName) {
-          $scope.secondMapObj.removeLayer($scope.layers[layerName].obj);
+          $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
           $scope.layers[layerName].secondvisible = false;
       };
 
       $scope.toggleSecondLayer = function(layerName) {
-        if($scope.secondMapObj.hasLayer($scope.layers[layerName].obj) === false) {
-          $scope.hideLayer(layerName);
+        if($scope.secondMapObj.hasLayer($scope.layers[layerName].secondObj) === false) {
           $scope.showSecondLayer(layerName);
         } else {
           $scope.hideSecondLayer(layerName);
@@ -127,6 +139,15 @@ app.controller('MapCtrl', [
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
         $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverUrl, {
+          continuousWorld: true,
+          layers: layer.name,
+          name: layer.name,
+          transparent: true,
+          format: 'image/png',
+          version: '1.3',
+          visible: false
+        });
+        $scope.layers[layer.name].secondObj = L.tileLayer.wms(geoserverUrl, {
           continuousWorld: true,
           layers: layer.name,
           name: layer.name,
@@ -151,7 +172,6 @@ app.controller('MapCtrl', [
 
     $scope.toggleLayer = function(layerName) {
       if($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
-        $scope.hideSecondLayer(layerName);
         $scope.showLayer(layerName);
       } else {
         $scope.hideLayer(layerName);
@@ -202,6 +222,14 @@ app.controller('MapCtrl', [
     });
 
 
+    $scope.$on('start-tour-dual-maps', function(event) {
+      $scope.$evalAsync(function() {
+        if ($scope.dualMaps === true) {
+          $scope.showDualMaps();
+        }
+      });
+    });
+
     $scope.$on('show-dual-maps', function(event) {
       $scope.$evalAsync(function() {
         $scope.showDualMaps();
@@ -215,7 +243,7 @@ app.controller('MapCtrl', [
     });
 
     $scope.showMapInformation = function(mapId) {
-      $http.get('http://localhost:8000/api/maps/' + mapId).success(function(data) {
+      $http.get(geonodeApiUrl + '/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();
         var content = '<h3>' + data.title + '</h3>';
         content = content.concat('<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>');
@@ -260,13 +288,25 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat('<img src="'+ geoserverUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
+
+      var source = '<h3>Where can I get this data?</h3>';
+      source = source.concat(converter.makeHtml(layer.distribution_description));
+      source = source.concat('<p><a href="' + layer.distribution_url + '">'+layer.distribution_url+'</a></p>')
+      content = content.concat(source);
       $scope.sidebar.setContent(content).show();
     };
 
     $scope.startTour = function() {
-      $scope.$emit('start-tour');
+      /* These map IDs will need to be changed based
+         upon the map ID of the system running the GeoNode
+         instance. */
+      if ($routeParams.mapId == 2) {
+        $scope.$emit('iem-start-tour');
+      } else if ($routeParams.mapId == 8) {
+        $scope.$emit('ncep-start-tour');
+      }
     }
   }
 ]);

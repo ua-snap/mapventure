@@ -2,14 +2,13 @@
   <h2 id="mapLoadingOverlayText">Hang on while the map is loading&hellip;</h2>
   <img src="images/ajax-loader.gif" />
 </div>
-<div class="layer-menu" ng-class="{'clear': minimized}">
-  <div>
+<div id="minimize-layer-div">
     <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimize_menu()">
       <span ng-hide="minimized" class="glyphicon glyphicon-minus"></span>
       <span ng-show="minimized" class="glyphicon glyphicon-plus"></span>
     </label>
-  </div>
-  <div ng-hide="minimized">
+</div>
+<div class="layer-menu" ng-hide="minimized"> 
   <div class="map">
     <h2 id="mapTitle">{{ map.title }}</h2>
     <div>

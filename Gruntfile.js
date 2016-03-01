@@ -9,6 +9,9 @@
 
 module.exports = function (grunt) {
 
+  // Load the ng-constant functionality into the Gruntfile
+  grunt.loadNpmTasks('grunt-ng-constant');
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -176,6 +179,38 @@ module.exports = function (grunt) {
           src: '{,*/}*.css',
           dest: '.tmp/styles/'
         }]
+      }
+    },
+
+    ngconstant: {
+      // Options for all targets
+      options: {
+        space: '  ',
+        wrap: '"use strict";\n\n {%= __ngModule %}',
+        name: 'config',
+      },
+      // Environment targets
+      development: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/config.js'
+        },
+        constants: {
+          ENV: {
+            geonode_url: process.env.GEONODE_URL,
+            geoserver_url: process.env.GEOSERVER_URL
+          }
+        }
+      },
+      production: {
+        options: {
+          dest: '<%= yeoman.dist %>/scripts/config.js'
+        },
+        constants: {
+          ENV: {
+            geonode_url: process.env.GEONODE_URL,
+            geoserver_url: process.env.GEOSERVER_URL
+          }
+        }
       }
     },
 
@@ -457,6 +492,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer:server',
+      'ngconstant:development',
       'connect:livereload',
       'watch'
     ]);
@@ -480,6 +516,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'useminPrepare',
+    'ngconstant:production',
     'concurrent:dist',
     'autoprefixer',
     'ngtemplates',

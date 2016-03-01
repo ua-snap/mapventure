@@ -7,22 +7,23 @@
  * # Map
  * Handles API requests for maps.
  */
-angular.module('mapventureApp')
+angular.module('mapventureApp') 
   .provider('Map', function MapProvider() {
-
-    // Default URL for Geonode API
-    var geonodeApiUrl = 'http://localhost:8000/api';
+    // Creates the variables for holding the URL for
+    // Geonode, Geoserver, and Geonode API.
+    var geonodeUrl, geoserverUrl, geonodeApiUrl;
 
     // Map is populated with layers
     var ready = false;
 
     // Public API for configuration
-    this.setGeonodeApiUrl = function (url) {
-      geonodeApiUrl = url;
+    this.setGeonodeUrl = function (url) {
+      geonodeUrl = url;
+      geonodeApiUrl = geonodeUrl + '/api';
     };
 
-    this.getGeonodeApiUrl = function() {
-      return geonodeApiUrl;
+    this.setGeoserverUrl = function (url) {
+      geoserverUrl = url;
     };
 
     // Method for instantiating
@@ -33,6 +34,15 @@ angular.module('mapventureApp')
         },
         layers: function(mapId) {
           return $http.get(geonodeApiUrl + '/maplayers/' + mapId);
+        },
+        geonodeUrl: function() {
+          return geonodeUrl;
+        },
+        geonodeApiUrl: function() {
+          return geonodeApiUrl;
+        },
+        geoserverUrl: function() {
+          return geoserverUrl;
         },
         setReady: function(isReady) {
           ready = isReady;
