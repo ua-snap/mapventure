@@ -49,7 +49,7 @@ angular
 
       if (ENV.geoserver_url === undefined) {
         // Set the default Geoserver URL here if environment variable isn't set during Grunt build
-        MapProvider.setGeoserverUrl('http://localhost:8080/geoserver/wms');
+        MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
       } else {
         MapProvider.setGeoserverUrl(ENV.geoserver_url);
       }

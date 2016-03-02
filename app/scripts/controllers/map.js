@@ -36,6 +36,7 @@ app.controller('MapCtrl', [
   'BaseMap',
   function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
       var geoserverUrl = Map.geoserverUrl();
+      var geoserverWmsUrl = Map.geoserverWmsUrl();
       var geonodeUrl = Map.geonodeUrl();
       var geonodeApiUrl = Map.geonodeApiUrl();
       $scope.layers = {};
@@ -48,10 +49,10 @@ app.controller('MapCtrl', [
         $scope.map.layers.reverse();
 
         $scope.crs = BaseMap.getCRS($scope.map.srid);
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.crs.options.resolutions.length);
+        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, $scope.crs.options.resolutions.length);
 
         $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
-        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverUrl, $scope.secondcrs.options.resolutions.length);
+        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, $scope.secondcrs.options.resolutions.length);
 
         $scope.minimized = false;
 
@@ -157,7 +158,7 @@ app.controller('MapCtrl', [
         // GeoExplorer or MapLoom's versions of things.
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
-        $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverUrl, {
+        $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverWmsUrl, {
           continuousWorld: true,
           layers: layer.name,
           name: layer.name,
@@ -166,7 +167,7 @@ app.controller('MapCtrl', [
           version: '1.3',
           visible: false
         });
-        $scope.layers[layer.name].secondObj = L.tileLayer.wms(geoserverUrl, {
+        $scope.layers[layer.name].secondObj = L.tileLayer.wms(geoserverWmsUrl, {
           continuousWorld: true,
           layers: layer.name,
           name: layer.name,
@@ -198,35 +199,25 @@ app.controller('MapCtrl', [
     };
 
     $scope.downloadMap = function(mapId) {
-      //var csrftoken = getCookie('csrftoken');
-      //$.get(geonodeUrl + "/maps/" + mapId + "/immeddownload", {'csrfmiddlewaretoken': csrftoken});
       $http.get(geonodeUrl + "/maps/" + mapId + "/immeddownload").then(function(response) {
         var processID = response.data.id;
-        console.log(processID);
         $scope.checkDownload(processID);
       });
-      //$scope.checkDownload(mapId);
-      //$.get("http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/1");
-      //window.open("http://localhost:8000/maps/"+ mapId +"/download","_blank");
     };
 
     $scope.checkDownload = function(processID) {
-      console.log("This is the process ID: " + processID);
       var checkStatus = setInterval(function (){
 
       $.ajax({
         type: "GET",
-        url : "http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/status/" + processID
+        url : geoserverUrl + "/rest/process/batchDownload/status/" + processID
       })
       .done(function(result){
         console.log(result);
-        //var response = $.parseJSON(result);
-
-        //if (response.process.status === "FINISHED") {
-          //location.href = "http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/" +  processID;
-          window.open("http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/" +  processID, "_blank");
+        if (result.process.status === "FINISHED") {
+          window.open(geoserverUrl + "/rest/process/batchDownload/download/" +  processID, "_blank");
           clearInterval(checkStatus);
-        //}
+        }
       });
       }, 1000);
 
@@ -335,7 +326,7 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img src="'+ geoserverUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat('<img src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
 
       var source = '<h3>Where can I get this data?</h3>';
