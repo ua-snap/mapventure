@@ -198,30 +198,35 @@ app.controller('MapCtrl', [
     };
 
     $scope.downloadMap = function(mapId) {
-      var csrftoken = getCookie('csrftoken');
+      //var csrftoken = getCookie('csrftoken');
       //$.get(geonodeUrl + "/maps/" + mapId + "/immeddownload", {'csrfmiddlewaretoken': csrftoken});
-      $.get(geonodeUrl + "/maps/" + mapId + "/immeddownload");
-      $scope.checkDownload(mapId);
+      $http.get(geonodeUrl + "/maps/" + mapId + "/immeddownload").then(function(response) {
+        var processID = response.data.id;
+        console.log(processID);
+        $scope.checkDownload(processID);
+      });
+      //$scope.checkDownload(mapId);
       //$.get("http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/1");
       //window.open("http://localhost:8000/maps/"+ mapId +"/download","_blank");
     };
 
-    $scope.checkDownload = function(mapId) {
-      var processID;
+    $scope.checkDownload = function(processID) {
+      console.log("This is the process ID: " + processID);
       var checkStatus = setInterval(function (){
 
       $.ajax({
         type: "GET",
-        url : "http://geonode.iarc.uaf.edu:8000/maps/check/"
+        url : "http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/status/" + processID
       })
       .done(function(result){
-        var response = $.parseJSON(result);
-        processID = response.process.id;
+        console.log(result);
+        //var response = $.parseJSON(result);
 
-        if (response.process.status === "FINISHED") {
-          location.href = "http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/" +  processID;
+        //if (response.process.status === "FINISHED") {
+          //location.href = "http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/" +  processID;
+          window.open("http://geonode.iarc.uaf.edu:8080/geoserver/rest/process/batchDownload/download/" +  processID, "_blank");
           clearInterval(checkStatus);
-        }
+        //}
       });
       }, 1000);
 
