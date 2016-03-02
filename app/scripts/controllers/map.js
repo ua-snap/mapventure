@@ -32,9 +32,10 @@ app.controller('MapCtrl', [
   '$http',
   '$routeParams',
   '$timeout',
+  'ngDialog',
   'Map',
   'BaseMap',
-  function ($scope, $http, $routeParams, $timeout, Map, BaseMap) {
+  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap) {
       var geoserverUrl = Map.geoserverUrl();
       var geoserverWmsUrl = Map.geoserverWmsUrl();
       var geonodeUrl = Map.geonodeUrl();
@@ -206,6 +207,10 @@ app.controller('MapCtrl', [
     };
 
     $scope.checkDownload = function(processID) {
+      ngDialog.open({
+        template: '<h1>My Popup Thing</h1>',
+        plain: true
+      });
       var checkStatus = setInterval(function (){
 
       $.ajax({

@@ -16,6 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'ngDialog',
     'ui.sortable',
     'config'
   ])
