@@ -41,6 +41,7 @@ app.controller('MapCtrl', [
       var geonodeUrl = Map.geonodeUrl();
       var geonodeApiUrl = Map.geonodeApiUrl();
       $scope.layers = {};
+      $scope.progress_width = 0;
 
       Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
@@ -208,9 +209,10 @@ app.controller('MapCtrl', [
 
     $scope.checkDownload = function(processID) {
       ngDialog.open({
-        template: '<h1>My Popup Thing</h1>',
-        plain: true
+        template: 'mapDownload',
+        scope: $scope
       });
+
       var checkStatus = setInterval(function (){
 
       $.ajax({
@@ -218,7 +220,8 @@ app.controller('MapCtrl', [
         url : geoserverUrl + "/rest/process/batchDownload/status/" + processID
       })
       .done(function(result){
-        console.log(result);
+        $scope.progress_width = result.process.progress.toFixed(2);
+        $scope.$apply();
         if (result.process.status === "FINISHED") {
           window.open(geoserverUrl + "/rest/process/batchDownload/download/" +  processID, "_blank");
           clearInterval(checkStatus);

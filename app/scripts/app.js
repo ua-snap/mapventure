@@ -18,6 +18,7 @@ angular
     'ngTouch',
     'ngDialog',
     'ui.sortable',
+    'ui.bootstrap',
     'config'
   ])
   .config(function ($routeProvider, MapProvider, ENV) {

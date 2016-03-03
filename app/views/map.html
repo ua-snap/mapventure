@@ -65,3 +65,10 @@
 <div id="info-sidebar"></div>
 <div id="snapmapapp" ng-class="{'half': dualMaps}"></div>
 <div id="secondmap" ng-class="{'half': dualMaps}"></div>
+<script type="text/ng-template" id="mapDownload">
+<div align='center'><h1>Downloading Map</h1><p>This can take multiple minutes. Do not close the map until the file has finished downloading.</p>
+<uib-progressbar max="100" value="progress_width">
+  <span style="color:white; white-space:nowrap;">{{ progress_width }}% Done</span>
+</uib-progressbar>
+</div>
+</script>

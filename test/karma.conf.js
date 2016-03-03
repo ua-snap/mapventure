@@ -45,6 +45,7 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap-tour/dist/angular-bootstrap-tour.js',
       'bower_components/leaflet.sync/L.Map.Sync.js',
       'bower_components/ng-dialog/js/ngDialog.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
