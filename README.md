@@ -25,7 +25,7 @@ For the production configuration of MapVenture, set two operating system environ
 
 ```
 export GEONODE_URL="http://localhost:8000"
-export GEOSERVER_URL="http://localhost:8080/geoserver/wms"
+export GEOSERVER_URL="http://localhost:8080/geoserver"
 ```
 
 Once the URLs are set, run either:
