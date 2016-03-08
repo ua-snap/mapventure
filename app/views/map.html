@@ -16,7 +16,8 @@
       <span class="glyphicon glyphicon-question-sign"></span>
     </label>
     <label id="downloadMap" class="btn btn-primary info" ng-click="downloadMap(map.id)">
-      <span class="glyphicon glyphicon-download-alt"></span>
+      <span ng-show="progress <= 0" class="glyphicon glyphicon-download-alt"></span>
+      <img ng-show="progress > 0" src="images/spinning.gif"/>
     </label>
     <label id="showDualMaps" class="btn btn-primary info" ng-click="showDualMaps()">
       <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
@@ -66,9 +67,10 @@
 <div id="snapmapapp" ng-class="{'half': dualMaps}"></div>
 <div id="secondmap" ng-class="{'half': dualMaps}"></div>
 <script type="text/ng-template" id="mapDownload">
-<div align='center'><h1>Downloading Map</h1><p>This can take multiple minutes. Do not close the map until the file has finished downloading.</p>
-<uib-progressbar max="100" value="progress_width">
-  <span style="color:white; white-space:nowrap;">{{ progress_width }}% Done</span>
+<div ng-show="progress >= 0" align='center'><h1>Downloading Map</h1><p>This can take multiple minutes. Do not close the map until the file has finished downloading.</p>
+<uib-progressbar max="100" value="progress">
+  <span style="color:white; white-space:nowrap;">{{ progress }}% Done</span>
 </uib-progressbar>
 </div>
+<div ng-hide="progress >= 0" align='center'><h1>Download Finished</h1></div>
 </script>

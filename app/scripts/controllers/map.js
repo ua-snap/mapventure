@@ -8,23 +8,6 @@
  * Controller of the mapventureApp
  */
 
-// using jQuery
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
@@ -41,7 +24,8 @@ app.controller('MapCtrl', [
       var geonodeUrl = Map.geonodeUrl();
       var geonodeApiUrl = Map.geonodeApiUrl();
       $scope.layers = {};
-      $scope.progress_width = 0;
+      $scope.progress = 0;
+      $scope.processID = 0;
 
       Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
@@ -201,10 +185,14 @@ app.controller('MapCtrl', [
     };
 
     $scope.downloadMap = function(mapId) {
-      $http.get(geonodeUrl + "/maps/" + mapId + "/immeddownload").then(function(response) {
-        var processID = response.data.id;
-        $scope.checkDownload(processID);
-      });
+      if ($scope.processID === 0) {
+        $http.get(geonodeUrl + "/maps/" + mapId + "/immeddownload").then(function(response) {
+          $scope.processID = response.data.id;
+          $scope.checkDownload($scope.processID);
+        });
+      } else {
+        $scope.checkDownload($scope.processID);
+      }
     };
 
     $scope.checkDownload = function(processID) {
@@ -213,22 +201,27 @@ app.controller('MapCtrl', [
         scope: $scope
       });
 
-      var checkStatus = setInterval(function (){
-
-      $.ajax({
-        type: "GET",
-        url : geoserverUrl + "/rest/process/batchDownload/status/" + processID
-      })
-      .done(function(result){
-        $scope.progress_width = result.process.progress.toFixed(2);
-        $scope.$apply();
-        if (result.process.status === "FINISHED") {
-          window.open(geoserverUrl + "/rest/process/batchDownload/download/" +  processID, "_blank");
-          clearInterval(checkStatus);
-        }
-      });
-      }, 1000);
-
+      if ($scope.progress <= 0) {
+        $scope.progress = 0;
+        var checkStatus = setInterval(function (){
+          $.ajax({
+            type: "GET",
+            url : geoserverUrl + "/rest/process/batchDownload/status/" + processID
+          })
+          .done(function(result){
+            $scope.progress = result.process.progress.toFixed(2);
+            console.log($scope.progress);
+            console.log(result);
+            if (result.process.status === "FINISHED") {
+              window.open(geoserverUrl + "/rest/process/batchDownload/download/" +  processID, "_blank");
+              $scope.progress = -1;
+              $scope.processID = 0;
+              clearInterval(checkStatus);
+            }
+            $scope.$apply();
+          });
+        }, 1000);
+      } 
     };
 
     $scope.$on('show-layers', function(event, showLayers) {
