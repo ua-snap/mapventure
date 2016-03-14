@@ -217,6 +217,10 @@ app.controller('MapCtrl', [
               $scope.progress = -1;
               $scope.processID = 0;
               clearInterval(checkStatus);
+            } else if (result.process.status === "ERROR") {
+              $scope.progress = -2;
+              $scope.processID = 0;
+              clearInterval(checkStatus);
             }
             $scope.$apply();
           });
