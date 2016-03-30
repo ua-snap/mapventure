@@ -26,7 +26,8 @@
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^2.0.0",
     "jit-grunt": "^0.9.1",
-    "jshint-stylish": "^1.0.0"
+    "jshint-stylish": "^1.0.0",
+    "time-grunt": "^1.0.0"
   },
   "devDependencies": {
     "karma": "^0.13.0",
@@ -34,8 +35,7 @@
     "phantomjs-prebuilt":">=1.9.0",
     "grunt-karma": "*",
     "karma-jasmine": "*",
-    "karma-phantomjs-launcher": "*",
-    "time-grunt": "^1.0.0"
+    "karma-phantomjs-launcher": "*"
   },
   "engines": {
     "node": ">=0.10.0"
