@@ -11,7 +11,7 @@ angular.module('mapventureApp')
   .provider('Map', function MapProvider() {
     // Creates the variables for holding the URL for
     // Geonode, Geoserver, and Geonode API.
-    var geonodeUrl, geoserverUrl, geonodeApiUrl;
+    var geonodeUrl, geoserverUrl, geoserverWmsUrl, geonodeApiUrl;
 
     // Map is populated with layers
     var ready = false;
@@ -24,6 +24,7 @@ angular.module('mapventureApp')
 
     this.setGeoserverUrl = function (url) {
       geoserverUrl = url;
+      geoserverWmsUrl = geoserverUrl + '/wms';
     };
 
     // Method for instantiating
@@ -43,6 +44,9 @@ angular.module('mapventureApp')
         },
         geoserverUrl: function() {
           return geoserverUrl;
+        },
+        geoserverWmsUrl: function() {
+          return geoserverWmsUrl;
         },
         setReady: function(isReady) {
           ready = isReady;
