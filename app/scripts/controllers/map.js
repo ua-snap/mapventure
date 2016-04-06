@@ -210,8 +210,6 @@ app.controller('MapCtrl', [
           })
           .done(function(result){
             $scope.progress = result.process.progress.toFixed(2);
-            console.log($scope.progress);
-            console.log(result);
             if (result.process.status === "FINISHED") {
               window.open(geoserverUrl + "/rest/process/batchDownload/download/" +  processID, "_blank");
               $scope.progress = -1;
@@ -225,7 +223,7 @@ app.controller('MapCtrl', [
             $scope.$apply();
           });
         }, 1000);
-      } 
+      }
     };
 
     $scope.$on('show-layers', function(event, showLayers) {
