@@ -34,11 +34,10 @@ app.controller('MapCtrl', [
         // match what we see in GeoNode's map editor.
         $scope.map.layers.reverse();
 
-        $scope.crs = BaseMap.getCRS($scope.map.srid);
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, $scope.crs.options.resolutions.length);
-
-        $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
-        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, $scope.secondcrs.options.resolutions.length);
+        // These need to be separate instances because we listen for events differently on each.
+        var crs = BaseMap.getCRS($scope.map.srid);
+        var baseLayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, crs.options.resolutions.length);
+        var secondBaseLayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, crs.options.resolutions.length);
 
         $scope.minimized = false;
 
@@ -61,7 +60,7 @@ app.controller('MapCtrl', [
 
         // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
-        $scope.baselayer.on("load", function() {
+        baseLayer.on("load", function() {
           $scope.splashHide = true;
           $scope.$apply();
           $('#mapLoadingOverlayText').css('color', 'red').html('&hellip;Enjoy!');
@@ -69,27 +68,30 @@ app.controller('MapCtrl', [
 
         $scope.addLayers();
 
-        $scope.mapObj = L.map('snapmapapp', {
-          center: [65, -150],
-          zoom: 1,
-          crs: $scope.crs,
-          scrollWheelZoom: false,
-          zoomControl: false,
-          layers: [
-            $scope.baselayer
-          ]
-        });
+        var mapDefaults = angular.extend({
+            center: [65, -150],
+            zoom: 1,
+            crs: crs,
+            scrollWheelZoom: false,
+            zoomControl: false
+          }, BaseMap.getMapOptions($scope.map.id)
+        );
 
-        $scope.secondMapObj = L.map('secondmap', {
-          center: [65, -150],
-          zoom: 1,
-          crs: $scope.secondcrs,
-          scrollWheelZoom: false,
-          zoomControl: false,
-          layers: [
-            $scope.secondbaselayer
-          ]
-        });
+        var firstMapOptions = angular.extend({
+            layers: [
+              baseLayer
+            ]
+          },
+          mapDefaults);
+        $scope.mapObj = L.map('snapmapapp', firstMapOptions);
+
+        var secondMapOptions = angular.extend({
+            layers: [
+              secondBaseLayer
+            ]
+          },
+          mapDefaults);
+        $scope.secondMapObj = L.map('secondmap', secondMapOptions);
 
         $scope.sidebar = L.control.sidebar('info-sidebar', {
           position: 'left'

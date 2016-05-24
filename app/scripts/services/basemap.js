@@ -46,6 +46,27 @@ angular.module('mapventureApp')
       }
     };
 
+    // Returns additional options per map ID.
+    // These override base map options specified
+    // in controllers/map.js
+    // This is hardcoded per map ID currently;
+    // future revisions could use a slugified
+    // version of the map title to return
+    // per-map configurations.
+    service.getMapOptions = function(mapId) {
+      var mapOptions = {
+        zoom: 3,
+        minZoom: 3,
+        maxBounds: new L.latLngBounds(
+          L.latLng(72, -165),
+          L.latLng(50, -145)
+        )
+      };
+
+      // TODO: replace with slug or UUID
+      return (5 === mapId) ? mapOptions : {};
+    };
+
     /**
       Get Base Layer Function
       Purpose: Generates the base layer from a WMS layer provided by the input to the function.
@@ -66,29 +87,34 @@ angular.module('mapventureApp')
 
       // When we add a 3rd map, we'll need to figure
       // out where to refactor this logic.
+      // These options are merged into the options array
+      // that Leaflet uses to configure the WMS layer,
+      // so the names of keys matter.
       var layerConfiguration = {
         'EPSG:3572': {
-          baseLayerName: 'ne_10m_coastline',
+          layers: 'ne_10m_coastline',
           zIndex: 10000,
           transparent: true
         },
         'EPSG:3338': {
-          baseLayerName: 'ne_50m_ocean',
+          layers: 'MapProxy:osm',
           transparent: true
         }
       };
 
-      return new L.tileLayer.wms(layerUrl, {
-            continuousWorld: true,
-            maxZoom: maximumZoom,
-            transparent: layerConfiguration[epsg_code].transparent,
-            minZoom: 0,
-            layers: layerConfiguration[epsg_code].baseLayerName,
-            format: 'image/png',
-            version: '1.3',
-            zIndex: layerConfiguration[epsg_code].zIndex
-      });
-    };
+      var baseConfiguration = {
+        format: 'image/png',
+        version: '1.3',
+        minZoom: 0,
+        maxZoom: 18,
+        continuousWorld: true, // needed for non-3857 projs
+        noWrap: false, // may be needed for non-3857 projs
+        zIndex: null
+      };
 
+      angular.extend(baseConfiguration, layerConfiguration[epsg_code]);
+
+      return new L.tileLayer.wms(layerUrl, baseConfiguration);
+    };
     return service;
   });
