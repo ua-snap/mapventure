@@ -12,6 +12,14 @@ angular.module('mapventureApp')
 
     var service = {};
 
+    // Returns an array of layers that should be toggled
+    // to a visible state upon map load.
+    // TODO: refactor to use slug/UUID
+    service.getDefaultLayers = function(mapId) {
+      var defaultLayers = ['fire_perimeters_2016'];
+      return (5 === mapId) ? defaultLayers : [];
+    }
+
     /**
       Get CRS Function
       Purpose: Used to generate the desired coordinate reference system for a particular map
