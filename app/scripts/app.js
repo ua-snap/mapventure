@@ -19,7 +19,8 @@ angular
     'ngDialog',
     'ui.sortable',
     'ui.bootstrap',
-    'config'
+    'config',
+    'slugifier'
   ])
   .config(function ($routeProvider, MapProvider, ENV) {
     $routeProvider
@@ -41,7 +42,7 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-      
+
       if (ENV.geonode_url === undefined) {
         // Set the default GeoNode URL here if environment variable isn't set during Grunt build
         MapProvider.setGeonodeUrl('http://localhost:8000');
