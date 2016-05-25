@@ -93,6 +93,11 @@ app.controller('MapCtrl', [
           mapDefaults);
         $scope.secondMapObj = L.map('secondmap', secondMapOptions);
 
+        // Show default layers
+        angular.forEach(BaseMap.getDefaultLayers($scope.map.id), function(layerName){
+          $scope.showLayer(layerName)
+        });
+
         $scope.sidebar = L.control.sidebar('info-sidebar', {
           position: 'left'
         });
