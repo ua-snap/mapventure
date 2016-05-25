@@ -18,7 +18,8 @@ app.controller('MapCtrl', [
   'ngDialog',
   'Map',
   'BaseMap',
-  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap) {
+  'Slug',
+  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug) {
       var geoserverUrl = Map.geoserverUrl();
       var geoserverWmsUrl = Map.geoserverWmsUrl();
       var geonodeUrl = Map.geonodeUrl();
@@ -29,6 +30,14 @@ app.controller('MapCtrl', [
 
       Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
+
+        // Attach class name for custom CSS hooks
+        // for this map.  Class name is a slugified
+        // version of the map's title.
+        //
+        // TODO: isolate this entire thing in a
+        // directive of its own?
+        angular.element('body').addClass(Slug.slugify($scope.map.title))
 
         // Reversing the layers makes the order
         // match what we see in GeoNode's map editor.
