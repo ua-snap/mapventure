@@ -87,8 +87,8 @@ app.controller('MapCtrl', [
             center: [65, -150],
             zoom: 1,
             crs: crs,
-            scrollWheelZoom: false,
-            zoomControl: false
+            zoomControl: false,
+            scrollWheelZoom: false
           }, BaseMap.getMapOptions($scope.map.id)
         );
 
@@ -159,6 +159,7 @@ app.controller('MapCtrl', [
           $scope.hideSecondLayer(layerName);
         }
       };
+
 
     $scope.addLayers = function() {
       angular.forEach($scope.map.layers, function(layer) {
