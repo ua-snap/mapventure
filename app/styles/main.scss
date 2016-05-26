@@ -1,12 +1,35 @@
 @import 'map';
+@import 'map-alaska-wildfires-today-and-in-history';
 
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
+@import url(https://fonts.googleapis.com/css?family=Lustria);
+
+/* Coolors Exported Palette - coolors.co/6a7173-96a73a-dcedff-94b0da-343f3e */
+
+$snapGray: #6a7173; //rgba(106, 113, 115, 100)
+$snapGreen: #96a73a; //rgba(150, 167, 58, 100)
+$lightBlue: #dcedff; //rgba(220, 237, 255, 100)
+$mediumBlue: #94b0da; //rgba(148, 176, 218, 100)
+$darkGray: #343f3e; //rgba(52, 63, 62, 100)
+
 html, body {
+  color: $darkGray;
   height: 100%;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3, h4 {
+  color: $snapGray !important;
+  font-family: 'Lustria', serif;
+  font-weight: bold;
+  font-size: 200%;
 }
 
 body {
