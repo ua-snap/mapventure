@@ -119,7 +119,6 @@
 .splash-screen {
   position: absolute;
   left: 0;
-  text-align: center;
   height: 100%;
   width: 100%;
   background-color: rgba(150, 168, 48, 0.8);
@@ -130,10 +129,9 @@
       line-height: 120%;
       padding: 0;
     }
-    width: 25rem;
-    margin: 5rem auto;
+    width: 45rem;
+    margin: 3rem auto;
     padding: 3rem;
-    border-radius: 1rem;
     background-color: rgba(255, 255, 255, .8);
   }
 }

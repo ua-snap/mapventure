@@ -1,35 +1,36 @@
-<div id="mapThemeWrapper">
-  <div ng-hide="splashHide" class="fade splash-screen">
-    <div class="billboard">
-      <h2 id="mapLoadingOverlayText">Please wait while the map gets ready&hellip;</h2>
-      <img src="images/ajax-loader.gif" />
-    </div>
+<div ng-hide="hideSplash" class="fade splash-screen">
+  <div class="billboard">
+    <div id="splashOverviewContent"></div>
+    <button class="btn" ng-click="hideSplash=true" ng-disabled="showMapButtonDisabled" disabled="disabled">
+      Show me the map!
+    </button>
   </div>
-  <div id="minimize-layer-div">
-      <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimize_menu()">
-        <span ng-hide="minimized" class="glyphicon glyphicon-minus"></span>
-        <span ng-show="minimized" class="glyphicon glyphicon-plus"></span>
-      </label>
-  </div>
-  <div class="layer-menu" ng-hide="minimized">
-    <div class="map">
-      <h2 id="mapTitle">{{ map.title }}</h2>
-      <div>
-      <label id="showMapInformation" class="btn btn-primary info" ng-click="showMapInformation(map.id)">
-        <span class="glyphicon glyphicon-question-sign"></span>
-      </label>
-      <label id="downloadMap" class="btn btn-primary info" ng-click="downloadMap(map.id)">
-        <span ng-show="progress <= 0" class="glyphicon glyphicon-download-alt"></span>
-        <img ng-show="progress > 0" src="images/spinning.gif"/>
-      </label>
-      <label id="showDualMaps" class="btn btn-primary info" ng-click="showDualMaps()">
-        <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
-        <span ng-hide="dualMaps">|</span>
-        <span class="glyphicon glyphicon-unchecked"></span>
-      </label>
-      <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="syncDualMaps()">
-        <span class="glyphicon glyphicon-flash"></span>
-      </label>
+</div>
+<div id="minimize-layer-div">
+    <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimize_menu()">
+      <span ng-hide="minimized" class="glyphicon glyphicon-minus"></span>
+      <span ng-show="minimized" class="glyphicon glyphicon-plus"></span>
+    </label>
+</div>
+<div class="layer-menu" ng-hide="minimized">
+  <div class="map">
+    <h2 id="mapTitle">{{ map.title }}</h2>
+    <div>
+    <label id="showMapInformation" class="btn btn-primary info" ng-click="showMapInformation(map.id)">
+      <span class="glyphicon glyphicon-question-sign"></span>
+    </label>
+    <label id="downloadMap" class="btn btn-primary info" ng-click="downloadMap(map.id)">
+      <span ng-show="progress <= 0" class="glyphicon glyphicon-download-alt"></span>
+      <img ng-show="progress > 0" src="images/spinning.gif"/>
+    </label>
+    <label id="showDualMaps" class="btn btn-primary info" ng-click="showDualMaps()">
+      <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
+      <span ng-hide="dualMaps">|</span>
+      <span class="glyphicon glyphicon-unchecked"></span>
+    </label>
+    <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="syncDualMaps()">
+      <span class="glyphicon glyphicon-flash"></span>
+    </label>
       </div>
     </div>
     <div ui-sortable="sortableOptions" ng-model="map.layers">

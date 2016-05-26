@@ -31,6 +31,12 @@ app.controller('MapCtrl', [
       Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
 
+        $http.get(geonodeApiUrl + '/maps/' + $scope.map.id).success(function(data) {
+          var converter = new showdown.Converter();
+          var content = converter.makeHtml(data.abstract);
+          angular.element('#splashOverviewContent').html(content);
+        });
+
         // Attach class name for custom CSS hooks
         // for this map.  Class name is a slugified
         // version of the map's title.
@@ -56,7 +62,7 @@ app.controller('MapCtrl', [
 
         // This variable must be set to be watched or else the
         // Leaflet event does not update the ngHide function properly.
-        $scope.$watch('splashHide');
+        $scope.$watch('showMapButtonDisabled');
 
         // Dual maps boolean
         $scope.dualMaps = false;
@@ -64,15 +70,15 @@ app.controller('MapCtrl', [
         // Sync maps boolean
         $scope.syncMaps = false;
 
-        // The splash screen should be on until Map is loaded.
-        $scope.splashHide = false;
+        // The Proceed button on the splash screen
+        // should be dimmed until Map is loaded.
+        $scope.showMapButtonDisabled = true;
 
         // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
         baseLayer.on("load", function() {
-          $scope.splashHide = true;
+          $scope.showMapButtonDisabled = false;
           $scope.$apply();
-          $('#mapLoadingOverlayText').css('color', 'red').html('&hellip;Enjoy!');
         });
 
         $scope.addLayers();
