@@ -18,7 +18,8 @@ app.controller('MapCtrl', [
   'ngDialog',
   'Map',
   'BaseMap',
-  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap) {
+  'Slug',
+  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug) {
       var geoserverUrl = Map.geoserverUrl();
       var geoserverWmsUrl = Map.geoserverWmsUrl();
       var geonodeUrl = Map.geonodeUrl();
@@ -36,15 +37,22 @@ app.controller('MapCtrl', [
           angular.element('#splashOverviewContent').html(content);
         });
 
+        // Attach class name for custom CSS hooks
+        // for this map.  Class name is a slugified
+        // version of the map's title.
+        //
+        // TODO: isolate this entire thing in a
+        // directive of its own?
+        angular.element('body').addClass(Slug.slugify($scope.map.title))
+
         // Reversing the layers makes the order
         // match what we see in GeoNode's map editor.
         $scope.map.layers.reverse();
 
-        $scope.crs = BaseMap.getCRS($scope.map.srid);
-        $scope.baselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, $scope.crs.options.resolutions.length);
-
-        $scope.secondcrs = BaseMap.getCRS($scope.map.srid);
-        $scope.secondbaselayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, $scope.secondcrs.options.resolutions.length);
+        // These need to be separate instances because we listen for events differently on each.
+        var crs = BaseMap.getCRS($scope.map.srid);
+        var baseLayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, crs.options.resolutions.length);
+        var secondBaseLayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, crs.options.resolutions.length);
 
         $scope.minimized = false;
 
@@ -68,33 +76,41 @@ app.controller('MapCtrl', [
 
         // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
-        $scope.baselayer.on("load", function() {
+        baseLayer.on("load", function() {
           $scope.showMapButtonDisabled = false;
           $scope.$apply();
         });
 
         $scope.addLayers();
 
-        $scope.mapObj = L.map('snapmapapp', {
-          center: [65, -150],
-          zoom: 1,
-          crs: $scope.crs,
-          scrollWheelZoom: false,
-          zoomControl: false,
-          layers: [
-            $scope.baselayer
-          ]
-        });
+        var mapDefaults = angular.extend({
+            center: [65, -150],
+            zoom: 1,
+            crs: crs,
+            scrollWheelZoom: false,
+            zoomControl: false
+          }, BaseMap.getMapOptions($scope.map.id)
+        );
 
-        $scope.secondMapObj = L.map('secondmap', {
-          center: [65, -150],
-          zoom: 1,
-          crs: $scope.secondcrs,
-          scrollWheelZoom: false,
-          zoomControl: false,
-          layers: [
-            $scope.secondbaselayer
-          ]
+        var firstMapOptions = angular.extend({
+            layers: [
+              baseLayer
+            ]
+          },
+          mapDefaults);
+        $scope.mapObj = L.map('snapmapapp', firstMapOptions);
+
+        var secondMapOptions = angular.extend({
+            layers: [
+              secondBaseLayer
+            ]
+          },
+          mapDefaults);
+        $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+
+        // Show default layers
+        angular.forEach(BaseMap.getDefaultLayers($scope.map.id), function(layerName){
+          $scope.showLayer(layerName)
         });
 
         $scope.sidebar = L.control.sidebar('info-sidebar', {
