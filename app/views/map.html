@@ -1,7 +1,9 @@
-<div ng-hide="splashHide" class="fade splash-screen">
+<div ng-hide="hideSplash" class="fade splash-screen">
   <div class="billboard">
-    <h2 id="mapLoadingOverlayText">Please wait while the map gets ready&hellip;</h2>
-    <img src="images/ajax-loader.gif" />
+    <div id="splashOverviewContent"></div>
+    <button class="btn" ng-click="hideSplash=true" ng-disabled="showMapButtonDisabled" disabled="disabled">
+      Show me the map!
+    </button>
   </div>
 </div>
 <div id="minimize-layer-div">
