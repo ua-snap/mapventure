@@ -353,11 +353,6 @@ app.controller('MapCtrl', [
       var content = '<h3>' + layer.capability.title + '</h3>';
       content = content.concat('<img src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
-
-      var source = '<h4>Where can I get this data?</h4>';
-      source = source.concat(converter.makeHtml(layer.distribution_description));
-      source = source.concat('<p><a href="' + layer.distribution_url + '">'+layer.distribution_url+'</a></p>')
-      content = content.concat(source);
       $scope.sidebar.setContent(content).show();
     };
 
