@@ -47,7 +47,7 @@ angular.module('mapventureApp')
           return new L.Proj.CRS('EPSG:3338',
               '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
               {
-                  resolutions: [8192, 4096, 2048, 1024, 512, 256, 128],
+                  resolutions: [65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
                   origin: [0, 0]
               }
           );
@@ -64,7 +64,8 @@ angular.module('mapventureApp')
     service.getMapOptions = function(mapId) {
       var mapOptions = {
         zoom: 3,
-        minZoom: 3,
+        minZoom: 6,
+        maxZoom: 11,
         maxBounds: new L.latLngBounds(
           L.latLng(72, -165),
           L.latLng(50, -145)
@@ -106,17 +107,19 @@ angular.module('mapventureApp')
         },
         'EPSG:3338': {
           layers: 'MapProxy:osm',
-          transparent: true
+          transparent: true,
+          minZoom: 6,
+          maxZoom: 11
         }
       };
 
       var baseConfiguration = {
         format: 'image/png',
         version: '1.3',
-        minZoom: 0,
-        maxZoom: 18,
+        minZoom: 6,
+        maxZoom: 11,
         continuousWorld: true, // needed for non-3857 projs
-        noWrap: false, // may be needed for non-3857 projs
+        noWrap: true, // may be needed for non-3857 projs
         zIndex: null
       };
 
