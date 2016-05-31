@@ -16,7 +16,7 @@ angular.module('mapventureApp')
     // to a visible state upon map load.
     // TODO: refactor to use slug/UUID
     service.getDefaultLayers = function(mapId) {
-      var defaultLayers = ['fire_perimeters_2016'];
+      var defaultLayers = ['active_fires'];
       return (5 === mapId) ? defaultLayers : [];
     }
 
