@@ -37,6 +37,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "prepublish": "npm install bower && rm -rf ./bower_components && bower install"
+    "prepublish": "unset GIT_WORK_TREE && npm install bower && rm -rf ./bower_components && bower install"
   }
 }

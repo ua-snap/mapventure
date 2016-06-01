@@ -19,7 +19,8 @@ app.controller('MapCtrl', [
   'Map',
   'BaseMap',
   'Slug',
-  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug) {
+  'moment',
+  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug, moment) {
       var geoserverUrl = Map.geoserverUrl();
       var geoserverWmsUrl = Map.geoserverWmsUrl();
       var geonodeUrl = Map.geonodeUrl();
@@ -107,6 +108,50 @@ app.controller('MapCtrl', [
           },
           mapDefaults);
         $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+
+        // Attach event handlers per-map
+        BaseMap.onLoad($scope.mapObj, $scope.secondMapObj, $scope);
+
+        // TODO: move this elsewhere?
+        $scope.fireInfoPopup = false;
+        $scope.$watch('fireInfoPopup', function(e) {
+          if(e) {
+            var WFSLayer = L.geoJson(e.data, {
+              style: function (feature) {
+                  return {
+                      color: '#000000',
+                      fillColor: '#ff0000'
+                  };
+              },
+              coordsToLatLng: function(coords) {
+                var xy = {
+                  x: coords[0],
+                  y: coords[1]
+                };
+                var p = $scope.mapObj.options.crs.projection.unproject(xy);
+                return p;
+
+              },
+              onEachFeature: function (feature, layer) {
+
+                  var dateString = moment.unix(
+                    feature.properties.UPDATETIME / 1000 // microseconds
+                  ).format('MMMM Do, h:mm:ss a');
+
+                  var popupOptions = {
+                    maxWidth: 200,
+                  };
+
+                  var cause = 'Cause: ' + feature.properties.GENERALCAU;
+                  var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
+                  popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
+                  popupContents += '<h3>' + cause + '</h3>';
+                  popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
+                  layer.bindPopup(popupContents, popupOptions);
+              }
+            }).addTo($scope.mapObj);
+          }
+        })
 
         // Show default layers
         angular.forEach(BaseMap.getDefaultLayers($scope.map.id), function(layerName){
