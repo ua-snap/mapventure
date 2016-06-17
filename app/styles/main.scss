@@ -8,7 +8,6 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
-@import url(https://fonts.googleapis.com/css?family=Lustria);
 
 /* Coolors Exported Palette - coolors.co/6a7173-96a73a-dcedff-94b0da-343f3e */
 
@@ -27,7 +26,7 @@ html, body {
 
 h1, h2, h3, h4 {
   color: $snapGray !important;
-  font-family: 'Lustria', serif;
+  font-family: 'Lato', serif;
   font-weight: bold;
   font-size: 200%;
 }
