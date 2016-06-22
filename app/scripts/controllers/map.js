@@ -65,6 +65,11 @@ app.controller('MapCtrl', [
         // Leaflet event does not update the ngHide function properly.
         $scope.$watch('showMapButtonDisabled');
 
+        // Two variables to use to keep the last map center/zoom
+        // so we can restore after an auto-zoom
+        $scope.mapCenter = undefined;
+        $scope.zoomLevel = undefined;
+
         // Dual maps boolean
         $scope.dualMaps = false;
 
@@ -116,38 +121,71 @@ app.controller('MapCtrl', [
         $scope.fireInfoPopup = false;
         $scope.$watch('fireInfoPopup', function(e) {
           if(e) {
+            var coordsToLatLng = function(coords) {
+              var xy = {
+                x: coords[0],
+                y: coords[1]
+              };
+              var p = $scope.mapObj.options.crs.projection.unproject(xy);
+              return p;
+            }
             var WFSLayer = L.geoJson(e.data, {
               style: function (feature) {
                   return {
-                      color: '#000000',
+                      color: '#ff0000',
                       fillColor: '#ff0000'
                   };
               },
-              coordsToLatLng: function(coords) {
-                var xy = {
-                  x: coords[0],
-                  y: coords[1]
-                };
-                var p = $scope.mapObj.options.crs.projection.unproject(xy);
-                return p;
-
-              },
+              coordsToLatLng: coordsToLatLng,
               onEachFeature: function (feature, layer) {
+                this.layer = layer;
+                this.feature = feature;
 
-                  var dateString = moment.unix(
-                    feature.properties.UPDATETIME / 1000 // microseconds
-                  ).format('MMMM Do, h:mm:ss a');
+                var dateString = moment.unix(
+                  feature.properties.UPDATETIME / 1000 // microseconds
+                ).format('MMMM Do, h:mm:ss a');
 
-                  var popupOptions = {
-                    maxWidth: 200,
-                  };
-
-                  var cause = 'Cause: ' + feature.properties.GENERALCAU;
-                  var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
-                  popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
+                var popupOptions = {
+                  maxWidth: 200,
+                };
+                var cause = 'Cause: ' + feature.properties.GENERALCAU;
+                var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
+                popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
+                if(cause) {
                   popupContents += '<h3>' + cause + '</h3>';
-                  popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
-                  layer.bindPopup(popupContents, popupOptions);
+                }
+                popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
+                layer.bindPopup(popupContents, popupOptions);
+                L.marker(
+                  coordsToLatLng(feature.geometry.coordinates[0][0][0]),
+                  {
+
+                  })
+                .on('click',
+                  function zoomToFirePolygon(e) {
+                    if(undefined === $scope.zoomLevel
+                      && undefined === $scope.mapCenter
+                    ) {
+                      $scope.minimize_menu();
+                      $scope.zoomLevel = $scope.mapObj.getZoom();
+                      $scope.mapCenter = $scope.mapObj.getCenter();
+                      $scope.mapObj.fitBounds(layer.getBounds());
+                      $scope.$apply();
+                    }
+                  }
+                )
+                .bindPopup(popupContents, popupOptions)
+                .on('popupclose',
+                  function restoreZoomLevel(e) {
+                    $scope.minimize_menu();
+                    $scope.mapObj.setZoom($scope.zoomLevel);
+                    $scope.mapObj.panTo($scope.mapCenter);
+                    $scope.zoomLevel = undefined;
+                    $scope.mapCenter = undefined;
+                    $scope.$apply();
+                  }
+                )
+                .addTo($scope.mapObj);
               }
             }).addTo($scope.mapObj);
           }
@@ -397,7 +435,7 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat('<img id="legend" src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
       $scope.sidebar.setContent(content).show();
     };
