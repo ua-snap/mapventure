@@ -99,8 +99,10 @@
   font-family: 'Lato';
   font-size: 150%;
 
-  img {
-    margin: 0 0 2rem 2rem;
+  // Assign the ID to override an !important
+  // assigned in the general Leaflet css.
+  img #legend {
+    max-width: 100%;
     display: block;
     float: right;
   }
