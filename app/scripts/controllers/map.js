@@ -392,8 +392,7 @@ app.controller('MapCtrl', [
     $scope.showMapInformation = function(mapId) {
       $http.get(geonodeApiUrl + '/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();
-        var content = '<h3>' + data.title + '</h3>';
-        content = content.concat('<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>');
+        var content = '<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>';
         content = content.concat(converter.makeHtml(data.abstract));
         $scope.sidebar.setContent(content).show();
       });

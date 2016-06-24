@@ -1,3 +1,4 @@
+<h1 id="mapTitle">{{ map.title }}</h1>
 <div ng-hide="hideSplash" class="fade splash-screen">
   <div class="billboard">
     <div id="splashOverviewContent"></div>
@@ -14,8 +15,6 @@
 </div>
 <div class="layer-menu" ng-hide="minimized">
   <div class="map">
-    <h2 id="mapTitle">{{ map.title }}</h2>
-    <div>
     <label id="showMapInformation" class="btn btn-primary info" ng-click="showMapInformation(map.id)">
       <span class="glyphicon glyphicon-question-sign"></span>
     </label>
@@ -31,8 +30,7 @@
     <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="syncDualMaps()">
       <span class="glyphicon glyphicon-flash"></span>
     </label>
-      </div>
-    </div>
+  </div>
     <div ui-sortable="sortableOptions" ng-model="map.layers">
       <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
         <!-- Buttons for first map -->
