@@ -18,6 +18,15 @@
       margin: 0 5px 0 0;
     }
   }
+  .mapTools {
+    margin: 1em 0;
+    label {
+      display: block;
+      margin: 1ex 0;
+      text-align: left !important;
+      width: 16em;
+    }
+  }
 }
 
 .layer-menu.clear {
@@ -48,37 +57,34 @@
   transition: 500ms;
 }
 
-#snapmapapp {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+#mapsWrapper {
+
+  #snapmapapp {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  #snapmapapp.half {
+    position: absolute;
+    width: 50%;
+    right: 50%;
+    border-right: 1px solid #888;
+  }
+
+  #secondmap {
+    position: absolute;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    border: 0;
+    z-index: -1;
+  }
+
+  #secondmap.half {
+    z-index: 0;
+  }
 }
-
-#snapmapapp.half {
-  position: absolute;
-  width: 50%;
-
-  right: 50%;
-  border: 0;
-}
-
-#secondmap {
-  position: absolute;
-  left: 50%;
-  width: 50%;
-  height: 100%;
-  border: 0;
-  z-index: -1;
-}
-
-#secondmap.half {
-  z-index: 0;
-}
-
-#showDualMaps, #syncDualMaps, #downloadMap {
-  margin-right: 3px;
-}
-
 #info-sidebar {
   font-family: 'Lato';
   font-size: 150%;
