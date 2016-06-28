@@ -8,9 +8,10 @@
  * Factory in the mapventureApp.
  */
 angular.module('mapventureApp')
-  .factory('BaseMap', function () {
+  .factory('BaseMap', [ '$http', 'Map',  function ($http, Map) {
 
     var service = {};
+    var geoserverUrl = Map.geoserverUrl();
 
     // Returns an array of layers that should be toggled
     // to a visible state upon map load.
@@ -19,6 +20,35 @@ angular.module('mapventureApp')
       var defaultLayers = ['active_fires'];
       return (5 === mapId) ? defaultLayers : [];
     }
+
+    // This is a hook for running scripts when the map is first loaded.
+    service.onLoad = function(mapObj, secondMapObj, $scope) {
+      // For refactoring, this would invoke
+      // a method in a "subclass"; for this first map,
+      // we hardcode -- fire a request to get all
+      // polygons!
+
+      var baseUrl = geoserverUrl + "/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=";
+      var requestUrl = baseUrl
+        + '-2255938.4795,'
+        + '449981.1884,'
+        + '1646517.6368,'
+        + '2676986.5642';
+      $http.get(requestUrl).then(function success(res) {
+        $scope.fireInfoPopup = res;
+      },
+      function error(res) {
+        $scope.fireInfoPopup = false;
+      });
+
+    }
+
+    // Attach additional per-map handlers.
+    // mapObj, secondMapObj are both Leaflet map objects
+    // TODO: pretty sure we don't want to inject scope here.
+    // Needs refactor.
+    // Like the 'onLoad' code, this would be called per-map.
+    service.attachEventHandlers = function(mapObj, secondMapObj, $scope) {}
 
     /**
       Get CRS Function
@@ -47,7 +77,7 @@ angular.module('mapventureApp')
           return new L.Proj.CRS('EPSG:3338',
               '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
               {
-                  resolutions: [8192, 4096, 2048, 1024, 512, 256, 128],
+                  resolutions: [65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
                   origin: [0, 0]
               }
           );
@@ -64,10 +94,11 @@ angular.module('mapventureApp')
     service.getMapOptions = function(mapId) {
       var mapOptions = {
         zoom: 3,
-        minZoom: 3,
+        minZoom: 6,
+        maxZoom: 11,
         maxBounds: new L.latLngBounds(
-          L.latLng(72, -165),
-          L.latLng(50, -145)
+          L.latLng(70.5, -175),
+          L.latLng(50, -135)
         )
       };
 
@@ -106,17 +137,19 @@ angular.module('mapventureApp')
         },
         'EPSG:3338': {
           layers: 'MapProxy:osm',
-          transparent: true
+          transparent: true,
+          minZoom: 6,
+          maxZoom: 11
         }
       };
 
       var baseConfiguration = {
         format: 'image/png',
         version: '1.3',
-        minZoom: 0,
-        maxZoom: 18,
+        minZoom: 6,
+        maxZoom: 11,
         continuousWorld: true, // needed for non-3857 projs
-        noWrap: false, // may be needed for non-3857 projs
+        noWrap: true, // may be needed for non-3857 projs
         zIndex: null
       };
 
@@ -125,4 +158,4 @@ angular.module('mapventureApp')
       return new L.tileLayer.wms(layerUrl, baseConfiguration);
     };
     return service;
-  });
+  }]);

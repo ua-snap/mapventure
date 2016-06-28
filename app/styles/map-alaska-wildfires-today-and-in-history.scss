@@ -1,4 +1,26 @@
 .alaska-wildfires-today-and-in-history * {
   /* This is just a placeholder for the merge. */
-  color: red;
+  .leaflet-popup-content {
+    z-index: 1000;
+
+    h1 {
+      color: #322323;
+    }
+
+    h2 {
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+
+    h3 {
+      font-size: .75rem;
+      margin-bottom: 0;
+    }
+
+    p.updated {
+      margin-top: .25ex;
+      font-weight: 300;
+      color: #988989;
+    }
+  }
 }

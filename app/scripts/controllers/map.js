@@ -19,7 +19,8 @@ app.controller('MapCtrl', [
   'Map',
   'BaseMap',
   'Slug',
-  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug) {
+  'moment',
+  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug, moment) {
       var geoserverUrl = Map.geoserverUrl();
       var geoserverWmsUrl = Map.geoserverWmsUrl();
       var geonodeUrl = Map.geonodeUrl();
@@ -64,6 +65,11 @@ app.controller('MapCtrl', [
         // Leaflet event does not update the ngHide function properly.
         $scope.$watch('showMapButtonDisabled');
 
+        // Two variables to use to keep the last map center/zoom
+        // so we can restore after an auto-zoom
+        $scope.mapCenter = undefined;
+        $scope.zoomLevel = undefined;
+
         // Dual maps boolean
         $scope.dualMaps = false;
 
@@ -87,8 +93,8 @@ app.controller('MapCtrl', [
             center: [65, -150],
             zoom: 1,
             crs: crs,
-            scrollWheelZoom: false,
-            zoomControl: false
+            zoomControl: false,
+            scrollWheelZoom: false
           }, BaseMap.getMapOptions($scope.map.id)
         );
 
@@ -107,6 +113,83 @@ app.controller('MapCtrl', [
           },
           mapDefaults);
         $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+
+        // Attach event handlers per-map
+        BaseMap.onLoad($scope.mapObj, $scope.secondMapObj, $scope);
+
+        // TODO: move this elsewhere?
+        $scope.fireInfoPopup = false;
+        $scope.$watch('fireInfoPopup', function(e) {
+          if(e) {
+            var coordsToLatLng = function(coords) {
+              var xy = {
+                x: coords[0],
+                y: coords[1]
+              };
+              var p = $scope.mapObj.options.crs.projection.unproject(xy);
+              return p;
+            }
+            var WFSLayer = L.geoJson(e.data, {
+              style: function (feature) {
+                  return {
+                      color: '#ff0000',
+                      fillColor: '#ff0000'
+                  };
+              },
+              coordsToLatLng: coordsToLatLng,
+              onEachFeature: function (feature, layer) {
+                this.layer = layer;
+                this.feature = feature;
+
+                var dateString = moment.unix(
+                  feature.properties.UPDATETIME / 1000 // microseconds
+                ).format('MMMM Do, h:mm:ss a');
+
+                var popupOptions = {
+                  maxWidth: 200,
+                };
+                var cause = 'Cause: ' + feature.properties.GENERALCAU;
+                var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
+                popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
+                if(cause) {
+                  popupContents += '<h3>' + cause + '</h3>';
+                }
+                popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
+                layer.bindPopup(popupContents, popupOptions);
+                L.marker(
+                  coordsToLatLng(feature.geometry.coordinates[0][0][0]),
+                  {
+
+                  })
+                .on('click',
+                  function zoomToFirePolygon(e) {
+                    if(undefined === $scope.zoomLevel
+                      && undefined === $scope.mapCenter
+                    ) {
+                      $scope.minimize_menu();
+                      $scope.zoomLevel = $scope.mapObj.getZoom();
+                      $scope.mapCenter = $scope.mapObj.getCenter();
+                      $scope.mapObj.fitBounds(layer.getBounds());
+                      $scope.$apply();
+                    }
+                  }
+                )
+                .bindPopup(popupContents, popupOptions)
+                .on('popupclose',
+                  function restoreZoomLevel(e) {
+                    $scope.minimize_menu();
+                    $scope.mapObj.setZoom($scope.zoomLevel);
+                    $scope.mapObj.panTo($scope.mapCenter);
+                    $scope.zoomLevel = undefined;
+                    $scope.mapCenter = undefined;
+                    $scope.$apply();
+                  }
+                )
+                .addTo($scope.mapObj);
+              }
+            }).addTo($scope.mapObj);
+          }
+        })
 
         // Show default layers
         angular.forEach(BaseMap.getDefaultLayers($scope.map.id), function(layerName){
@@ -159,6 +242,7 @@ app.controller('MapCtrl', [
           $scope.hideSecondLayer(layerName);
         }
       };
+
 
     $scope.addLayers = function() {
       angular.forEach($scope.map.layers, function(layer) {
@@ -308,8 +392,7 @@ app.controller('MapCtrl', [
     $scope.showMapInformation = function(mapId) {
       $http.get(geonodeApiUrl + '/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();
-        var content = '<h3>' + data.title + '</h3>';
-        content = content.concat('<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>');
+        var content = '<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>';
         content = content.concat(converter.makeHtml(data.abstract));
         $scope.sidebar.setContent(content).show();
       });
@@ -351,13 +434,8 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat('<img id="legend" src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
-
-      var source = '<h4>Where can I get this data?</h4>';
-      source = source.concat(converter.makeHtml(layer.distribution_description));
-      source = source.concat('<p><a href="' + layer.distribution_url + '">'+layer.distribution_url+'</a></p>')
-      content = content.concat(source);
       $scope.sidebar.setContent(content).show();
     };
 

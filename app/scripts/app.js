@@ -20,7 +20,8 @@ angular
     'ui.sortable',
     'ui.bootstrap',
     'config',
-    'slugifier'
+    'slugifier',
+    'angularMoment'
   ])
   .config(function ($routeProvider, MapProvider, ENV) {
     $routeProvider
