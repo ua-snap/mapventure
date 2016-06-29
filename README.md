@@ -13,7 +13,7 @@ bower install
 grunt serve
 ```
 
-Run `grunt` for building and `grunt serve` for preview.
+Run `grunt build` for building and `grunt serve` for preview.
 
 ## Testing
 
@@ -21,11 +21,16 @@ Running `grunt test` will run the unit tests with karma.
 
 ## Production configuration changes
 
-For the production configuration of MapVenture, set two operating system environment variables to provide the production GeoNode and GeoServer URLs. The environment variables to set are GEONODE_URL and GEOSERVER_URL. Here is a development example of setting the environment variables:
+For the production configuration of MapVenture, set two operating system environment variables to provide the production GeoNode and GeoServer URLs. The three environment variables to set are GEONODE_URL, GEOSERVER_URL and MV_LEAFLET_IMAGE_PATH.
+
+`MV_LEAFLET_IMAGE_PATH` should be set to point to the directory where images built into Leaflet live, and on the production server this is likely to just be `/images/`.
+
+Here is a development example of setting the environment variables:
 
 ```
 export GEONODE_URL="http://localhost:8000"
 export GEOSERVER_URL="http://localhost:8080/geoserver"
+export MV_LEAFLET_IMAGE_PATH="bower_components/leaflet/dist/images"
 ```
 
 Once the URLs are set, run either:
@@ -40,7 +45,7 @@ or:
 grunt build
 ```
 
-Note: If the system variables are not set, it will default to using http://localhost:8000 for GeoNode and http://localhost:8080/geoserver/wms for GeoServer.
+Note: If the system variables are not set, it will default to using http://localhost:8000 for GeoNode and http://localhost:8080/geoserver/wms for GeoServer.  There is no meaningful default for the Leaflet image path.
 
 ## Git-hooks Installation and Usage
 

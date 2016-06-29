@@ -57,4 +57,6 @@ angular
       } else {
         MapProvider.setGeoserverUrl(ENV.geoserver_url);
       }
+
+      MapProvider.setLeafletImagePath(ENV.leaflet_image_path);
   });
