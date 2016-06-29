@@ -7,11 +7,14 @@
  * # Map
  * Handles API requests for maps.
  */
-angular.module('mapventureApp') 
+angular.module('mapventureApp')
   .provider('Map', function MapProvider() {
     // Creates the variables for holding the URL for
     // Geonode, Geoserver, and Geonode API.
     var geonodeUrl, geoserverUrl, geoserverWmsUrl, geonodeApiUrl;
+
+    // Path to Leaflet image files
+    var leafletImagePath;
 
     // Map is populated with layers
     var ready = false;
@@ -26,6 +29,10 @@ angular.module('mapventureApp')
       geoserverUrl = url;
       geoserverWmsUrl = geoserverUrl + '/wms';
     };
+
+    this.setLeafletImagePath = function(path) {
+      leafletImagePath = path;
+    }
 
     // Method for instantiating
     this.$get = function ($http) {
@@ -47,6 +54,9 @@ angular.module('mapventureApp')
         },
         geoserverWmsUrl: function() {
           return geoserverWmsUrl;
+        },
+        leafletImagePath: function() {
+          return leafletImagePath;
         },
         setReady: function(isReady) {
           ready = isReady;

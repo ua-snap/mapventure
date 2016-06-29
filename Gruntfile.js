@@ -197,7 +197,8 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             geonode_url: process.env.GEONODE_URL,
-            geoserver_url: process.env.GEOSERVER_URL
+            geoserver_url: process.env.GEOSERVER_URL,
+            leaflet_image_path: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
       },
@@ -447,6 +448,12 @@ module.exports = function (grunt) {
           cwd: '.',
           src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= yeoman.dist %>'
+        },{
+          expand: true,
+          flatten: true,
+          cwd: '.',
+          src: 'bower_components/leaflet/dist/images/*',
+          dest: '<%= yeoman.dist %>/images'
         }]
       },
       styles: {
