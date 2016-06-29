@@ -89,6 +89,10 @@ app.controller('MapCtrl', [
 
         $scope.addLayers();
 
+        // Configure correct location for inbuilt / custom
+        // map markers
+        L.Icon.Default.imagePath = Map.leafletImagePath();
+
         var mapDefaults = angular.extend({
             center: [65, -150],
             zoom: 1,
