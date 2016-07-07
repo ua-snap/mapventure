@@ -20,22 +20,22 @@ angular.module('mapventureApp')
     var ready = false;
 
     // Public API for configuration
-    this.setGeonodeUrl = function (url) {
+    this.setGeonodeUrl = function(url) {
       geonodeUrl = url;
       geonodeApiUrl = geonodeUrl + '/api';
     };
 
-    this.setGeoserverUrl = function (url) {
+    this.setGeoserverUrl = function(url) {
       geoserverUrl = url;
       geoserverWmsUrl = geoserverUrl + '/wms';
     };
 
     this.setLeafletImagePath = function(path) {
       leafletImagePath = path;
-    }
+    };
 
     // Method for instantiating
-    this.$get = function ($http) {
+    this.$get = function($http) {
       return {
         all: function() {
           return $http.get(geonodeApiUrl + '/maps');

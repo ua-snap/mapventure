@@ -23,7 +23,7 @@ angular
     'slugifier',
     'angularMoment'
   ])
-  .config(function ($routeProvider, MapProvider, ENV) {
+  .config(function($routeProvider, MapProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -44,19 +44,19 @@ angular
         redirectTo: '/'
       });
 
-      if (ENV.geonode_url === undefined) {
-        // Set the default GeoNode URL here if environment variable isn't set during Grunt build
-        MapProvider.setGeonodeUrl('http://localhost:8000');
-      } else {
-        MapProvider.setGeonodeUrl(ENV.geonode_url);
-      }
+    if (ENV.geonode_url === undefined) {
+      // Set the default GeoNode URL here if environment variable isn't set during Grunt build
+      MapProvider.setGeonodeUrl('http://localhost:8000');
+    } else {
+      MapProvider.setGeonodeUrl(ENV.geonode_url);
+    }
 
-      if (ENV.geoserver_url === undefined) {
-        // Set the default Geoserver URL here if environment variable isn't set during Grunt build
-        MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
-      } else {
-        MapProvider.setGeoserverUrl(ENV.geoserver_url);
-      }
+    if (ENV.geoserver_url === undefined) {
+      // Set the default Geoserver URL here if environment variable isn't set during Grunt build
+      MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
+    } else {
+      MapProvider.setGeoserverUrl(ENV.geoserver_url);
+    }
 
-      MapProvider.setLeafletImagePath(ENV.leaflet_image_path);
+    MapProvider.setLeafletImagePath(ENV.leaflet_image_path);
   });

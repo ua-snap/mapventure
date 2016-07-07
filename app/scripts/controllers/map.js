@@ -20,16 +20,16 @@ app.controller('MapCtrl', [
   'BaseMap',
   'Slug',
   'moment',
-  function ($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug, moment) {
-      var geoserverUrl = Map.geoserverUrl();
-      var geoserverWmsUrl = Map.geoserverWmsUrl();
-      var geonodeUrl = Map.geonodeUrl();
-      var geonodeApiUrl = Map.geonodeApiUrl();
-      $scope.layers = {};
-      $scope.progress = 0;
-      $scope.processID = 0;
+  function($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug, moment) {
+    var geoserverUrl = Map.geoserverUrl();
+    var geoserverWmsUrl = Map.geoserverWmsUrl();
+    var geonodeUrl = Map.geonodeUrl();
+    var geonodeApiUrl = Map.geonodeApiUrl();
+    $scope.layers = {};
+    $scope.progress = 0;
+    $scope.processID = 0;
 
-      Map.layers($routeParams.mapId).success(function(data) {
+    Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
 
         $http.get(geonodeApiUrl + '/maps/' + $scope.map.id).success(function(data) {
@@ -44,7 +44,7 @@ app.controller('MapCtrl', [
         //
         // TODO: isolate this entire thing in a
         // directive of its own?
-        angular.element('body').addClass(Slug.slugify($scope.map.title))
+        angular.element('body').addClass(Slug.slugify($scope.map.title));
 
         // Reversing the layers makes the order
         // match what we see in GeoNode's map editor.
@@ -82,7 +82,7 @@ app.controller('MapCtrl', [
 
         // This checks for the 'load' event from Leaflet which means that the basemap
         // has completely loaded.
-        baseLayer.on("load", function() {
+        baseLayer.on('load', function() {
           $scope.showMapButtonDisabled = false;
           $scope.$apply();
         });
@@ -124,7 +124,7 @@ app.controller('MapCtrl', [
         // TODO: move this elsewhere?
         $scope.fireInfoPopup = false;
         $scope.$watch('fireInfoPopup', function(e) {
-          if(e) {
+          if (e) {
             var coordsToLatLng = function(coords) {
               var xy = {
                 x: coords[0],
@@ -132,16 +132,16 @@ app.controller('MapCtrl', [
               };
               var p = $scope.mapObj.options.crs.projection.unproject(xy);
               return p;
-            }
+            };
             var WFSLayer = L.geoJson(e.data, {
-              style: function (feature) {
-                  return {
-                      color: '#ff0000',
-                      fillColor: '#ff0000'
-                  };
+              style: function(feature) {
+                return {
+                  color: '#ff0000',
+                  fillColor: '#ff0000'
+                };
               },
               coordsToLatLng: coordsToLatLng,
-              onEachFeature: function (feature, layer) {
+              onEachFeature: function(feature, layer) {
                 this.layer = layer;
                 this.feature = feature;
 
@@ -155,7 +155,7 @@ app.controller('MapCtrl', [
                 var cause = 'Cause: ' + feature.properties.GENERALCAU;
                 var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
                 popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
-                if(cause) {
+                if (cause) {
                   popupContents += '<h3>' + cause + '</h3>';
                 }
                 popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
@@ -167,8 +167,8 @@ app.controller('MapCtrl', [
                   })
                 .on('click',
                   function zoomToFirePolygon(e) {
-                    if(undefined === $scope.zoomLevel
-                      && undefined === $scope.mapCenter
+                    if (undefined === $scope.zoomLevel &&
+                      undefined === $scope.mapCenter
                     ) {
                       $scope.minimize_menu();
                       $scope.zoomLevel = $scope.mapObj.getZoom();
@@ -193,11 +193,11 @@ app.controller('MapCtrl', [
               }
             }).addTo($scope.mapObj);
           }
-        })
+        });
 
         // Show default layers
-        angular.forEach(BaseMap.getDefaultLayers($scope.map.id), function(layerName){
-          $scope.showLayer(layerName)
+        angular.forEach(BaseMap.getDefaultLayers($scope.map.id), function(layerName) {
+          $scope.showLayer(layerName);
         });
 
         $scope.sidebar = L.control.sidebar('info-sidebar', {
@@ -217,36 +217,35 @@ app.controller('MapCtrl', [
 
         $scope.sortableOptions = {
           stop: function() {
-            for(var i = 0; i < $scope.map.layers.length; i++) {
+            for (var i = 0; i < $scope.map.layers.length; i++) {
               $scope.layers[$scope.map.layers[i].name].obj.setZIndex($scope.map.layers.length - i);
               $scope.layers[$scope.map.layers[i].name].secondObj.setZIndex($scope.map.layers.length - i);
             }
           }
         };
 
-      new L.Control.Zoom({ position: 'topright' }).addTo($scope.mapObj);
-      new L.Control.Zoom({ position: 'topright' }).addTo($scope.secondMapObj);
+        new L.Control.Zoom({position: 'topright'}).addTo($scope.mapObj);
+        new L.Control.Zoom({position: 'topright'}).addTo($scope.secondMapObj);
 
       });
 
-      $scope.showSecondLayer = function(layerName) {
-          $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
-          $scope.layers[layerName].secondvisible = true;
-      };
+    $scope.showSecondLayer = function(layerName) {
+      $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
+      $scope.layers[layerName].secondvisible = true;
+    };
 
-      $scope.hideSecondLayer = function(layerName) {
-          $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
-          $scope.layers[layerName].secondvisible = false;
-      };
+    $scope.hideSecondLayer = function(layerName) {
+      $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
+      $scope.layers[layerName].secondvisible = false;
+    };
 
-      $scope.toggleSecondLayer = function(layerName) {
-        if($scope.secondMapObj.hasLayer($scope.layers[layerName].secondObj) === false) {
+    $scope.toggleSecondLayer = function(layerName) {
+        if ($scope.secondMapObj.hasLayer($scope.layers[layerName].secondObj) === false) {
           $scope.showSecondLayer(layerName);
         } else {
           $scope.hideSecondLayer(layerName);
         }
       };
-
 
     $scope.addLayers = function() {
       angular.forEach($scope.map.layers, function(layer) {
@@ -287,7 +286,7 @@ app.controller('MapCtrl', [
     };
 
     $scope.toggleLayer = function(layerName) {
-      if($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
+      if ($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
         $scope.showLayer(layerName);
       } else {
         $scope.hideLayer(layerName);
@@ -296,7 +295,7 @@ app.controller('MapCtrl', [
 
     $scope.downloadMap = function(mapId) {
       if ($scope.processID === 0) {
-        $http.get(geonodeUrl + "/maps/" + mapId + "/immeddownload").then(function(response) {
+        $http.get(geonodeUrl + '/maps/' + mapId + '/immeddownload').then(function(response) {
           $scope.processID = response.data.id;
           $scope.checkDownload($scope.processID);
         });
@@ -313,19 +312,19 @@ app.controller('MapCtrl', [
 
       if ($scope.progress <= 0) {
         $scope.progress = 0;
-        var checkStatus = setInterval(function (){
+        var checkStatus = setInterval(function() {
           $.ajax({
-            type: "GET",
-            url : geoserverUrl + "/rest/process/batchDownload/status/" + processID
+            type: 'GET',
+            url: geoserverUrl + '/rest/process/batchDownload/status/' + processID
           })
-          .done(function(result){
+          .done(function(result) {
             $scope.progress = result.process.progress.toFixed(2);
-            if (result.process.status === "FINISHED") {
-              window.open(geoserverUrl + "/rest/process/batchDownload/download/" +  processID, "_blank");
+            if (result.process.status === 'FINISHED') {
+              window.open(geoserverUrl + '/rest/process/batchDownload/download/' +  processID, '_blank');
               $scope.progress = -1;
               $scope.processID = 0;
               clearInterval(checkStatus);
-            } else if (result.process.status === "ERROR") {
+            } else if (result.process.status === 'ERROR') {
               $scope.progress = -2;
               $scope.processID = 0;
               clearInterval(checkStatus);
@@ -338,7 +337,7 @@ app.controller('MapCtrl', [
 
     $scope.$on('show-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {
-        if(showLayers.indexOf(layerName) !== -1) {
+        if (showLayers.indexOf(layerName) !== -1) {
           $scope.$evalAsync(function() {
             $scope.showLayer(layerName);
           });
@@ -360,7 +359,7 @@ app.controller('MapCtrl', [
 
     $scope.$on('show-second-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {
-        if(showLayers.indexOf(layerName) !== -1) {
+        if (showLayers.indexOf(layerName) !== -1) {
           $scope.$evalAsync(function() {
             $scope.showSecondLayer(layerName);
           });
@@ -371,7 +370,6 @@ app.controller('MapCtrl', [
         }
       });
     });
-
 
     $scope.$on('start-tour-dual-maps', function(event) {
       $scope.$evalAsync(function() {
@@ -438,7 +436,7 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img id="legend" src="'+ geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat('<img id="legend" src="' + geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
       content = content.concat(converter.makeHtml(layer.capability.abstract));
       $scope.sidebar.setContent(content).show();
     };
@@ -452,6 +450,6 @@ app.controller('MapCtrl', [
       } else if ($routeParams.mapId == 8) {
         $scope.$emit('ncep-start-tour');
       }
-    }
+    };
   }
 ]);

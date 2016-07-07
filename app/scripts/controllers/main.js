@@ -8,7 +8,7 @@
  * Controller of the mapventureApp
  */
 angular.module('mapventureApp')
-  .controller('MainCtrl', ['$scope', 'Map', function ($scope, Map) {
+  .controller('MainCtrl', ['$scope', 'Map', function($scope, Map) {
     Map.all()
       .success(function(data) {
         $scope.maps = data.objects;
