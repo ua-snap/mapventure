@@ -37,7 +37,7 @@ angular.module('mapventureApp')
       $http.get(requestUrl).then(function success(res) {
         $scope.fireInfoPopup = res;
       },
-      function error(res) {
+      function error() {
         $scope.fireInfoPopup = false;
       });
 
@@ -48,7 +48,7 @@ angular.module('mapventureApp')
     // TODO: pretty sure we don't want to inject scope here.
     // Needs refactor.
     // Like the 'onLoad' code, this would be called per-map.
-    service.attachEventHandlers = function(mapObj, secondMapObj, $scope) {};
+    // service.attachEventHandlers = function(mapObj, secondMapObj, $scope) {};
 
     /**
       Get CRS Function
@@ -115,7 +115,7 @@ angular.module('mapventureApp')
              maximumZoom - The maximum number of resolutions available from the created CRS.
       Output: Returns a new Leaflet WMS layer object created from the layerURL input.
     */
-    service.getBaseLayer = function(epsgCode, layerUrl, maximumZoom) {
+    service.getBaseLayer = function(epsgCode, layerUrl) {
 
       // Real cheap for the moment.
       // The `epsgCode` comes from the `SRS` field of the map object

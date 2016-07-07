@@ -1,3 +1,4 @@
+/* global: Tour */
 'use strict';
 
 /**

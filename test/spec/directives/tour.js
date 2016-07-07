@@ -1,3 +1,4 @@
+/* globals: Tour */
 'use strict';
 
 describe('Directive: tour', function () {
@@ -5,14 +6,13 @@ describe('Directive: tour', function () {
   // load the directive's module
   beforeEach(module('mapventureApp'));
 
-  var element,
-    scope;
+  var scope;
 
   beforeEach(inject(function ($rootScope) {
     scope = $rootScope.$new();
   }));
 
-  it('should instantiate a tour object', inject(function ($compile) {
+  it('should instantiate a tour object', inject(function () {
     var tour = new Tour({
       steps: [
         {

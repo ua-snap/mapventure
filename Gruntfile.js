@@ -500,8 +500,8 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('tidy', 'Run linters and other style checkers', function(target) {
-    grunt.task.run(['jscs'])
+  grunt.registerTask('tidy', 'Run linters and other style checkers', function() {
+    grunt.task.run(['jscs', 'jshint']);
   });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {

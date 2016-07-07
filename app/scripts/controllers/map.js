@@ -133,8 +133,9 @@ app.controller('MapCtrl', [
               var p = $scope.mapObj.options.crs.projection.unproject(xy);
               return p;
             };
-            var WFSLayer = L.geoJson(e.data, {
-              style: function(feature) {
+
+            L.geoJson(e.data, {
+              style: function() {
                 return {
                   color: '#ff0000',
                   fillColor: '#ff0000'
@@ -166,7 +167,7 @@ app.controller('MapCtrl', [
 
                   })
                 .on('click',
-                  function zoomToFirePolygon(e) {
+                  function zoomToFirePolygon() {
                     if (undefined === $scope.zoomLevel &&
                       undefined === $scope.mapCenter
                     ) {
@@ -180,7 +181,7 @@ app.controller('MapCtrl', [
                 )
                 .bindPopup(popupContents, popupOptions)
                 .on('popupclose',
-                  function restoreZoomLevel(e) {
+                  function restoreZoomLevel() {
                     $scope.minimizeMenu();
                     $scope.mapObj.setZoom($scope.zoomLevel);
                     $scope.mapObj.panTo($scope.mapCenter);
@@ -350,7 +351,7 @@ app.controller('MapCtrl', [
     });
 
     $scope.minimizeMenu = function() {
-      if ($scope.minimized == false) {
+      if ($scope.minimized === false) {
         $scope.minimized = true;
       } else {
         $scope.minimized = false;
@@ -371,7 +372,7 @@ app.controller('MapCtrl', [
       });
     });
 
-    $scope.$on('start-tour-dual-maps', function(event) {
+    $scope.$on('start-tour-dual-maps', function() {
       $scope.$evalAsync(function() {
         if ($scope.dualMaps === true) {
           $scope.showDualMaps();
@@ -379,13 +380,13 @@ app.controller('MapCtrl', [
       });
     });
 
-    $scope.$on('show-dual-maps', function(event) {
+    $scope.$on('show-dual-maps', function() {
       $scope.$evalAsync(function() {
         $scope.showDualMaps();
       });
     });
 
-    $scope.$on('show-sync-maps', function(event) {
+    $scope.$on('show-sync-maps', function() {
       $scope.$evalAsync(function() {
         $scope.syncDualMaps();
       });
@@ -453,9 +454,9 @@ app.controller('MapCtrl', [
       /* These map IDs will need to be changed based
          upon the map ID of the system running the GeoNode
          instance. */
-      if ($routeParams.mapId == 2) {
+      if ($routeParams.mapId === 2) {
         $scope.$emit('iem-start-tour');
-      } else if ($routeParams.mapId == 8) {
+      } else if ($routeParams.mapId === 8) {
         $scope.$emit('ncep-start-tour');
       }
     };

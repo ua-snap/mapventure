@@ -5,8 +5,7 @@ describe('Directive: mapList', function () {
   // load the directive's module
   beforeEach(module('mapventureApp'));
 
-  var element,
-    scope;
+  var scope;
 
   beforeEach(inject(function ($rootScope) {
     scope = $rootScope.$new();

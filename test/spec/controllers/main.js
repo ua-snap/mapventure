@@ -5,7 +5,7 @@ describe('Controller: MainCtrl', function () {
   // load the controller's module
   beforeEach(module('mapventureApp'));
 
-  var MainCtrl, $httpBackend, mapRequestHandler, createController,
+  var $httpBackend, mapRequestHandler, createController,
     scope;
 
   // Initialize the controller and a mock scope

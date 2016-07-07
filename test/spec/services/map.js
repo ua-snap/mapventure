@@ -3,12 +3,7 @@
 describe('Service: Map', function () {
 
   // instantiate service
-  var Map,
-    init = function () {
-      inject(function (_Map_) {
-        Map = _Map_;
-      });
-    };
+  var Map;
 
   // load the service's module
   beforeEach(module('mapventureApp'));
