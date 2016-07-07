@@ -197,9 +197,9 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
-            geonode_url: process.env.GEONODE_URL,
-            geoserver_url: process.env.GEOSERVER_URL,
-            leaflet_image_path: process.env.MV_LEAFLET_IMAGE_PATH
+            GEONODE_URL: process.env.GEONODE_URL,
+            GEOSERVER_URL: process.env.GEOSERVER_URL,
+            LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
       },
@@ -209,8 +209,9 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
-            geonode_url: process.env.GEONODE_URL,
-            geoserver_url: process.env.GEOSERVER_URL
+            GEONODE_URL: process.env.GEONODE_URL,
+            GEOSERVER_URL: process.env.GEOSERVER_URL,
+            LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
       }

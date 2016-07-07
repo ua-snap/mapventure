@@ -44,19 +44,19 @@ angular
         redirectTo: '/'
       });
 
-    if (ENV.geonode_url === undefined) {
+    if (ENV.GEONODE_URL === undefined) {
       // Set the default GeoNode URL here if environment variable isn't set during Grunt build
       MapProvider.setGeonodeUrl('http://localhost:8000');
     } else {
-      MapProvider.setGeonodeUrl(ENV.geonode_url);
+      MapProvider.setGeonodeUrl(ENV.GEONODE_URL);
     }
 
-    if (ENV.geoserver_url === undefined) {
+    if (ENV.GEOSERVER_URL === undefined) {
       // Set the default Geoserver URL here if environment variable isn't set during Grunt build
       MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
     } else {
-      MapProvider.setGeoserverUrl(ENV.geoserver_url);
+      MapProvider.setGeoserverUrl(ENV.GEOSERVER_URL);
     }
 
-    MapProvider.setLeafletImagePath(ENV.leaflet_image_path);
+    MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
   });

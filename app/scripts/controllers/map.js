@@ -21,10 +21,10 @@ app.controller('MapCtrl', [
   'Slug',
   'moment',
   function($scope, $http, $routeParams, $timeout, ngDialog, Map, BaseMap, Slug, moment) {
-    var geoserverUrl = Map.geoserverUrl();
-    var geoserverWmsUrl = Map.geoserverWmsUrl();
-    var geonodeUrl = Map.geonodeUrl();
-    var geonodeApiUrl = Map.geonodeApiUrl();
+    var GEOSERVER_URL = Map.geoserverUrl();
+    var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
+    var GEONODE_URL = Map.geonodeUrl();
+    var GEONODE_API_URL = Map.geonodeApiUrl();
     $scope.layers = {};
     $scope.progress = 0;
     $scope.processID = 0;
@@ -32,7 +32,7 @@ app.controller('MapCtrl', [
     Map.layers($routeParams.mapId).success(function(data) {
         $scope.map = data;
 
-        $http.get(geonodeApiUrl + '/maps/' + $scope.map.id).success(function(data) {
+        $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
           var converter = new showdown.Converter();
           var content = converter.makeHtml(data.abstract);
           angular.element('#splashOverviewContent').html(content);
@@ -52,8 +52,8 @@ app.controller('MapCtrl', [
 
         // These need to be separate instances because we listen for events differently on each.
         var crs = BaseMap.getCRS($scope.map.srid);
-        var baseLayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, crs.options.resolutions.length);
-        var secondBaseLayer = BaseMap.getBaseLayer($scope.map.srid, geoserverWmsUrl, crs.options.resolutions.length);
+        var baseLayer = BaseMap.getBaseLayer($scope.map.srid, GEOSERVER_WMS_URL, crs.options.resolutions.length);
+        var secondBaseLayer = BaseMap.getBaseLayer($scope.map.srid, GEOSERVER_WMS_URL, crs.options.resolutions.length);
 
         $scope.minimized = false;
 
@@ -170,7 +170,7 @@ app.controller('MapCtrl', [
                     if (undefined === $scope.zoomLevel &&
                       undefined === $scope.mapCenter
                     ) {
-                      $scope.minimize_menu();
+                      $scope.minimizeMenu();
                       $scope.zoomLevel = $scope.mapObj.getZoom();
                       $scope.mapCenter = $scope.mapObj.getCenter();
                       $scope.mapObj.fitBounds(layer.getBounds());
@@ -181,7 +181,7 @@ app.controller('MapCtrl', [
                 .bindPopup(popupContents, popupOptions)
                 .on('popupclose',
                   function restoreZoomLevel(e) {
-                    $scope.minimize_menu();
+                    $scope.minimizeMenu();
                     $scope.mapObj.setZoom($scope.zoomLevel);
                     $scope.mapObj.panTo($scope.mapCenter);
                     $scope.zoomLevel = undefined;
@@ -205,11 +205,11 @@ app.controller('MapCtrl', [
         });
 
         $scope.sidebar.on('show', function() {
-          $scope.minimize_menu();
+          $scope.minimizeMenu();
         });
 
         $scope.sidebar.on('hide', function() {
-          $scope.minimize_menu();
+          $scope.minimizeMenu();
           $scope.$apply();
         });
 
@@ -253,7 +253,7 @@ app.controller('MapCtrl', [
         // GeoExplorer or MapLoom's versions of things.
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
-        $scope.layers[layer.name].obj = L.tileLayer.wms(geoserverWmsUrl, {
+        $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
           continuousWorld: true,
           layers: layer.name,
           name: layer.name,
@@ -262,7 +262,7 @@ app.controller('MapCtrl', [
           version: '1.3',
           visible: false
         });
-        $scope.layers[layer.name].secondObj = L.tileLayer.wms(geoserverWmsUrl, {
+        $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
           continuousWorld: true,
           layers: layer.name,
           name: layer.name,
@@ -295,7 +295,7 @@ app.controller('MapCtrl', [
 
     $scope.downloadMap = function(mapId) {
       if ($scope.processID === 0) {
-        $http.get(geonodeUrl + '/maps/' + mapId + '/immeddownload').then(function(response) {
+        $http.get(GEONODE_URL + '/maps/' + mapId + '/immeddownload').then(function(response) {
           $scope.processID = response.data.id;
           $scope.checkDownload($scope.processID);
         });
@@ -315,12 +315,12 @@ app.controller('MapCtrl', [
         var checkStatus = setInterval(function() {
           $.ajax({
             type: 'GET',
-            url: geoserverUrl + '/rest/process/batchDownload/status/' + processID
+            url: GEOSERVER_URL + '/rest/process/batchDownload/status/' + processID
           })
           .done(function(result) {
             $scope.progress = result.process.progress.toFixed(2);
             if (result.process.status === 'FINISHED') {
-              window.open(geoserverUrl + '/rest/process/batchDownload/download/' +  processID, '_blank');
+              window.open(GEOSERVER_URL + '/rest/process/batchDownload/download/' +  processID, '_blank');
               $scope.progress = -1;
               $scope.processID = 0;
               clearInterval(checkStatus);
@@ -349,7 +349,7 @@ app.controller('MapCtrl', [
       });
     });
 
-    $scope.minimize_menu = function() {
+    $scope.minimizeMenu = function() {
       if ($scope.minimized == false) {
         $scope.minimized = true;
       } else {
@@ -392,7 +392,7 @@ app.controller('MapCtrl', [
     });
 
     $scope.showMapInformation = function(mapId) {
-      $http.get(geonodeApiUrl + '/maps/' + mapId).success(function(data) {
+      $http.get(GEONODE_API_URL + '/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();
         var content = '<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>';
         content = content.concat(converter.makeHtml(data.abstract));
@@ -410,7 +410,9 @@ app.controller('MapCtrl', [
         }, 250);
       } else {
         $scope.dualMaps = false;
-        if ($scope.syncMaps === true) $scope.syncDualMaps();
+        if ($scope.syncMaps === true) {
+          $scope.syncDualMaps();
+        }
         $timeout(function() {
           $scope.mapObj.invalidateSize();
           $scope.mapObj.panTo([65, -150]);
@@ -436,7 +438,13 @@ app.controller('MapCtrl', [
       });
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat('<img id="legend" src="' + geoserverWmsUrl + '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' + layerName + '" alt="legend" />');
+      content = content.concat(
+        '<img id="legend" src="' +
+        GEOSERVER_WMS_URL +
+        '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' +
+        layerName +
+        '" alt="legend" />'
+      );
       content = content.concat(converter.makeHtml(layer.capability.abstract));
       $scope.sidebar.setContent(content).show();
     };

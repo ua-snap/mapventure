@@ -12,7 +12,7 @@ app.directive('tour', ['$timeout', 'Map', function($timeout, Map) {
   return {
     restrict: 'E',
     link: function postLink(scope) {
-      scope.ncep_tour = new Tour({
+      scope.ncepTour = new Tour({
         steps: [
           {
             element: '.layer-menu',
@@ -141,7 +141,7 @@ app.directive('tour', ['$timeout', 'Map', function($timeout, Map) {
         ]
       });
 
-      scope.iem_tour = new Tour({
+      scope.iemTour = new Tour({
         steps: [
           {
             element: '.layer-menu',
@@ -243,20 +243,20 @@ app.directive('tour', ['$timeout', 'Map', function($timeout, Map) {
         function() {
           if (Map.ready() === true) {
             $timeout(function() {
-              scope.ncep_tour.init();
-              scope.iem_tour.init();
-              //scope.ncep_tour.start();
+              scope.ncepTour.init();
+              scope.iemTour.init();
+              //scope.ncepTour.start();
             });
           }
         }
       );
 
       scope.$on('iem-start-tour', function() {
-        scope.iem_tour.restart();
+        scope.iemTour.restart();
       });
 
       scope.$on('ncep-start-tour', function() {
-        scope.ncep_tour.restart();
+        scope.ncepTour.restart();
       });
     }
   };

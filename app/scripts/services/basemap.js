@@ -11,7 +11,7 @@ angular.module('mapventureApp')
   .factory('BaseMap', ['$http', 'Map',  function($http, Map) {
 
     var service = {};
-    var geoserverUrl = Map.geoserverUrl();
+    var GEOSERVER_URL = Map.geoserverUrl();
 
     // Returns an array of layers that should be toggled
     // to a visible state upon map load.
@@ -28,7 +28,7 @@ angular.module('mapventureApp')
       // we hardcode -- fire a request to get all
       // polygons!
 
-      var baseUrl = geoserverUrl + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=';
+      var baseUrl = GEOSERVER_URL + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=';
       var requestUrl = baseUrl +
         '-2255938.4795,' +
         '449981.1884,' +
@@ -53,11 +53,11 @@ angular.module('mapventureApp')
     /**
       Get CRS Function
       Purpose: Used to generate the desired coordinate reference system for a particular map
-      Input: epsg_code - EPSG Code as integer value.
+      Input: epsgCode - EPSG Code as integer value.
       Output: Returns a new Leaflet CRS object using the correct options for the input EPSG code
     */
-    service.getCRS = function(epsg_code) {
-      if (epsg_code === 'EPSG:3572') {
+    service.getCRS = function(epsgCode) {
+      if (epsgCode === 'EPSG:3572') {
         var proj = new L.Proj.CRS('EPSG:3572',
             '+proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
               {
@@ -110,19 +110,19 @@ angular.module('mapventureApp')
       Get Base Layer Function
       Purpose: Generates the base layer from a WMS layer provided by the input to the function.
       Definition: Base layers are non-toggleable layers used to place other layers on top of.
-      Input: epsg_code - EPSG Code as integer value.
+      Input: epsgCode - EPSG Code as integer value.
              layerUrl - Full URL to web-accessible WMS service providing our imported baselayer.
              maximumZoom - The maximum number of resolutions available from the created CRS.
       Output: Returns a new Leaflet WMS layer object created from the layerURL input.
     */
-    service.getBaseLayer = function(epsg_code, layerUrl, maximumZoom) {
+    service.getBaseLayer = function(epsgCode, layerUrl, maximumZoom) {
 
       // Real cheap for the moment.
-      // The `epsg_code` comes from the `SRS` field of the map object
+      // The `epsgCode` comes from the `SRS` field of the map object
       // we get back from the MapLayers API endpoint.  It defaults
       // to 4326, and you need to use the Django admin to change it,
       // this is just a safety catch.
-      if (epsg_code === 'EPSG:4326') { epsg_code = 'EPSG:3338'; }
+      if (epsgCode === 'EPSG:4326') { epsgCode = 'EPSG:3338'; }
 
       // When we add a 3rd map, we'll need to figure
       // out where to refactor this logic.
@@ -153,7 +153,7 @@ angular.module('mapventureApp')
         zIndex: null
       };
 
-      angular.extend(baseConfiguration, layerConfiguration[epsg_code]);
+      angular.extend(baseConfiguration, layerConfiguration[epsgCode]);
 
       return new L.tileLayer.wms(layerUrl, baseConfiguration);
     };
