@@ -11,52 +11,52 @@ angular.module('mapventureApp')
   .provider('Map', function MapProvider() {
     // Creates the variables for holding the URL for
     // Geonode, Geoserver, and Geonode API.
-    var geonodeUrl, geoserverUrl, geoserverWmsUrl, geonodeApiUrl;
+    var GEONODE_URL, GEOSERVER_URL, GEOSERVER_WMS_URL, GEONODE_API_URL;
 
     // Path to Leaflet image files
-    var leafletImagePath;
+    var LEAFLET_IMAGE_PATH;
 
     // Map is populated with layers
     var ready = false;
 
     // Public API for configuration
-    this.setGeonodeUrl = function (url) {
-      geonodeUrl = url;
-      geonodeApiUrl = geonodeUrl + '/api';
+    this.setGeonodeUrl = function(url) {
+      GEONODE_URL = url;
+      GEONODE_API_URL = GEONODE_URL + '/api';
     };
 
-    this.setGeoserverUrl = function (url) {
-      geoserverUrl = url;
-      geoserverWmsUrl = geoserverUrl + '/wms';
+    this.setGeoserverUrl = function(url) {
+      GEOSERVER_URL = url;
+      GEOSERVER_WMS_URL = GEOSERVER_URL + '/wms';
     };
 
     this.setLeafletImagePath = function(path) {
-      leafletImagePath = path;
-    }
+      LEAFLET_IMAGE_PATH = path;
+    };
 
     // Method for instantiating
-    this.$get = function ($http) {
+    this.$get = function($http) {
       return {
         all: function() {
-          return $http.get(geonodeApiUrl + '/maps');
+          return $http.get(GEONODE_API_URL + '/maps');
         },
         layers: function(mapId) {
-          return $http.get(geonodeApiUrl + '/maplayers/' + mapId);
+          return $http.get(GEONODE_API_URL + '/maplayers/' + mapId);
         },
         geonodeUrl: function() {
-          return geonodeUrl;
+          return GEONODE_URL;
         },
         geonodeApiUrl: function() {
-          return geonodeApiUrl;
+          return GEONODE_API_URL;
         },
         geoserverUrl: function() {
-          return geoserverUrl;
+          return GEOSERVER_URL;
         },
         geoserverWmsUrl: function() {
-          return geoserverWmsUrl;
+          return GEOSERVER_WMS_URL;
         },
         leafletImagePath: function() {
-          return leafletImagePath;
+          return LEAFLET_IMAGE_PATH;
         },
         setReady: function(isReady) {
           ready = isReady;

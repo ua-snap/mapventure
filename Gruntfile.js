@@ -11,6 +11,7 @@ module.exports = function (grunt) {
 
   // Load the ng-constant functionality into the Gruntfile
   grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks("grunt-jscs");
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -196,9 +197,9 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
-            geonode_url: process.env.GEONODE_URL,
-            geoserver_url: process.env.GEOSERVER_URL,
-            leaflet_image_path: process.env.MV_LEAFLET_IMAGE_PATH
+            GEONODE_URL: process.env.GEONODE_URL,
+            GEOSERVER_URL: process.env.GEOSERVER_URL,
+            LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
       },
@@ -208,8 +209,9 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
-            geonode_url: process.env.GEONODE_URL,
-            geoserver_url: process.env.GEOSERVER_URL
+            GEONODE_URL: process.env.GEONODE_URL,
+            GEOSERVER_URL: process.env.GEOSERVER_URL,
+            LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
       }
@@ -485,9 +487,22 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    jscs: {
+      src: "./app/**/*.js",
+      options: {
+          config: ".jscsrc",
+          verbose: true, // If you need output with rule names http://jscs.info/overview.html#verbose
+          fix: true // Autofix code style violations when possible.
+      }
     }
   });
 
+
+  grunt.registerTask('tidy', 'Run linters and other style checkers', function() {
+    grunt.task.run(['jscs', 'jshint']);
+  });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -497,6 +512,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'jscs',
       'concurrent:server',
       'autoprefixer:server',
       'ngconstant:development',
@@ -513,6 +529,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'wiredep',
+    'jscs',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -522,6 +539,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    'jscs',
     'useminPrepare',
     'ngconstant:production',
     'concurrent:dist',

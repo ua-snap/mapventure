@@ -7,7 +7,7 @@
  * # mapList
  */
 angular.module('mapventureApp')
-  .directive('mapList', function () {
+  .directive('mapList', function() {
     return {
       templateUrl: 'views/mapList.html',
       restrict: 'E',

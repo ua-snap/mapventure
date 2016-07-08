@@ -1,3 +1,4 @@
+/* global: Tour */
 'use strict';
 
 /**
@@ -8,16 +9,16 @@
  */
 var app = angular.module('mapventureApp');
 
-app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
+app.directive('tour', ['$timeout', 'Map', function($timeout, Map) {
   return {
     restrict: 'E',
     link: function postLink(scope) {
-      scope.ncep_tour = new Tour({
+      scope.ncepTour = new Tour({
         steps: [
           {
-            element: ".layer-menu",
-            title: "NCEP Map",
-            content: "Hello! Welcome to the NCEP map. This tour will show you around.",
+            element: '.layer-menu',
+            title: 'NCEP Map',
+            content: 'Hello! Welcome to the NCEP map. This tour will show you around.',
             onShow: function() {
               scope.$broadcast('show-layers', []);
               scope.$broadcast('show-second-layers', []);
@@ -25,13 +26,13 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#ncep_daily_air_temperature",
-            content: "This is the most recent temperature data from NCEP.",
+            element: '#ncep_daily_air_temperature',
+            content: 'This is the most recent temperature data from NCEP.',
             onShow: function() {
               $('#ncep_daily_air_temperature')
                 .addClass('bling')
                 .removeClass('no-bling');
-              scope.$broadcast('show-layers', [ 'ncep_daily_air_temperature' ]);
+              scope.$broadcast('show-layers', ['ncep_daily_air_temperature']);
             },
             onHide: function() {
               $('#ncep_daily_air_temperature')
@@ -40,8 +41,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#ncep_air_temperature_current_month_forecast_average .info",
-            content: "Use this button to see more information about this layer, including the legend.",
+            element: '#ncep_air_temperature_current_month_forecast_average .info',
+            content: 'Use this button to see more information about this layer, including the legend.',
             onShow: function() {
               $('#ncep_air_temperature_current_month_forecast_average .info')
                 .addClass('zoom')
@@ -54,8 +55,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showMapInformation",
-            content: "Use this button to show detailed information about this map, including data sources and how to obtain this data.",
+            element: '#showMapInformation',
+            content: 'Use this button to show detailed information about this map, including data sources and how to obtain this data.',
             onShow: function() {
               $('#showMapInformation')
                 .addClass('zoom')
@@ -68,8 +69,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showDualMaps",
-            content: "Use this button to split the map into two maps.",
+            element: '#showDualMaps',
+            content: 'Use this button to split the map into two maps.',
             onShow: function() {
               $('#showDualMaps')
                 .addClass('zoom')
@@ -77,8 +78,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showDualMaps",
-            content: "Once clicked, additional buttons are added to the layer menu.",
+            element: '#showDualMaps',
+            content: 'Once clicked, additional buttons are added to the layer menu.',
             onShow: function() {
               scope.$broadcast('start-tour-dual-maps');
               scope.$broadcast('show-dual-maps', []);
@@ -90,8 +91,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#syncDualMaps",
-            content: "Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.",
+            element: '#syncDualMaps',
+            content: 'Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.',
             onShow: function() {
               $('#syncDualMaps')
                 .addClass('zoom')
@@ -105,17 +106,17 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#snapmapapp",
-            content: "Try moving either map around or zoom in to see both maps synchronized.",
+            element: '#snapmapapp',
+            content: 'Try moving either map around or zoom in to see both maps synchronized.',
           },
           {
-            element: "#ncep_yearly_air_temperature",
-            content: "This is the temperature data from NCEP for a year ago today. With two maps, we can choose which map to display the data on. The left map is controlled by the left buttons, and the right map is controller by the right buttons.",
+            element: '#ncep_yearly_air_temperature',
+            content: 'This is the temperature data from NCEP for a year ago today. With two maps, we can choose which map to display the data on. The left map is controlled by the left buttons, and the right map is controller by the right buttons.',
             onShow: function() {
               $('#ncep_yearly_air_temperature')
                 .addClass('bling')
                 .removeClass('no-bling');
-              scope.$broadcast('show-second-layers', [ 'ncep_yearly_air_temperature' ]);
+              scope.$broadcast('show-second-layers', ['ncep_yearly_air_temperature']);
             },
             onHide: function() {
               $('#ncep_yearly_air_temperature')
@@ -124,8 +125,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showDualMaps",
-            content: "If wishing to return to a single map view, click on this button again.",
+            element: '#showDualMaps',
+            content: 'If wishing to return to a single map view, click on this button again.',
             onShow: function() {
               scope.$broadcast('show-dual-maps', []);
               $('#showDualMaps')
@@ -141,12 +142,12 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
         ]
       });
 
-      scope.iem_tour = new Tour({
+      scope.iemTour = new Tour({
         steps: [
           {
-            element: ".layer-menu",
-            title: "IEM Map",
-            content: "Hello! Welcome to the IEM map. This tour will show you around the IEM map.",
+            element: '.layer-menu',
+            title: 'IEM Map',
+            content: 'Hello! Welcome to the IEM map. This tour will show you around the IEM map.',
             onShow: function() {
               scope.$broadcast('show-layers', []);
               scope.$broadcast('show-second-layers', []);
@@ -154,13 +155,13 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#pr_total_mm_iem_cru_ts31_06_2004_reproj",
-            content: "This is the Historical Monthly Precipitation for June 2004 in the State of Alaska. Clicking on the eye will turn on this layer.",
+            element: '#pr_total_mm_iem_cru_ts31_06_2004_reproj',
+            content: 'This is the Historical Monthly Precipitation for June 2004 in the State of Alaska. Clicking on the eye will turn on this layer.',
             onShow: function() {
               $('#pr_total_mm_iem_cru_ts31_06_2004_reproj')
                 .addClass('bling')
                 .removeClass('no-bling');
-              scope.$broadcast('show-layers', [ 'pr_total_mm_iem_cru_ts31_06_2004_reproj' ]);
+              scope.$broadcast('show-layers', ['pr_total_mm_iem_cru_ts31_06_2004_reproj']);
             },
             onHide: function() {
               $('#pr_total_mm_iem_cru_ts31_06_2004_reproj')
@@ -169,8 +170,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#pr_total_mm_iem_cru_ts31_06_2004_reproj .info",
-            content: "Use this button to see more information about this layer, including the legend.",
+            element: '#pr_total_mm_iem_cru_ts31_06_2004_reproj .info',
+            content: 'Use this button to see more information about this layer, including the legend.',
             onShow: function() {
               $('#pr_total_mm_iem_cru_ts31_06_2004_reproj .info')
                 .addClass('zoom')
@@ -183,8 +184,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showMapInformation",
-            content: "Use this button to show detailed information about this map, including data sources and how to obtain this data.",
+            element: '#showMapInformation',
+            content: 'Use this button to show detailed information about this map, including data sources and how to obtain this data.',
             onShow: function() {
               $('#showMapInformation')
                 .addClass('zoom')
@@ -197,8 +198,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showDualMaps",
-            content: "Use this button to split the map into two maps.",
+            element: '#showDualMaps',
+            content: 'Use this button to split the map into two maps.',
             onShow: function() {
               $('#showDualMaps')
                 .addClass('zoom')
@@ -206,8 +207,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#showDualMaps",
-            content: "Once clicked, additional buttons are added to the layer menu.",
+            element: '#showDualMaps',
+            content: 'Once clicked, additional buttons are added to the layer menu.',
             onShow: function() {
               scope.$broadcast('start-tour-dual-maps');
               scope.$broadcast('show-dual-maps', []);
@@ -219,8 +220,8 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
             }
           },
           {
-            element: "#syncDualMaps",
-            content: "Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.",
+            element: '#syncDualMaps',
+            content: 'Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.',
             onShow: function() {
               $('#syncDualMaps')
                 .addClass('zoom')
@@ -241,22 +242,22 @@ app.directive('tour', ['$timeout', 'Map', function ($timeout, Map) {
           return Map.ready();
         },
         function() {
-          if(Map.ready() === true) {
+          if (Map.ready() === true) {
             $timeout(function() {
-              scope.ncep_tour.init();
-              scope.iem_tour.init();
-              //scope.ncep_tour.start();
+              scope.ncepTour.init();
+              scope.iemTour.init();
+              //scope.ncepTour.start();
             });
           }
         }
       );
 
       scope.$on('iem-start-tour', function() {
-        scope.iem_tour.restart();
+        scope.iemTour.restart();
       });
 
       scope.$on('ncep-start-tour', function() {
-        scope.ncep_tour.restart();
+        scope.ncepTour.restart();
       });
     }
   };
