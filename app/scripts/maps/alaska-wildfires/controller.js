@@ -2,10 +2,11 @@
 
 /**
  * @ngdoc function
- * @name mapventureApp.controller:MapCtrl
+ * @name mapventureApp.controller:AlaskaWildfiresCtrl
  * @description
- * # MapCtrl
- * Controller of the mapventureApp
+ * # Alaska wildfires
+ * This controller handles special functionality
+ * for the Alaska Wildfire map.
  */
 
 var app = angular.module('mapventureApp');
@@ -53,10 +54,10 @@ app.controller('AlaskaWildfiresCtrl', [
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
       return new L.tileLayer.wms(Map.geoserverUrl(), baseConfiguration);
-    }
+    };
 
     // This function loads the additional fire polygons
-    $scope.onLoad = function(mapObj, secondMapObj, $scope) {
+    $scope.onLoad = function(mapObj, secondMapObj) {
 
       // Configure correct location for inbuilt / custom
       // map markers

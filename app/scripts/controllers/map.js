@@ -19,8 +19,8 @@ app.controller('MapCtrl', [
   'ngDialog',
   'Map',
   'Slug',
-  'moment',
-  function($scope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, moment) {
+  'MapRegistry',
+  function($scope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
 
     var GEOSERVER_URL = Map.geoserverUrl();
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
@@ -68,14 +68,15 @@ app.controller('MapCtrl', [
     // should be dimmed until Map is loaded.
     $scope.showMapButtonDisabled = true;
 
-    // Create controller for map-specific functionality
-    var mapInstanceController = $controller(
-      'AlaskaWildfiresCtrl',
-      {$scope: $scope}
-    );
-
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
+
+      // Create controller for map-specific functionality
+      // Just invoking it will compile/execute it.
+      var mapInstanceController = $controller(
+        MapRegistry.getController($scope.map.uuid),
+        {$scope: $scope}
+      );
 
       $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
         var converter = new showdown.Converter();
@@ -96,7 +97,7 @@ app.controller('MapCtrl', [
       $scope.map.layers.reverse();
 
       // These need to be separate instances because we listen for events differently on each.
-      var baseLayer = $scope.getBaseLayer()
+      var baseLayer = $scope.getBaseLayer();
       var secondBaseLayer = $scope.getBaseLayer();
 
       // Move to a per-map service?
