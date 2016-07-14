@@ -39,8 +39,8 @@ angular.module('mapventureApp')
       // any normal layer type.
       // http://leafletjs.com/reference.html#ilayer
       $scope.getBaseLayer = function() {
-      return undefined;
-    };
+        return undefined;
+      };
 
       // Called after the data has been loaded,
       // this function can be used to modify & hook into
@@ -67,7 +67,8 @@ angular.module('mapventureApp')
           resolutions: [8192, 4096, 2048, 1024, 512, 256, 128],
           origin: [0, 0]
         }
-    );
+      );
+
       // trust me.
       // Without this (= pi/2), proj4js returns an undefined
       // value for tiles requested at the North Pole and
@@ -77,29 +78,29 @@ angular.module('mapventureApp')
 
       // General options for Leaflet configuration.
       $scope.mapOptions = {
-      zoom: 3,
-      minZoom: 6,
-      maxZoom: 11,
-      maxBounds: new L.latLngBounds(
-        L.latLng(70.5, -175),
-        L.latLng(50, -135)
-      )
-    };
+        zoom: 3,
+        minZoom: 6,
+        maxZoom: 11,
+        maxBounds: new L.latLngBounds(
+          L.latLng(70.5, -175),
+          L.latLng(50, -135)
+        )
+      };
 
       // Base layer configuration for pan-Arctic map.
       var baseConfiguration = {
-      layers: 'ne_10m_coastline',
-      transparent: true,
-      format: 'image/png',
-      version: '1.3',
-      continuousWorld: true, // needed for non-3857 projs
-      noWrap: true, // may be needed for non-3857 projs
-      zIndex: null
-    };
+        layers: 'ne_10m_coastline',
+        transparent: true,
+        format: 'image/png',
+        version: '1.3',
+        continuousWorld: true, // needed for non-3857 projs
+        noWrap: true, // may be needed for non-3857 projs
+        zIndex: null
+      };
 
       // Return a new instance of a base layer.
       $scope.getBaseLayer = function() {
-      return new L.tileLayer.wms(Map.geoserverUrl(), baseConfiguration);
-    };
+        return new L.tileLayer.wms(Map.geoserverUrl(), baseConfiguration);
+      };
 
     }]);

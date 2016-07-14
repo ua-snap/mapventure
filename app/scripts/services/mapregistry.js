@@ -16,16 +16,22 @@ angular.module('mapventureApp')
     // Map between GeoNode Map URI's and
     // Angular controller names.
     var registry = {
-      'd5a90928-2119-11e6-92e2-08002742f21f': 'AlaskaWildfiresCtrl'
+      'd5a90928-2119-11e6-92e2-08002742f21f': 'AlaskaWildfires'
     };
 
     // Public API here
     return {
-      getController: function(uuid) {
+      getControllerName: function(uuid) {
         if (undefined !== registry[uuid]) {
-          return registry[uuid];
+          return registry[uuid] + 'Ctrl';
         }
         return 'DefaultMapCtrl';
+      },
+      getTourServiceName: function(uuid) {
+        if (undefined !== registry[uuid]) {
+          return registry[uuid] + 'Tour';
+        }
+        return 'DefaultMapTour';
       }
     };
   });
