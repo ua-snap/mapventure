@@ -74,7 +74,7 @@ app.controller('MapCtrl', [
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
       var mapInstanceController = $controller(
-        MapRegistry.getController($scope.map.uuid),
+        MapRegistry.getControllerName($scope.map.uuid),
         {$scope: $scope}
       );
 
@@ -404,14 +404,7 @@ app.controller('MapCtrl', [
     };
 
     $scope.startTour = function() {
-      /* These map IDs will need to be changed based
-         upon the map ID of the system running the GeoNode
-         instance. */
-      if ($routeParams.mapId === 2) {
-        $scope.$emit('iem-start-tour');
-      } else if ($routeParams.mapId === 8) {
-        $scope.$emit('ncep-start-tour');
-      }
+      $scope.$emit('start-tour');
     };
 
   }
