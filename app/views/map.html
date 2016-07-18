@@ -23,20 +23,20 @@
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
       <!-- Buttons for first map -->
       <label class="btn btn-success visibility" ng-show="$parent.layers[layer.name].visible" ng-click="$parent.toggleLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-open" ></span>
+        <span class="glyphicon glyphicon-check" ></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <label class="btn btn-primary visibility" ng-hide="$parent.layers[layer.name].visible" ng-click="$parent.toggleLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-close"></span>
+        <span class="glyphicon glyphicon-unchecked"></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <!-- Buttons for second map -->
       <label class="btn btn-success visibility" ng-show="dualMaps && $parent.layers[layer.name].secondvisible" ng-click="$parent.toggleSecondLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-open"></span>
+        <span class="glyphicon glyphicon-check"></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <label class="btn btn-primary visibility" ng-show="dualMaps && !$parent.layers[layer.name].secondvisible" ng-click="$parent.toggleSecondLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-close"></span>
+        <span class="glyphicon glyphicon-unchecked"></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <!-- Information about layer button -->
