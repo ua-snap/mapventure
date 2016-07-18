@@ -31,8 +31,8 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // General options for Leaflet configuration.
     $scope.mapOptions = {
-      zoom: 3,
-      minZoom: 6,
+      zoom: 5,
+      minZoom: 5,
       maxZoom: 11,
       maxBounds: new L.latLngBounds(
         L.latLng(70.5, -175),
@@ -53,7 +53,7 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
-      return new L.tileLayer.wms(Map.geoserverUrl(), baseConfiguration);
+      return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
     };
 
     // This function loads the additional fire polygons
