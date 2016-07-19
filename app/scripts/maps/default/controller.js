@@ -100,7 +100,7 @@ angular.module('mapventureApp')
 
       // Return a new instance of a base layer.
       $scope.getBaseLayer = function() {
-        return new L.tileLayer.wms(Map.geoserverUrl(), baseConfiguration);
+        return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
       };
 
     }]);

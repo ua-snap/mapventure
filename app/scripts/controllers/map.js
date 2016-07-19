@@ -106,7 +106,7 @@ app.controller('MapCtrl', [
           zoom: 1,
           crs: $scope.crs,
           zoomControl: false,
-          scrollWheelZoom: false
+          scrollWheelZoom: true
         }, $scope.mapOptions
       );
 
