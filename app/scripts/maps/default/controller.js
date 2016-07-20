@@ -78,13 +78,9 @@ angular.module('mapventureApp')
 
       // General options for Leaflet configuration.
       $scope.mapOptions = {
-        zoom: 3,
-        minZoom: 6,
-        maxZoom: 11,
-        maxBounds: new L.latLngBounds(
-          L.latLng(70.5, -175),
-          L.latLng(50, -135)
-        )
+        zoom: 0,
+        minZoom: 0,
+        maxZoom: 5
       };
 
       // Base layer configuration for pan-Arctic map.
