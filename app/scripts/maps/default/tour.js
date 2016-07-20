@@ -14,8 +14,8 @@ angular.module('mapventureApp')
         steps: [
           {
             element: '.layer-menu',
-            title: 'NCEP Map',
-            content: 'Hello! Welcome to the NCEP map. This tour will show you around.',
+            title: 'Map overview',
+            content: 'Hello! Welcome to this map. This tour will show you around.',
             onShow: function() {
               scope.$broadcast('show-layers', []);
               scope.$broadcast('show-second-layers', []);
@@ -23,30 +23,15 @@ angular.module('mapventureApp')
             }
           },
           {
-            element: '#ncep_daily_air_temperature',
-            content: 'This is the most recent temperature data from NCEP.',
-            onShow: function() {
-              $('#ncep_daily_air_temperature')
-                .addClass('bling')
-                .removeClass('no-bling');
-              scope.$broadcast('show-layers', ['ncep_daily_air_temperature']);
-            },
-            onHide: function() {
-              $('#ncep_daily_air_temperature')
-                .removeClass('bling')
-                .addClass('no-bling');
-            }
-          },
-          {
-            element: '#ncep_air_temperature_current_month_forecast_average .info',
+            element: '.layer-menu .layer:first-of-type label.info',
             content: 'Use this button to see more information about this layer, including the legend.',
             onShow: function() {
-              $('#ncep_air_temperature_current_month_forecast_average .info')
+              $('.layer-menu .layer:first-of-type label.info')
                 .addClass('zoom')
                 .removeClass('no-zoom');
             },
             onHide: function() {
-              $('#ncep_air_temperature_current_month_forecast_average .info')
+              $('.layer-menu .layer:first-of-type label.info')
                 .removeClass('zoom')
                 .addClass('no-zoom');
             }
@@ -107,23 +92,8 @@ angular.module('mapventureApp')
             content: 'Try moving either map around or zoom in to see both maps synchronized.',
           },
           {
-            element: '#ncep_yearly_air_temperature',
-            content: 'This is the temperature data from NCEP for a year ago today. With two maps, we can choose which map to display the data on. The left map is controlled by the left buttons, and the right map is controller by the right buttons.',
-            onShow: function() {
-              $('#ncep_yearly_air_temperature')
-                .addClass('bling')
-                .removeClass('no-bling');
-              scope.$broadcast('show-second-layers', ['ncep_yearly_air_temperature']);
-            },
-            onHide: function() {
-              $('#ncep_yearly_air_temperature')
-                .removeClass('bling')
-                .addClass('no-bling');
-            }
-          },
-          {
             element: '#showDualMaps',
-            content: 'If wishing to return to a single map view, click on this button again.',
+            content: 'To return to a single map view, click on this button again.',
             onShow: function() {
               scope.$broadcast('show-dual-maps', []);
               $('#showDualMaps')
