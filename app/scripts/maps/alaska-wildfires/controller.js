@@ -128,7 +128,12 @@ app.controller('AlaskaWildfiresCtrl', [
                     $scope.minimizeMenu();
                     $scope.zoomLevel = $scope.mapObj.getZoom();
                     $scope.mapCenter = $scope.mapObj.getCenter();
-                    $scope.mapObj.fitBounds(layer.getBounds());
+                    $scope.mapObj.fitBounds(layer.getBounds(),
+                      {
+                        animate: true,
+                        maxZoom: 9
+                      }
+                    );
                     $scope.$apply();
                   }
                 }
