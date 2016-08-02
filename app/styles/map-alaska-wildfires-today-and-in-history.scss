@@ -1,4 +1,4 @@
-.alaska-wildfires-today-and-in-history * {
+.alaska-wildfires-today-and-historically * {
   /* This is just a placeholder for the merge. */
   .leaflet-popup-content {
     z-index: 1000;
@@ -22,5 +22,20 @@
       font-weight: 300;
       color: #988989;
     }
+  }
+
+  #splashOverviewContent {
+    h1 {
+      margin: 0 0 1ex 0 !important;
+      padding: 0 !important;
+    }
+    ul {
+      margin-bottom: 1em;
+    }
+  }
+
+  .billboard button.btn {
+    display: inline-block;
+    margin-top: 1em;
   }
 }

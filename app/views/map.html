@@ -1,15 +1,18 @@
 <h1 id="mapTitle">{{ map.title }}</h1>
+
+<tour></tour>
+
 <div ng-hide="hideSplash" class="fade splash-screen">
   <div class="billboard">
     <div id="splashOverviewContent"></div>
-    <button class="btn" ng-click="hideSplash=true" ng-disabled="showMapButtonDisabled" disabled="disabled">
+    <button type="button" class="btn btn-success" ng-click="hideSplash=true" ng-disabled="showMapButtonDisabled" disabled="disabled">
       Show me the map!
     </button>
   </div>
 </div>
 
 <div id="minimize-layer-div">
-  <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimize_menu()">
+  <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimizeMenu()">
     <span ng-hide="minimized" class="glyphicon glyphicon-minus"></span>
     <span ng-show="minimized" class="glyphicon glyphicon-plus"></span>
   </label>
@@ -20,20 +23,20 @@
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
       <!-- Buttons for first map -->
       <label class="btn btn-success visibility" ng-show="$parent.layers[layer.name].visible" ng-click="$parent.toggleLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-open" ></span>
+        <span class="glyphicon glyphicon-check" ></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <label class="btn btn-primary visibility" ng-hide="$parent.layers[layer.name].visible" ng-click="$parent.toggleLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-close"></span>
+        <span class="glyphicon glyphicon-unchecked"></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <!-- Buttons for second map -->
       <label class="btn btn-success visibility" ng-show="dualMaps && $parent.layers[layer.name].secondvisible" ng-click="$parent.toggleSecondLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-open"></span>
+        <span class="glyphicon glyphicon-check"></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <label class="btn btn-primary visibility" ng-show="dualMaps && !$parent.layers[layer.name].secondvisible" ng-click="$parent.toggleSecondLayer(layer.name)">
-        <span class="glyphicon glyphicon-eye-close"></span>
+        <span class="glyphicon glyphicon-unchecked"></span>
         <input type="checkbox" autocomplete="off">
       </label>
       <!-- Information about layer button -->

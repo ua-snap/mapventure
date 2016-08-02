@@ -1,0 +1,14 @@
+{
+  "preset": "google",
+  "disallowMultipleVarDecl": false,
+  "maximumLineLength": false,
+  "jsDoc": {
+    "checkAnnotations": {
+      "preset": "jsdoc3",
+      "extra": {
+        "ngdoc": "some",
+        "methodOf": "some"
+      }
+    }
+  }
+}

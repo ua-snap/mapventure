@@ -23,17 +23,12 @@ angular
     'slugifier',
     'angularMoment'
   ])
-  .config(function ($routeProvider, MapProvider, ENV) {
+  .config(function($routeProvider, MapProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
       })
       .when('/map/:mapId', {
         templateUrl: 'views/map.html',
@@ -44,19 +39,19 @@ angular
         redirectTo: '/'
       });
 
-      if (ENV.geonode_url === undefined) {
-        // Set the default GeoNode URL here if environment variable isn't set during Grunt build
-        MapProvider.setGeonodeUrl('http://localhost:8000');
-      } else {
-        MapProvider.setGeonodeUrl(ENV.geonode_url);
-      }
+    if (ENV.GEONODE_URL === undefined) {
+      // Set the default GeoNode URL here if environment variable isn't set during Grunt build
+      MapProvider.setGeonodeUrl('http://localhost:8000');
+    } else {
+      MapProvider.setGeonodeUrl(ENV.GEONODE_URL);
+    }
 
-      if (ENV.geoserver_url === undefined) {
-        // Set the default Geoserver URL here if environment variable isn't set during Grunt build
-        MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
-      } else {
-        MapProvider.setGeoserverUrl(ENV.geoserver_url);
-      }
+    if (ENV.GEOSERVER_URL === undefined) {
+      // Set the default Geoserver URL here if environment variable isn't set during Grunt build
+      MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
+    } else {
+      MapProvider.setGeoserverUrl(ENV.GEOSERVER_URL);
+    }
 
-      MapProvider.setLeafletImagePath(ENV.leaflet_image_path);
+    MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
   });
