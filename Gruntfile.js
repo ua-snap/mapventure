@@ -545,6 +545,7 @@ module.exports = function (grunt) {
     'wiredep',
     'jscs',
     'useminPrepare',
+    'ngconstant:development',
     'ngconstant:production',
     'concurrent:dist',
     'autoprefixer',
