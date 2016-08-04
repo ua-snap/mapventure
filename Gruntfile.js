@@ -459,7 +459,7 @@ module.exports = function (grunt) {
           flatten: true,
           cwd: '.',
           src: 'bower_components/leaflet/dist/images/*',
-          dest: '<%= yeoman.dist %>/images'
+          dest: '<%= yeoman.dist %>/bower_components/leaflet/dist/images/'
         }]
       },
       styles: {
