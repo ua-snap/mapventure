@@ -118,7 +118,7 @@ app.controller('AlaskaWildfiresCtrl', [
               L.marker(
                 coordsToLatLng(feature.geometry.coordinates[0][0][0]),
                 {
-
+                  riseOnHover: true
                 })
               .on('click',
                 function zoomToFirePolygon() {
