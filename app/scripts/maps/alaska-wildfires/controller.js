@@ -51,6 +51,22 @@ app.controller('AlaskaWildfiresCtrl', [
       zIndex: null
     };
 
+    var FireIcon = L.Icon.extend({
+      options: {
+        iconUrl: 'images/fire.svg',
+        iconSize:     [34, 64],
+        shadowSize:   [0, 0], // no shadow!
+        iconAnchor:   [17, 49], // point of the icon which will correspond to marker's location
+        shadowAnchor: [0, 0],  // the same for the shadow
+        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+      }
+    });
+
+    var activeFireIcon = new FireIcon();
+    var inactiveFireIcon = new FireIcon({
+      iconUrl: 'images/inactive-fire.svg'
+    });
+
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
@@ -100,6 +116,10 @@ app.controller('AlaskaWildfiresCtrl', [
               this.layer = layer;
               this.feature = feature;
 
+              // Assign active/inactive fire icon.
+              var icon = feature.properties.ACTIVENOW == 1 ?
+                activeFireIcon : inactiveFireIcon;
+
               var dateString = moment.unix(
                 feature.properties.UPDATETIME / 1000 // microseconds
               ).format('MMMM Do, h:mm:ss a');
@@ -118,7 +138,8 @@ app.controller('AlaskaWildfiresCtrl', [
               L.marker(
                 coordsToLatLng(feature.geometry.coordinates[0][0][0]),
                 {
-                  riseOnHover: true
+                  riseOnHover: true,
+                  icon: icon
                 })
               .on('click',
                 function zoomToFirePolygon() {
