@@ -21,16 +21,16 @@ app.directive('tour', [
   return {
     restrict: 'E',
     link: function postLink(scope) {
-
-      var tour = $injector.get(MapRegistry.getTourServiceName(scope.map.uuid));
-      scope.tour = tour.getTour(scope);
-
       scope.$watch(
         function() {
           return Map.ready();
         },
         function() {
           if (Map.ready() === true) {
+
+            var tour = $injector.get(MapRegistry.getTourServiceName(scope.map.uuid));
+            scope.tour = tour.getTour(tour);
+
             $timeout(function() {
               scope.tour.init();
             });
