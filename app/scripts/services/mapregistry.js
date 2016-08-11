@@ -16,7 +16,8 @@ angular.module('mapventureApp')
     // Map between GeoNode Map URI's and
     // Angular controller names.
     var registry = {
-      'd5a90928-2119-11e6-92e2-08002742f21f': 'AlaskaWildfires'
+      'd5a90928-2119-11e6-92e2-08002742f21f': 'AlaskaWildfires',
+      '6dd7678c-5dc7-11e6-9ccd-00163edb1deb': 'Iam'
     };
 
     // Public API here
