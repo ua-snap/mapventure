@@ -90,7 +90,7 @@ app.controller('MapCtrl', [
       //
       // TODO: isolate this entire thing in a
       // directive of its own?
-      angular.element('body').addClass(Slug.slugify($scope.map.title));
+      angular.element('body').addClass('_' + $scope.map.uuid);
 
       // Reversing the layers makes the order
       // match what we see in GeoNode's map editor.

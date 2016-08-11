@@ -26,8 +26,8 @@ angular.module('mapventureApp')
 
         _.each(hotspots, function(e) {
           L.marker(e.latlng).bindPopup(
-            '<h1>' + e.name + '</h1>'
-            + e.description
+            '<h1>' + e.name + '</h1>' +
+            e.description
           ).on('click', function zoomToMarker(e) {
             $scope.mapObj.setView(e.latlng, 4);
           }).addTo(mapObj);
@@ -87,9 +87,9 @@ Prudhoe Bay (70.248864, -148.287767).
 */
 var hotspots = [
   {
-    'name':'St. Lawrence Island',
-    'latlng':[63.333802, -170.039820],
-    'description':`
+    'name': 'St. Lawrence Island',
+    'latlng': [63.333802, -170.039820],
+    'description': `
 <ul>
   <li>Nutrient-rich waters create a highly productive marine ecosystem and key habitat for many species.</li>
   <li>1500 island inhabitants depend on subsistence harvest.</li>
@@ -97,9 +97,9 @@ var hotspots = [
 </ul>`
   },
   {
-    'name':'Point Hope',
-    'latlng':[68.349432, -166.771550],
-    'description':`
+    'name': 'Point Hope',
+    'latlng': [68.349432, -166.771550],
+    'description': `
 <ul>
   <li>Excellent access to marine mammals, ice conditions allow easy boat launchings into open leads early in the spring whaling season.</li>
   <li>Increasingly vulnerable to ice jams and flooding due to storm intensity, ersoion and late sea ice freeze up.</li>
@@ -107,9 +107,9 @@ var hotspots = [
 </ul>`
   },
   {
-    'name':'Prudhoe Bay',
-    'latlng':[70.248864, -148.287767],
-    'description':`
+    'name': 'Prudhoe Bay',
+    'latlng': [70.248864, -148.287767],
+    'description': `
 <ul>
   <li>The timing, quantity, and quality of sea ice affect resource development, maritime traffic, wildlife health, food security, and coastal erosion.</li>
   <li>The Prudhoe Bay Oilfield and TransAlaska Pipeline produce air pollution and oil spills.</li>
