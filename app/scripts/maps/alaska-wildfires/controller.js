@@ -153,7 +153,7 @@ app.controller('AlaskaWildfiresCtrl', [
               .addTo($scope.fireMarkerCluster);
             }
           }).addTo($scope.mapObj);
-          $scope.mapObj.addLayer($scope.fireMarkerCluster)
+          $scope.mapObj.addLayer($scope.fireMarkerCluster);
         }
       });
 
