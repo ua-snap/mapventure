@@ -303,6 +303,10 @@ app.controller('MapCtrl', [
       });
     });
 
+    $scope.$on('reset-map'), function(event) {
+      // PICK UP HERE
+    };
+
     $scope.minimizeMenu = function() {
       if ($scope.minimized === false) {
         $scope.minimized = true;

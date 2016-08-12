@@ -80,11 +80,6 @@ angular.module('mapventureApp')
 Object containing interesting points/hotspots information.
 
 */
-/*
-St. Lawrence Island (63.333802, -170.039820)
-Point Hope (68.349432, -166.771550)
-Prudhoe Bay (70.248864, -148.287767).
-*/
 var hotspots = [
   {
     'name': 'St. Lawrence Island',
