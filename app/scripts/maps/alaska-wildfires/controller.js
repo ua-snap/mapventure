@@ -76,6 +76,7 @@ app.controller('AlaskaWildfiresCtrl', [
         $scope.fireInfoPopup = false;
       });
 
+      $scope.fireMarkerCluster = L.markerClusterGroup();
       $scope.fireInfoPopup = false;
       $scope.$watch('fireInfoPopup', function(e) {
         if (e) {
@@ -149,9 +150,10 @@ app.controller('AlaskaWildfiresCtrl', [
                   $scope.$apply();
                 }
               )
-              .addTo($scope.mapObj);
+              .addTo($scope.fireMarkerCluster);
             }
           }).addTo($scope.mapObj);
+          $scope.mapObj.addLayer($scope.fireMarkerCluster)
         }
       });
 
