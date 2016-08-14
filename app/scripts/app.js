@@ -21,7 +21,8 @@ angular
     'ui.bootstrap',
     'config',
     'slugifier',
-    'angularMoment'
+    'angularMoment',
+    'markdown'
   ])
   .config(function($routeProvider, MapProvider, ENV) {
     $routeProvider

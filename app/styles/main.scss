@@ -28,7 +28,6 @@ h1, h2, h3, h4 {
   color: $snapGray !important;
   font-family: 'Lato', serif;
   font-weight: bold;
-  font-size: 200%;
 }
 
 body {
@@ -150,4 +149,18 @@ body, .middle, .middle .container-fluid {
 .fade.ng-hide-add {
   transition: all linear 1000ms;
   display: block !important;
+}
+
+.mapList {
+  margin-top: 2em;
+  .list-group-item-heading {
+    font-size: 16pt;
+    color: #333 !important;
+  }
+  .markdown {
+    // Tame a few of the styles so they aren't so brash here
+    h1, h2, h3, h4 {
+      font-size: 14pt;
+    }
+  }
 }
