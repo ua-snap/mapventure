@@ -65,7 +65,12 @@ angular.module('mapventureApp')
         '+proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
         {
           resolutions: [8192, 4096, 2048, 1024, 512, 256, 128],
-          origin: [0, 0]
+
+          // Origin should be lower-left coordinate
+          // in projected space.  Use GeoServer to
+          // find this:
+          // TileSet > Gridset Bounds > compute from maximum extent of SRS
+          origin: [-4234288.146966308, -4234288.146966307]
         }
       );
 
@@ -85,12 +90,12 @@ angular.module('mapventureApp')
 
       // Base layer configuration for pan-Arctic map.
       var baseConfiguration = {
-        layers: 'ne_10m_coastline',
+        layers: 'geonode:ne_10m_coastline',
         transparent: true,
         format: 'image/png',
         version: '1.3',
+        tiled: 'true',
         continuousWorld: true, // needed for non-3857 projs
-        noWrap: true, // may be needed for non-3857 projs
         zIndex: null
       };
 

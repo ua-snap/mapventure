@@ -17,15 +17,17 @@ app.controller('AlaskaWildfiresCtrl', [
   '$http',
   function($scope, Map, $http) {
 
-    // Some configuration for this map object.
-    // (In version history, this used to be
-    // in a `basemap` Service).
     $scope.defaultLayers = ['active_fires'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
         {
           resolutions: [65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
-          origin: [0, 0]
+
+          // Origin should be lower-left coordinate
+          // in projected space.  Use GeoServer to
+          // find this:
+          // TileSet > Gridset Bounds > compute from maximum extent of SRS
+          origin: [-4648005.934316417, 444809.882955059],
         }
     );
 
@@ -47,7 +49,6 @@ app.controller('AlaskaWildfiresCtrl', [
       format: 'image/png',
       version: '1.3',
       continuousWorld: true, // needed for non-3857 projs
-      noWrap: true, // may be needed for non-3857 projs
       zIndex: null
     };
 
