@@ -50,6 +50,7 @@ module.exports = function(config) {
       'bower_components/moment/moment.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/angular-markdown-filter/markdown.js',
+      'bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

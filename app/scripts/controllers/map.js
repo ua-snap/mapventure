@@ -201,17 +201,19 @@ app.controller('MapCtrl', [
         $scope.layers[layer.name] = {};
         $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
           continuousWorld: true,
-          layers: layer.name,
+          layers: 'geonode:' + layer.name,
           name: layer.name,
           transparent: true,
+          tiled: 'true',
           format: 'image/png',
           version: '1.3',
           visible: false
         });
         $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
           continuousWorld: true,
-          layers: layer.name,
+          layers: 'geonode:' + layer.name,
           name: layer.name,
+          tiled: 'true',
           transparent: true,
           format: 'image/png',
           version: '1.3',
