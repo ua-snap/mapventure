@@ -1,5 +1,6 @@
-<ul>
-<li ng-repeat="map in maps track by $index">
-<a ng-click="viewMap(map.id)">{{ map.title }}</a>
-</li>
-</ul>
+<div class="mapList list-group">
+  <a ng-click="viewMap(map.id)" class="list-group-item" ng-repeat="map in maps track by $index">
+    <h4 class="list-group-item-heading">{{ map.title }}</h4>
+    <p class="markdown list-group-item-text" ng-bind-html="map.abstract | markdown"></p>
+  </a>
+</div>

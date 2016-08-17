@@ -17,15 +17,17 @@ app.controller('AlaskaWildfiresCtrl', [
   '$http',
   function($scope, Map, $http) {
 
-    // Some configuration for this map object.
-    // (In version history, this used to be
-    // in a `basemap` Service).
     $scope.defaultLayers = ['active_fires'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
         {
           resolutions: [65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
-          origin: [0, 0]
+
+          // Origin should be lower-left coordinate
+          // in projected space.  Use GeoServer to
+          // find this:
+          // TileSet > Gridset Bounds > compute from maximum extent of SRS
+          origin: [-4648005.934316417, 444809.882955059],
         }
     );
 
@@ -47,13 +49,40 @@ app.controller('AlaskaWildfiresCtrl', [
       format: 'image/png',
       version: '1.3',
       continuousWorld: true, // needed for non-3857 projs
-      noWrap: true, // may be needed for non-3857 projs
       zIndex: null
     };
+
+    var FireIcon = L.Icon.extend({
+      options: {
+        iconUrl: 'images/fire.svg',
+        iconSize:     [25, 36],
+        shadowSize:   [0, 0], // no shadow!
+        iconAnchor:   [16, 34], // point of the icon which will correspond to marker's location
+        shadowAnchor: [0, 0],  // the same for the shadow
+        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+      }
+    });
+
+    var activeFireIcon = new FireIcon();
+    var inactiveFireIcon = new FireIcon({
+      iconUrl: 'images/inactive-fire.svg'
+    });
 
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
+    };
+
+    // Is the map currently zoomed in to a marker?
+    // This is true if the
+    $scope.firePopopIsOpen = function() {
+      if(
+        undefined === $scope.zoomLevel &&
+        undefined === $scope.mapCenter
+        ) {
+        return false;
+      }
+      return true;
     };
 
     // This function loads the additional fire polygons
@@ -63,6 +92,7 @@ app.controller('AlaskaWildfiresCtrl', [
       // map markers
       L.Icon.Default.imagePath = Map.leafletImagePath();
 
+      // Query features for the entire scope of AK (3338 coords)
       var baseUrl = Map.geoserverUrl() + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=';
       var requestUrl = baseUrl +
         '-2255938.4795,' +
@@ -76,6 +106,7 @@ app.controller('AlaskaWildfiresCtrl', [
         $scope.fireInfoPopup = false;
       });
 
+      $scope.fireMarkerCluster = L.markerClusterGroup();
       $scope.fireInfoPopup = false;
       $scope.$watch('fireInfoPopup', function(e) {
         if (e) {
@@ -89,16 +120,35 @@ app.controller('AlaskaWildfiresCtrl', [
           };
 
           L.geoJson(e.data, {
-            style: function() {
-              return {
-                color: '#ff0000',
-                fillColor: '#ff0000'
-              };
+            // Active fire polygons are red-ish,
+            // inactive are grey.
+            style: function(feature) {
+              if (feature.properties.ACTIVENOW == 1) {
+                return {
+                  color: '#ff0000',
+                  fillColor: '#E83C18',
+                  opacity: 1,
+                  weight: 2,
+                  fillOpacity: 1
+                };
+              } else {
+                return {
+                  color: '#888888',
+                  fillColor: '#888888',
+                  opacity: 1,
+                  weight: 3,
+                  fillOpacity: 1
+                };
+              }
             },
             coordsToLatLng: coordsToLatLng,
             onEachFeature: function(feature, layer) {
               this.layer = layer;
               this.feature = feature;
+
+              // Assign active/inactive fire icon.
+              var icon = feature.properties.ACTIVENOW == 1 ?
+                activeFireIcon : inactiveFireIcon;
 
               var dateString = moment.unix(
                 feature.properties.UPDATETIME / 1000 // microseconds
@@ -116,46 +166,70 @@ app.controller('AlaskaWildfiresCtrl', [
               popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
               layer.bindPopup(popupContents, popupOptions);
               L.marker(
-                coordsToLatLng(feature.geometry.coordinates[0][0][0]),
+                coordsToLatLng(getCentroid2(feature.geometry.coordinates[0][0])),
                 {
-                  riseOnHover: true
+                  riseOnHover: true,
+                  icon: icon
                 })
               .on('click',
-                function zoomToFirePolygon() {
-                  if (undefined === $scope.zoomLevel &&
-                    undefined === $scope.mapCenter
-                  ) {
-                    $scope.minimizeMenu();
+                function zoomToFirePolygon(e) {
+                  if ($scope.firePopopIsOpen()) {
                     $scope.zoomLevel = $scope.mapObj.getZoom();
                     $scope.mapCenter = $scope.mapObj.getCenter();
-                    $scope.mapObj.fitBounds(layer.getBounds(),
-                      {
-                        animate: true,
-                        maxZoom: 9
-                      }
-                    );
                     $scope.$apply();
                   }
+                  $scope.mapObj.fitBounds(layer.getBounds(),
+                    {
+                      animate: true,
+                      maxZoom: 9
+                    }
+                  );
                 }
               )
               .bindPopup(popupContents, popupOptions)
               .on('popupclose',
-                function restoreZoomLevel() {
-                  $scope.minimizeMenu();
-                  $scope.mapObj.setZoom($scope.zoomLevel);
-                  $scope.mapObj.panTo($scope.mapCenter);
-                  $scope.zoomLevel = undefined;
-                  $scope.mapCenter = undefined;
-                  $scope.$apply();
+                function restoreZoomLevel(e) {
+                  if (false !== $scope.firePopopIsOpen()) {
+                    $scope.mapObj.setZoom($scope.zoomLevel);
+                    $scope.mapObj.panTo($scope.mapCenter);
+                    $scope.zoomLevel = undefined;
+                    $scope.mapCenter = undefined;
+                    $scope.$apply();
+                  }
                 }
               )
-              .addTo($scope.mapObj);
+              .addTo($scope.fireMarkerCluster);
             }
           }).addTo($scope.mapObj);
+          $scope.mapObj.addLayer($scope.fireMarkerCluster);
         }
       });
-
     };
-
   }
 ]);
+
+/* Helper function to place markers at the centroid
+of their polygon.
+
+http://stackoverflow.com/questions/22796520/finding-the-center-of-leaflet-polygon
+
+*/
+var getCentroid2 = function(arr) {
+  var twoTimesSignedArea = 0;
+  var cxTimes6SignedArea = 0;
+  var cyTimes6SignedArea = 0;
+
+  var length = arr.length;
+
+  var x = function(i) { return arr[i % length][0]; };
+  var y = function(i) { return arr[i % length][1]; };
+
+  for (var i = 0; i < arr.length; i++) {
+    var twoSA = x(i) * y(i + 1) - x(i + 1) * y(i);
+    twoTimesSignedArea += twoSA;
+    cxTimes6SignedArea += (x(i) + x(i + 1)) * twoSA;
+    cyTimes6SignedArea += (y(i) + y(i + 1)) * twoSA;
+  }
+  var sixSignedArea = 3 * twoTimesSignedArea;
+  return [cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];
+};
