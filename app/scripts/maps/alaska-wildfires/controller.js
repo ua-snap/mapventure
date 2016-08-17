@@ -76,7 +76,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // Is the map currently zoomed in to a marker?
     // This is true if the
     $scope.firePopopIsOpen = function() {
-      if(
+      if (
         undefined === $scope.zoomLevel &&
         undefined === $scope.mapCenter
         ) {

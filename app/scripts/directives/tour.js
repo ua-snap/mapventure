@@ -29,7 +29,7 @@ app.directive('tour', [
           if (Map.ready() === true) {
 
             var tour = $injector.get(MapRegistry.getTourServiceName(scope.map.uuid));
-            scope.tour = tour.getTour(tour);
+            scope.tour = tour.getTour(scope);
 
             $timeout(function() {
               scope.tour.init();

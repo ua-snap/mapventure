@@ -1,23 +1,23 @@
 ._6dd7678c-5dc7-11e6-9ccd-00163edb1deb {
-    #downloadMap {
-        display: none;
-    }
+  #downloadMap {
+      display: none;
+  }
 
-    /* Styles for specific tour steps */
-    #step-0, #step-1, #step-2 {
-     max-width: none;
-    }
+  /* Styles for specific tour steps */
+  #step-0 {
+   max-width: none;
+  }
 
-    .popover.tour-tour {
-      cite {
-        display: block;
-        color: #888;
-        text-align: right;
-        margin: -1em 2em 1em 0;
-        font-style: italic;
-      }
-      h4 {
-        font-size: 14pt;
-      }
+  .popover {
+    .popover-title {
+      padding: 1ex;
+      font-weight: bold;
+      font-size: 16pt;
+      color: #333;
     }
+  }
+
+  .tourMarker {
+    display: none;
+  }
 }

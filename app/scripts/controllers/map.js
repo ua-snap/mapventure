@@ -73,7 +73,7 @@ app.controller('MapCtrl', [
 
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
-      var mapInstanceController = $controller(
+      var mapInstanceController = $controller(  // jshint ignore:line
         MapRegistry.getControllerName($scope.map.uuid),
         {$scope: $scope}
       );
@@ -101,7 +101,7 @@ app.controller('MapCtrl', [
       var secondBaseLayer = $scope.getBaseLayer();
 
       // Move to a per-map service?
-      var mapDefaults = angular.extend({
+      $scope.mapDefaults = angular.extend({
           center: [65, -150],
           zoom: 1,
           crs: $scope.crs,
@@ -115,7 +115,7 @@ app.controller('MapCtrl', [
             baseLayer
           ]
         },
-        mapDefaults);
+        $scope.mapDefaults);
       $scope.mapObj = L.map('snapmapapp', firstMapOptions);
 
       var secondMapOptions = angular.extend({
@@ -123,7 +123,7 @@ app.controller('MapCtrl', [
             secondBaseLayer
           ]
         },
-        mapDefaults);
+        $scope.mapDefaults);
       $scope.secondMapObj = L.map('secondmap', secondMapOptions);
 
       // Attach event handlers per-map.
@@ -174,6 +174,16 @@ app.controller('MapCtrl', [
       $scope.minimizeMenu();
       $scope.$apply();
     });
+
+    $scope.setDefaultView = function() {
+      $scope.mapObj.setView(
+        $scope.mapDefaults.center,
+        $scope.mapDefaults.zoom,
+        {
+          reset: true
+        }
+      );
+    };
 
     $scope.showSecondLayer = function(layerName) {
       $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
@@ -304,10 +314,6 @@ app.controller('MapCtrl', [
         }
       });
     });
-
-    $scope.$on('reset-map'), function(event) {
-      // PICK UP HERE
-    };
 
     $scope.minimizeMenu = function() {
       if ($scope.minimized === false) {

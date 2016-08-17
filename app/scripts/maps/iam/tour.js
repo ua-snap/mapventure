@@ -13,116 +13,98 @@ angular.module('mapventureApp')
         orphan: true,
         steps: [
           {
-            title: 'Introduction',
+            title: 'The IAM study area',
             content: `
-<blockquote>&ldquo;The U.S. Arctic is experiencing rapid, sustained change, and those changes are expected to continue into the coming decades due to climate change, resource extraction, and increasing human activities. Terrestrial, freshwater, and marine ecosystems as well as broader environmental, cultural, and economic trends in the Arctic will be affected.&rdquo;</blockquote>
-<cite>Managing for the Future in a Rapidly Changing Arctic. A Report to the President.</cite>
-
-<blockquote>&ldquo;The Arctic is changing rapidly, providing new opportunities and challenges.&rdquo;</blockquote>
-<cite>Managing for the Future in a Rapidly Changing Arctic. A Report to the President.</cite>
+The IAM study area covers a subset of the northern Arctic within US jurisdiction. The Bering Strait region and the Chukchi and Beaufort seas are characterized by diminishing seasonal sea ice and are thus vulnerable to significant changes. This tool allows you to explore some of the environmental, economic, and cultural geospatial data available in the study area. Areas with overlapping datasets highlight zones of overlapping, and potentially competing, interests or concerns.
 `,
             onShown: function() {
-              $('#step-0').css('width', '60%').center();
+              $('#step-0')
+                .css('width', '60%')
+                .center()
+                .css('margin-top', '12rem');
+            },
+            onShow: function() {
+              scope.$broadcast('show-layers', []);
+              scope.$broadcast('show-second-layers', []);
             }
           },
           {
-            title: 'What is IAM?  Where is IAM?  Why?',
-            content: `
-<h3>Integrated Arctic Management (IAM)</h3>
-<blockquote>&ldquo;…an &ldquo;Integrated Arctic Management&rdquo; approach holds the promise of a broader-based consideration of economic, environmental, and cultural sensitivities and trends.&rdquo;</blockquote>
-<cite>Managing for the Future in a Rapidly Changing Arctic. A Report to the President.</cite>
-
-<blockquote>&ldquo;The U.S.Arctic is a vast area that is changing rapidly while economic and social expectations are growing. This combination of factors is adding stress to a largely balkanized management system already straining to address many competing issues and priorities.&rdquo;</blockquote>
-<cite>Managing for the Future in a Rapidly Changing Arctic. A Report to the President.</cite>
-
-<p>The goal of the project was to determine where in the IAM study area ecologically, economically and culturally significant areas are located. This was done by identifying relevant and trusted existing data sources that directly relate to the analysis of important areas. <strong>The overlapping datasets were visualized to highlight areas of possible competing interests or concerns</strong>.</p>
-<p>Visualizing the results of this analysis can help identify which data are available to decision-makers, denote areas of overlapping demands or concerns, and reveal significant data gaps.</p>
-            `,
-            onShown: function(tour) {
-              $('#step-1').css('width', '60%').center();
-            }
-          },
-          {
-            title: 'IAM layers shown in this map',
+            title: 'What does this map show?',
             element: '.layer-menu',
             content: `
-<p>The datasets were chosen by several criteria including availability of geospatial data, coverage of the IAM area and usability of the data in analysis and visualization approach. Altogether the analysis included 20 ecological layers (before 20), 8 economic layers (before 11, mile-layers removed) and 7 cultural layers (before 7).To simplify the visualization in this map, these three groups are divided into 8 categories.</p>
-<h4>Ecology</h4>
-<ul>
-  <li><strong>Important/sensitive areas</strong> (AMSAIIC, EBSA) (2)</li>
-  <li><strong>Fish</strong> (capelin, chum salmon, pink salmon, pacific herring, saffron cod, ESI fish) (6)</li>
-  <li><strong>Mammals</strong> (gray whale, bowhead whale, beluga whale, spotted seal, bearded seal, ringed seal, ribbon seal, pacific walrus, polar bear, caribou) (10)</li>
-<li>Birds and areas (Murre, IBA) (2)</li>
-</ul>
+<p>Data layers are grouped in the legend by:</p>
+
+<h4>Environmental</h4>
+<ul><li>Sensitive areas (2 datasets)</li><li>Fish (6)</li><li>Mammals (10)</li><li>Birds (2)</li></ul>
+
 <h4>Economic</h4>
-<ul>
-<li><strong>Transportation</strong> (DOT roads, shipping routes, ports, airports, infrastructure transportation) (5)</li>
-<li><strong>Oil infrastructure</strong> (AK lease, wells, pipeline) (3)</li>
-</ul>
+<ul><li>Transportation (5)</li><li>Oil infrastructure (3)</li></ul>
+
 <h4>Cultural</h4>
-<ul><li><strong>Communities and subsistence areas</strong> (communities, villages, quiet zone, subsistence)  (4)</li>
-<li><strong>Cultural and protected areas</strong> (cultural sites, cultural buildings, recreational areas) (3)</li></ul>
+<ul><li>Communities and subsistence areas (4)</li><li>Cultural and recreational  areas (3)</li></ul>
 `,
-            onShow: function() {
-              //scope.$broadcast('reset-map');
-            },
             onShown: function() {
-              $('#step-2').css('width', '50%');
+              $('.layer-menu').css('background-color', '#DAEE88');
+            },
+            onHide: function() {
+              $('.layer-menu').css({
+                'background-color': 'rgba(255, 255, 255, .75)'
+              });
+            }
+          },
+          {
+            title: 'How to get more information',
+            element: '.layer-menu .layer:first-of-type label.info',
+            content: 'You can see a list of all included datasets by clicking this button. You can read about the dataset and find out where to get more information.',
+            onShow: function() {
+              $('.layer-menu .layer:first-of-type label.info')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('.layer-menu .layer:first-of-type label.info')
+                .removeClass('zoom')
+                .addClass('no-zoom');
+            }
+          },
+          {
+            element: '.tourMarker',
+            title: 'Overlapping areas',
+            content: `
+Data layers are semi-transparent. Overlapping data layers become darker and darker shades of color. The darker the area the more layers are overlapping which indicates a &ldquo;hot spot&rdquo;.`,
+            onShow: function() {
+              scope.showLayer('mammals');
+              scope.mapObj.setView([
+                66.43771036250584,
+                -162.61488740208168
+              ], 3);
+              $('.tourMarker').css('display', 'block');
+            },
+            onHide: function() {
+              scope.hideLayer('mammals');
+              $('.tourMarker').css('display', 'none');
+              scope.setDefaultView();
             }
           },
           {
             element: '.leaflet-marker-pane > img:first',
             title: 'Hotspots',
-            content: 'These markers show areas of particular interest because many data sets overlap near these communities.  Clicking on a marker will zoom to the area and show more information.',
-            onShown: function() {
-              $('.leaflet-marker-pane > img').click();
-            }
-          },
-          {
-            element: '#showDualMaps',
-            content: 'Once clicked, additional buttons are added to the layer menu.',
+            content: `
+The highest amount of overlapping data is shown in darkest shade. These areas indicate the highest number of environmental, economic and cultural features at a location. A few hot spots were identified based on the amount of layers overlapping in the area. By selecting a hot spot from the map you can zoom in and see which datasets are present there.`,
             onShow: function() {
-              scope.$broadcast('start-tour-dual-maps');
-              scope.$broadcast('show-dual-maps', []);
+              scope.showLayer('fish');
+              scope.showLayer('cult_rec');
+              scope.showLayer('trans');
+              scope.mapObj.setView(
+                [63.333802, -170.039820],
+                4
+              );
             },
             onHide: function() {
-              $('#showDualMaps')
-                .removeClass('zoom')
-                .addClass('no-zoom');
-            }
-          },
-          {
-            element: '#syncDualMaps',
-            content: 'Use this button to synchronize the maps to allow for the movement on one map to be reflected on the other.',
-            onShow: function() {
-              $('#syncDualMaps')
-                .addClass('zoom')
-                .removeClass('no-zoom');
-              scope.$broadcast('show-sync-maps', []);
-            },
-            onHide: function() {
-              $('#syncDualMaps')
-                .removeClass('zoom')
-                .addClass('no-zoom');
-            }
-          },
-          {
-            element: '#snapmapapp',
-            content: 'Try moving either map around or zoom in to see both maps synchronized.',
-          },
-          {
-            element: '#showDualMaps',
-            content: 'To return to a single map view, click on this button again.',
-            onShow: function() {
-              scope.$broadcast('show-dual-maps', []);
-              $('#showDualMaps')
-                .addClass('zoom')
-                .removeClass('no-zoom');
-            },
-            onHide: function() {
-              $('#showDualMaps')
-                .removeClass('zoom')
-                .addClass('no-zoom');
+              scope.hideLayer('fish');
+              scope.hideLayer('cult_rec');
+              scope.hideLayer('trans');
+              scope.setDefaultView();
             }
           }
         ]
