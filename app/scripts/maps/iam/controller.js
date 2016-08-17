@@ -94,33 +94,32 @@ angular.module('mapventureApp')
         {
           'name': 'St. Lawrence Island',
           'latlng': [63.333802, -170.039820],
-          'description': `
-<ul>
-  <li>Nutrient-rich waters create a highly productive marine ecosystem and key habitat for many species.</li>
-  <li>1500 island inhabitants depend on subsistence harvest.</li>
-  <li>Risks for increased vessel traffic include: air and water pollution, underwater noise pollution, and interference with subsistence activities.</li>
-</ul>`
+          'description': '\
+<ul>\
+  <li>Nutrient-rich waters create a highly productive marine ecosystem and key habitat for many species.</li>\
+  <li>1500 island inhabitants depend on subsistence harvest.</li>\
+  <li>Risks for increased vessel traffic include: air and water pollution, underwater noise pollution, and interference with subsistence activities.</li>\
+</ul>'
         },
         {
           'name': 'Point Hope',
           'latlng': [68.349432, -166.771550],
-          'description': `
-<ul>
-  <li>Excellent access to marine mammals, ice conditions allow easy boat launchings into open leads early in the spring whaling season.</li>
-  <li>Increasingly vulnerable to ice jams and flooding due to storm intensity, ersoion and late sea ice freeze up.</li>
-  <li>Changes in climate are influencing food and water security. The mental health of Arctic people is also affected by life-altering changes in their environment and traditions.</li>
-</ul>`
+          'description': '\
+<ul>\
+  <li>Excellent access to marine mammals, ice conditions allow easy boat launchings into open leads early in the spring whaling season.</li>\
+  <li>Increasingly vulnerable to ice jams and flooding due to storm intensity, ersoion and late sea ice freeze up.</li>\
+  <li>Changes in climate are influencing food and water security. The mental health of Arctic people is also affected by life-altering changes in their environment and traditions.</li>\
+</ul>'
         },
         {
           'name': 'Prudhoe Bay',
           'latlng': [70.248864, -148.287767],
-          'description': `
-<ul>
-  <li>The timing, quantity, and quality of sea ice affect resource development, maritime traffic, wildlife health, food security, and coastal erosion.</li>
-  <li>The Prudhoe Bay Oilfield and TransAlaska Pipeline produce air pollution and oil spills.</li>
-  <li>Resource extraction required frozen conditions to transport heavy equipment and maintain infrastructure.</li>
-</ul>`
+          'description': '\
+<ul>\
+  <li>The timing, quantity, and quality of sea ice affect resource development, maritime traffic, wildlife health, food security, and coastal erosion.</li>\
+  <li>The Prudhoe Bay Oilfield and TransAlaska Pipeline produce air pollution and oil spills.</li>\
+  <li>Resource extraction required frozen conditions to transport heavy equipment and maintain infrastructure.</li>\
+</ul>'
         }
       ];
     }]);
-

@@ -73,7 +73,7 @@ app.controller('MapCtrl', [
 
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
-      var mapInstanceController = $controller(  // jshint ignore:line
+      var mapInstanceController = $controller(// jshint ignore:line
         MapRegistry.getControllerName($scope.map.uuid),
         {$scope: $scope}
       );
@@ -125,6 +125,9 @@ app.controller('MapCtrl', [
         },
         $scope.mapDefaults);
       $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+
+      // Correct default location of default Leaflet markers.
+      L.Icon.Default.imagePath = Map.leafletImagePath();
 
       // Attach event handlers per-map.
       // The onLoad() function is defined in the

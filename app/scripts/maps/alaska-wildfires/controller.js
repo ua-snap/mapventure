@@ -88,10 +88,6 @@ app.controller('AlaskaWildfiresCtrl', [
     // This function loads the additional fire polygons
     $scope.onLoad = function(mapObj, secondMapObj) {
 
-      // Configure correct location for inbuilt / custom
-      // map markers
-      L.Icon.Default.imagePath = Map.leafletImagePath();
-
       // Query features for the entire scope of AK (3338 coords)
       var baseUrl = Map.geoserverUrl() + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=';
       var requestUrl = baseUrl +
