@@ -127,6 +127,15 @@
     margin: 3rem auto;
     padding: 3rem;
     background-color: rgba(255, 255, 255, .8);
+    .buttons {
+      margin-top: 2em;
+      a {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 1.25em;
+        font-size: 10pt;
+      }
+    }
   }
 }
 

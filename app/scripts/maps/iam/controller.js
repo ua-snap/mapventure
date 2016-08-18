@@ -11,7 +11,8 @@ angular.module('mapventureApp')
   .controller('IamCtrl', [
     '$scope',
     'Map',
-    function($scope, Map) {
+    '$http',
+    function($scope, Map, $http) {
 
       // Default layers are switched to Visible after
       // the map has loaded.
@@ -30,7 +31,7 @@ angular.module('mapventureApp')
             '<h1>' + e.name + '</h1>' +
             e.description
           ).on('click', function zoomToMarker(e) {
-            $scope.mapObj.setView(e.latlng, 4);
+            $scope.mapObj.setView(e.latlng, 3);
           }).addTo(mapObj);
         });
 
@@ -47,6 +48,27 @@ angular.module('mapventureApp')
             fillColor: '#DAEE88',
             fillOpacity: 1
           }).addTo(mapObj);
+
+        // Query features for the entire scope of AK (3338 coords)
+        var requestUrl = Map.geoserverUrl() + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:iam_area_alaska_albers&srsName=EPSG:3572&outputFormat=application/json';
+        $http.get(requestUrl).then(function success(res) {
+            var coordsToLatLng = function(coords) {
+              var xy = {
+                x: coords[0],
+                y: coords[1]
+              };
+              var p = $scope.mapObj.options.crs.projection.unproject(xy);
+              return p;
+            };
+            // This will added/removed during the tour.
+            $scope.iamPoly = L.geoJson(res.data, {
+              coordsToLatLng: coordsToLatLng
+            });
+          },
+          function error() {
+            console.info(res);
+          });
+
       };
 
       // We need to modify the default pan-Arctic
