@@ -7,7 +7,7 @@
  * # maps/iam/iamInfo
  */
 angular.module('mapventureApp')
-  .directive('iamInfoButton', function () {
+  .directive('iamInfoButton', function() {
     return {
       templateUrl: 'scripts/maps/iam/views/iamInfoButton.html',
       restrict: 'E',
