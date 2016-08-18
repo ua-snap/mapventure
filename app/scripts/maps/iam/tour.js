@@ -72,6 +72,19 @@ angular.module('mapventureApp')
             }
           },
           {
+            title: 'Layers and datasets / What does this map show?',
+            element: '.layer-list',
+            content: '<p>Why were these layers selected?<ol><li>Data readily available in geospatial form</li><li>Approximately full coverage within the IAM study area</li><li>Data required minimal modification to be used in visualization approach</li><li>Data falls into (at least) one of the three main groups (ecological, economic, cultural).</li></ol>',
+            onShown: function() {
+              $('.layer-list').css('background-color', '#DAEE88');
+            },
+            onHide: function() {
+              $('.layer-list').css({
+                'background-color': 'rgba(255, 255, 255, .75)'
+              });
+            }
+          },
+          {
             title: 'Information about the datasets',
             element: '.layer-menu .layer:first-of-type label.info',
             content: 'Click this button to see a list of all included datasets. This provides a short description of the dataset and shows where to get more information.',

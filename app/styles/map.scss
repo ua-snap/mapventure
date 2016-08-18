@@ -6,8 +6,17 @@
   z-index: 3;
 }
 
+#tools-wrapper {
+  position: relative;
+  z-index: 500;
+}
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 499;
+}
+
 .layer-menu {
-  z-index: 2;
+  z-index: 500;
   background-color: rgba(255, 255, 255, .75);
   position: absolute;
   top: 4em;
