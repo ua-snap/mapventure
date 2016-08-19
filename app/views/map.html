@@ -17,10 +17,10 @@
 </div>
 
 <div id="minimize-layer-div">
-  <label id="minimize-layer-menu" class="btn btn-default btn-xs" ng-click="minimizeMenu()">
-    <span ng-hide="minimized" class="glyphicon glyphicon-minus"></span>
-    <span ng-show="minimized" class="glyphicon glyphicon-plus"></span>
-  </label>
+  <div id="minimize-layer-menu" ng-click="minimizeMenu()">
+    <a ng-hide="minimized">Hide layers</a>
+    <a ng-show="minimized">Show layers</a>
+  </div>
 </div>
 
 <div class="layer-menu" ng-hide="minimized">
