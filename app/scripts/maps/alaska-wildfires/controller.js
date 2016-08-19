@@ -201,6 +201,9 @@ app.controller('AlaskaWildfiresCtrl', [
         }
       });
     };
+
+    $scope.layerOptions = function() {};
+
   }
 ]);
 

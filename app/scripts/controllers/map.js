@@ -207,31 +207,29 @@ app.controller('MapCtrl', [
       };
 
     $scope.addLayers = function() {
+
+      var layerOptions = angular.extend({
+          continuousWorld: true,
+          transparent: true,
+          tiled: 'true',
+          format: 'image/png',
+          version: '1.3',
+          visible: false
+      }, $scope.layerOptions());
+
       angular.forEach($scope.map.layers, function(layer) {
         // Strip the 'geonode:' prefix, not sure how that's used in
         // GeoExplorer or MapLoom's versions of things.
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
-        $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
-          continuousWorld: true,
+
+        layerOptions = angular.extend(layerOptions, {
           layers: 'geonode:' + layer.name,
-          name: layer.name,
-          transparent: true,
-          tiled: 'true',
-          format: 'image/png',
-          version: '1.3',
-          visible: false
+          name: layer.name
         });
-        $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
-          continuousWorld: true,
-          layers: 'geonode:' + layer.name,
-          name: layer.name,
-          tiled: 'true',
-          transparent: true,
-          format: 'image/png',
-          version: '1.3',
-          visible: false
-        });
+
+        $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, layerOptions);
+        $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, layerOptions);
       });
       Map.setReady(true);
     };

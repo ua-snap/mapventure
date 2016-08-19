@@ -111,6 +111,12 @@ angular.module('mapventureApp')
         return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
       };
 
+      $scope.layerOptions = function() {
+        return {
+          opacity: 0.5
+        }
+      };
+
       // Object containing interesting points/hotspots information.
       $scope.hotspots = [
         {
