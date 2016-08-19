@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name mapventureApp.controller:DefaultCtrl
+ * @name mapventureApp.controller:IamCtrl
  * @description
- * # DefaultCtrl
+ * # IAM Ctrl
  * Controller of the mapventureApp
  */
 angular.module('mapventureApp')
@@ -24,6 +24,9 @@ angular.module('mapventureApp')
       // scope (Controllers/Map).  mapObj and secondMapObj
       // are both instances of Leaflet maps.
       $scope.onLoad = function(mapObj, secondMapObj) {
+
+        $('<a type="button" href="https://docs.google.com/document/u/1/d/1MayMZ6fIfz40tBLhftiisQVpHoGPJuFKxEtkMMcLi88/pub" target="_blank" class="iam-info-button btn btn-primary"> <span class="glyphicon glyphicon-question-sign"></span> &nbsp; Dataset information&hellip; </a>')
+          .prependTo('.mapTools');
 
         /* Add points of interest */
         _.each($scope.hotspots, function(e) {
