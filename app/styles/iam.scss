@@ -49,21 +49,8 @@
     }
   }
 
-  #iamInfoModal .modal-body {
-    div.photo {
-      float: left;
-      margin: 1ex 2em 1em 0;
-      max-width: 22%;
-      img {
-        max-width: 100%;
-      }
-      cite {
-        display: block;
-      }
-    }
-    div.source {
-      border-left: 1ex solid #aaa;
-      padding-left: 2em;
-    }
+  .iam-info-button {
+    width: 16em;
+    text-align: left;
   }
 }
