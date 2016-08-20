@@ -25,7 +25,10 @@ angular.module('mapventureApp')
         steps: [
           {
             title: 'The IAM study area',
-            content: 'The IAM study area covers a subset of the northern Arctic within US jurisdiction. The Bering Strait region and the Chukchi and Beaufort seas are characterized by diminishing seasonal sea ice and are thus vulnerable to significant changes. This tool allows you to explore some of the environmental, economic, and cultural geospatial data available in the study area. Areas with overlapping datasets highlight zones of overlapping, and potentially competing, interests or concerns.',
+            content: '\
+<p>The IAM study area covers a subset of the northern Arctic within US jurisdiction. The Bering Strait region and the Chukchi and Beaufort seas are characterized by diminishing seasonal sea ice and are thus vulnerable to significant changes. This tool allows you to explore some of the environmental, economic, and cultural geospatial data available in the study area.</p>\
+<p>Areas with overlapping datasets highlight zones of overlapping, and potentially competing, interests or concerns.</p>\
+',
             onShown: function() {
               scope.setDefaultView();
               try {
@@ -54,27 +57,14 @@ angular.module('mapventureApp')
             title: 'Layers and datasets / What does this map show?',
             element: '.layer-list',
             content: '\
-<p>Each data layer contains multiple datasets that are grouped in the legend by:</p>\
+<p>Each layer contains multiple datasets grouped by:</p>\
 <h4>Environmental</h4>\
-<ul><li>Sensitive areas (2 datasets)</li><li>Fish (6)</li><li>Mammals (10)</li><li>Birds (2)</li></ul>\
+<ul><li>Sensitive areas</li><li>Fish</li><li>Mammals</li><li>Birds</li></ul>\
 <h4>Economic</h4>\
-<ul><li>Transportation (5)</li><li>Oil infrastructure (3)</li></ul>\
+<ul><li>Transportation</li><li>Oil infrastructure</li></ul>\
 <h4>Cultural</h4>\
-<ul><li>Communities and subsistence areas (4)</li><li>Cultural and recreational  areas (3)</li></ul>'
+<ul><li>Communities and subsistence areas</li><li>Cultural and protected areas</li></ul>'
 ,
-            onShown: function() {
-              $('.layer-list').css('background-color', '#DAEE88');
-            },
-            onHide: function() {
-              $('.layer-list').css({
-                'background-color': 'rgba(255, 255, 255, .75)'
-              });
-            }
-          },
-          {
-            title: 'Layers and datasets / What does this map show?',
-            element: '.layer-list',
-            content: '<p>Why were these layers selected?<ol><li>Data readily available in geospatial form</li><li>Approximately full coverage within the IAM study area</li><li>Data required minimal modification to be used in visualization approach</li><li>Data falls into (at least) one of the three main groups (ecological, economic, cultural).</li></ol>',
             onShown: function() {
               $('.layer-list').css('background-color', '#DAEE88');
             },

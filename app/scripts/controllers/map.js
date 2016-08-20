@@ -209,12 +209,12 @@ app.controller('MapCtrl', [
     $scope.addLayers = function() {
 
       var layerOptions = angular.extend({
-          continuousWorld: true,
-          transparent: true,
-          tiled: 'true',
-          format: 'image/png',
-          version: '1.3',
-          visible: false
+        continuousWorld: true,
+        transparent: true,
+        tiled: 'true',
+        format: 'image/png',
+        version: '1.3',
+        visible: false
       }, $scope.layerOptions());
 
       angular.forEach($scope.map.layers, function(layer) {
