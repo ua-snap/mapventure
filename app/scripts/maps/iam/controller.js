@@ -34,7 +34,10 @@ angular.module('mapventureApp')
             '<h1>' + e.name + '</h1>' +
             e.description
           ).on('click', function zoomToMarker(e) {
-            $scope.mapObj.setView(e.latlng, 3);
+            $scope.mapObj.setView([
+              e.latlng.lat + .5,
+              e.latlng.lng - 4
+            ], 3);
             $scope.activateAllLayers();
           }).addTo(mapObj);
         });
