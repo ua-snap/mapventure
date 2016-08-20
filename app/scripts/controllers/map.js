@@ -188,6 +188,12 @@ app.controller('MapCtrl', [
       );
     };
 
+    $scope.activateAllLayers = function() {
+      _.each($scope.layers, function(layerObj, layerName) {
+        $scope.showLayer(layerName);
+      });
+    };
+
     $scope.showSecondLayer = function(layerName) {
       $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
       $scope.layers[layerName].secondvisible = true;
