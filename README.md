@@ -58,3 +58,18 @@ Untar and move the binary within the extracted build directory into your $PATH. 
 Run the following command in your local  mapventure repository: `git hooks install`
 
 Now when creating a branch from master, the branch will have the post-checkout command to prune our Bower components.
+
+## Adding a new custom map and styles
+
+To customize behavior for a map so that it's not using the DefaultMapController:
+
+ 1. Add a new directory to the `app/scripts/maps` directory.
+ 2. Copy/paste the `app/scripts/maps/default/controller.js` file there, and customize it as required.
+ 3. Add the UUID for the map to the `app/scripts/services/mapregistry.js` file.
+ 4. Add the new controller and map files to the `index.html` so they are included/minified (see how it's done for the `default` controller/tour for the proper syntax).
+
+To customize CSS per-map:
+
+ 1. Create a new SCSS file in `app/styles`.
+ 2. In that SCSS file, create one wrapper class that corresponds to the UUID for the map *prepended with an underscore*.  For example: `._d5a90928-2119-11e6-92e2-08002742f21f { // styles here... }`.
+ 3. Add an `@import('newStyleFile.scss')` block to the `main.scss` file.

@@ -36,10 +36,10 @@ app.controller('AlaskaWildfiresCtrl', [
       zoom: 5,
       minZoom: 5,
       maxZoom: 11,
-      maxBounds: new L.latLngBounds(
-        L.latLng(70.5, -175),
-        L.latLng(50, -135)
-      )
+      // maxBounds: new L.latLngBounds(
+      //   L.latLng(70.5, -175),
+      //   L.latLng(50, -135)
+      // )
     };
 
     // Base layer configuration.
@@ -76,7 +76,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // Is the map currently zoomed in to a marker?
     // This is true if the
     $scope.firePopopIsOpen = function() {
-      if(
+      if (
         undefined === $scope.zoomLevel &&
         undefined === $scope.mapCenter
         ) {
@@ -87,10 +87,6 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // This function loads the additional fire polygons
     $scope.onLoad = function(mapObj, secondMapObj) {
-
-      // Configure correct location for inbuilt / custom
-      // map markers
-      L.Icon.Default.imagePath = Map.leafletImagePath();
 
       // Query features for the entire scope of AK (3338 coords)
       var baseUrl = Map.geoserverUrl() + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=';
@@ -205,6 +201,9 @@ app.controller('AlaskaWildfiresCtrl', [
         }
       });
     };
+
+    $scope.layerOptions = function() {};
+
   }
 ]);
 
