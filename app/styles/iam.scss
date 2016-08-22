@@ -1,0 +1,56 @@
+._6dd7678c-5dc7-11e6-9ccd-00163edb1deb {
+
+  #downloadMap {
+      display: none;
+  }
+
+  /* Styles for specific tour steps */
+  #step-0 {
+   max-width: none;
+  }
+
+  // The legends for this map aren't useful, hide them.
+  #info-sidebar {
+    h3 {
+      margin-bottom: 1rem;
+    }
+    #legend {
+      display: none;
+    }
+  }
+
+  .popover {
+    &.right > .arrow:after {
+      border-right-color: rgba(241, 255, 195, 1);
+    }
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .6);
+    background-color: rgba(241, 255, 195, 1);
+    .popover-title {
+      padding: 1ex;
+      font-weight: bold;
+      font-size: 16pt;
+      color: #333;
+      background-color: rgba(250, 255, 235, 1);
+    }
+  }
+
+  .tourMarker {
+    display: none;
+  }
+
+  .leaflet-popup-content-wrapper {
+    h1 {
+      font-size: 14pt;
+    }
+    ul {
+      margin: 1em 2em 1.5em;
+      padding: 0;
+      font-size: 10pt;
+    }
+  }
+
+  .iam-info-button {
+    width: 16em;
+    text-align: left;
+  }
+}

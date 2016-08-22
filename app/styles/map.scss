@@ -2,12 +2,23 @@
   position: absolute;
   left: 15px;
   top: 4em;
-  padding: 15px 0 0 0;
-  z-index: 3;
+  padding: 1em;
+  z-index: 501;
+  background: rgba(255, 255, 255, .75);
+  cursor: pointer;
+}
+
+#tools-wrapper {
+  position: relative;
+  z-index: 500;
+}
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 499;
 }
 
 .layer-menu {
-  z-index: 2;
+  z-index: 500;
   background-color: rgba(255, 255, 255, .75);
   position: absolute;
   top: 4em;
@@ -78,7 +89,7 @@
     position: absolute;
     left: 50%;
     width: 50%;
-    height: 90%;
+    height: 100%;
     border: 0;
     z-index: -1;
   }
@@ -127,6 +138,15 @@
     margin: 3rem auto;
     padding: 3rem;
     background-color: rgba(255, 255, 255, .8);
+    .buttons {
+      margin-top: 2em;
+      a {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 1.25em;
+        font-size: 10pt;
+      }
+    }
   }
 }
 
