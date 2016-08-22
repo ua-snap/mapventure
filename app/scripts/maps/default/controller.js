@@ -49,6 +49,13 @@ angular.module('mapventureApp')
       // are both instances of Leaflet maps.
       $scope.onLoad = function(mapObj, secondMapObj) {};
 
+      // This hook is used to modify the specific
+      // layer parameters that are generated when
+      // requesting a layer from the server.
+      // Should return an object with properties
+      // to merge/override into the layer request.
+      $scope.layerOptions = function() {};
+
       /* End definition section.
 
       Below we provide a default pan-arctic view & base layer.

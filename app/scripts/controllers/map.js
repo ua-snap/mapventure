@@ -73,7 +73,7 @@ app.controller('MapCtrl', [
 
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
-      var mapInstanceController = $controller(
+      var mapInstanceController = $controller(// jshint ignore:line
         MapRegistry.getControllerName($scope.map.uuid),
         {$scope: $scope}
       );
@@ -90,7 +90,7 @@ app.controller('MapCtrl', [
       //
       // TODO: isolate this entire thing in a
       // directive of its own?
-      angular.element('body').addClass(Slug.slugify($scope.map.title));
+      angular.element('body').addClass('_' + $scope.map.uuid);
 
       // Reversing the layers makes the order
       // match what we see in GeoNode's map editor.
@@ -101,7 +101,7 @@ app.controller('MapCtrl', [
       var secondBaseLayer = $scope.getBaseLayer();
 
       // Move to a per-map service?
-      var mapDefaults = angular.extend({
+      $scope.mapDefaults = angular.extend({
           center: [65, -150],
           zoom: 1,
           crs: $scope.crs,
@@ -115,7 +115,7 @@ app.controller('MapCtrl', [
             baseLayer
           ]
         },
-        mapDefaults);
+        $scope.mapDefaults);
       $scope.mapObj = L.map('snapmapapp', firstMapOptions);
 
       var secondMapOptions = angular.extend({
@@ -123,8 +123,11 @@ app.controller('MapCtrl', [
             secondBaseLayer
           ]
         },
-        mapDefaults);
+        $scope.mapDefaults);
       $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+
+      // Correct default location of default Leaflet markers.
+      L.Icon.Default.imagePath = Map.leafletImagePath();
 
       // Attach event handlers per-map.
       // The onLoad() function is defined in the
@@ -175,6 +178,22 @@ app.controller('MapCtrl', [
       $scope.$apply();
     });
 
+    $scope.setDefaultView = function() {
+      $scope.mapObj.setView(
+        $scope.mapDefaults.center,
+        $scope.mapDefaults.zoom,
+        {
+          reset: true
+        }
+      );
+    };
+
+    $scope.activateAllLayers = function() {
+      _.each($scope.layers, function(layerObj, layerName) {
+        $scope.showLayer(layerName);
+      });
+    };
+
     $scope.showSecondLayer = function(layerName) {
       $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
       $scope.layers[layerName].secondvisible = true;
@@ -194,31 +213,29 @@ app.controller('MapCtrl', [
       };
 
     $scope.addLayers = function() {
+
+      var layerOptions = angular.extend({
+        continuousWorld: true,
+        transparent: true,
+        tiled: 'true',
+        format: 'image/png',
+        version: '1.3',
+        visible: false
+      }, $scope.layerOptions());
+
       angular.forEach($scope.map.layers, function(layer) {
         // Strip the 'geonode:' prefix, not sure how that's used in
         // GeoExplorer or MapLoom's versions of things.
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
-        $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
-          continuousWorld: true,
+
+        layerOptions = angular.extend(layerOptions, {
           layers: 'geonode:' + layer.name,
-          name: layer.name,
-          transparent: true,
-          tiled: 'true',
-          format: 'image/png',
-          version: '1.3',
-          visible: false
+          name: layer.name
         });
-        $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, {
-          continuousWorld: true,
-          layers: 'geonode:' + layer.name,
-          name: layer.name,
-          tiled: 'true',
-          transparent: true,
-          format: 'image/png',
-          version: '1.3',
-          visible: false
-        });
+
+        $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, layerOptions);
+        $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, layerOptions);
       });
       Map.setReady(true);
     };

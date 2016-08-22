@@ -1,5 +1,6 @@
 @import 'map';
 @import 'map-alaska-wildfires-today-and-in-history';
+@import 'iam';
 
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
@@ -85,7 +86,7 @@ body, .middle, .middle .container-fluid {
   color: #777;
   background-color: rgba(200, 200, 200, .5);
   padding: 1ex;
-  z-index: 1000;
+  z-index: 500;
   border-top: 1px solid #e5e5e5;
 
   p {
@@ -153,6 +154,7 @@ body, .middle, .middle .container-fluid {
 
 .mapList {
   margin-top: 2em;
+  cursor: pointer;
   .list-group-item-heading {
     font-size: 16pt;
     color: #333 !important;
@@ -169,4 +171,13 @@ body, .middle, .middle .container-fluid {
   float: right;
   display: inline-block;
   padding-right: 1em;
+}
+
+.tour-tour.popover {
+  font-family: 'Lato', sans-serif;
+  h3.popover-title {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #333;
+  }
 }

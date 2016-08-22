@@ -1,6 +1,7 @@
 {
   "preset": "google",
   "disallowMultipleVarDecl": false,
+  "disallowMultipleLineStrings": false,
   "maximumLineLength": false,
   "jsDoc": {
     "checkAnnotations": {
