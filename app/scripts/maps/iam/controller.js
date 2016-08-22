@@ -127,8 +127,8 @@ angular.module('mapventureApp')
       // Object containing interesting points/hotspots information.
       $scope.hotspots = [
         {
-          'name': 'St. Lawrence Island',
-          'latlng': [63.333802, -170.039820],
+          'name': 'St. Lawrence Island area',
+          'latlng': [63.726247, -170.498930],
           'description': '\
 <ul>\
   <li>Nutrient-rich waters create a highly productive marine ecosystem and key habitat for many species.</li>\
@@ -137,8 +137,8 @@ angular.module('mapventureApp')
 </ul>'
         },
         {
-          'name': 'Point Hope',
-          'latlng': [68.349432, -166.771550],
+          'name': 'Point Hope area',
+          'latlng': [68.299069, -166.739916],
           'description': '\
 <ul>\
   <li>Excellent access to marine mammals, ice conditions allow easy boat launchings into open leads early in the spring whaling season.</li>\
@@ -147,8 +147,8 @@ angular.module('mapventureApp')
 </ul>'
         },
         {
-          'name': 'Prudhoe Bay',
-          'latlng': [70.248864, -148.287767],
+          'name': 'Prudhoe Bay area',
+          'latlng': [70.456491,  -148.755187],
           'description': '\
 <ul>\
   <li>The timing, quantity, and quality of sea ice affect resource development, maritime traffic, wildlife health, food security, and coastal erosion.</li>\
