@@ -171,3 +171,12 @@ body, .middle, .middle .container-fluid {
   display: inline-block;
   padding-right: 1em;
 }
+
+.tour-tour.popover {
+  font-family: 'Lato', sans-serif;
+  h3.popover-title {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #333;
+  }
+}
