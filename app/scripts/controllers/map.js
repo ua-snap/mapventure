@@ -69,12 +69,13 @@ app.controller('MapCtrl', [
     // should be dimmed until Map is loaded.
     $scope.showMapButtonDisabled = true;
 
-    // Clean up when we leave this scope.
+    // Clean up when we leave a specific map.
     $rootScope.$on('$locationChangeStart', function(event, next, current) {
       if($scope.tour) {
         $scope.tour.end();
         $scope.tour = undefined;
       }
+      Map.setReady(false);
     });
 
     Map.layers($routeParams.mapId).success(function(data) {
