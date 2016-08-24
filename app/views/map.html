@@ -16,12 +16,7 @@
   </div>
 </div>
 
-<div id="minimize-layer-div">
-  <div id="minimize-layer-menu" ng-click="minimizeMenu()">
-    <a ng-hide="minimized">Hide layers</a>
-    <a ng-show="minimized">Show layers</a>
-  </div>
-</div>
+<menu-toggle></menu-toggle>
 
 <div class="layer-menu" ng-hide="minimized">
   <div class="layer-list" ui-sortable="sortableOptions" ng-model="map.layers">
