@@ -146,21 +146,28 @@ app.controller('AlaskaWildfiresCtrl', [
               var icon = feature.properties.ACTIVENOW == 1 ?
                 activeFireIcon : inactiveFireIcon;
 
-              var dateString = moment.unix(
-                feature.properties.UPDATETIME / 1000 // microseconds
-              ).format('MMMM Do, h:mm:ss a');
-
               var popupOptions = {
                 maxWidth: 200,
               };
-              var cause = 'Cause: ' + feature.properties.GENERALCAU;
-              var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
-              popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
-              if (cause) {
-                popupContents += '<h3>' + cause + '</h3>';
-              }
-              popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
-              layer.bindPopup(popupContents, popupOptions);
+
+              var popupContents = _.template('\
+<h1><%= title %></h1>\
+<h2><%= acres %></h2>\
+<h3><%= cause %></h3>\
+<p class="updated"><%= updated %></p>\
+              ')(
+                {
+                  title: feature.properties.NAME,
+                  acres: feature.properties.ACRES + ' acres',
+                  cause: feature.properties.GENERALCAU,
+                  updated: moment.utc(
+                      moment.unix(
+                        feature.properties.UPDATETIME / 1000
+                      )
+                    ).format('MMMM Do, h:mm a')
+                }
+              );
+
               L.marker(
                 coordsToLatLng(getCentroid2(feature.geometry.coordinates[0][0])),
                 {
