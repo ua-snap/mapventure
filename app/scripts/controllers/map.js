@@ -80,8 +80,7 @@ app.controller('MapCtrl', [
 
       $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
         var converter = new showdown.Converter();
-        var content = converter.makeHtml(data.abstract);
-        angular.element('#splashOverviewContent').html(content);
+        $scope.abstract = converter.makeHtml(data.abstract);;
       });
 
       // Attach class name for custom CSS hooks
