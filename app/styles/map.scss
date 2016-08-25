@@ -39,7 +39,14 @@
       text-align: left !important;
       width: 16em;
     }
+
+    #showDualMaps {
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
+    }
   }
+
 }
 
 .layer-menu.clear {
