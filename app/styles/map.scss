@@ -1,11 +1,20 @@
 #minimize-layer-div {
+  display: block;
   position: absolute;
   left: 15px;
   top: 4em;
   padding: 1em;
+
+  // Negative margin to left-align, but keep ample
+  // whitespace padding
+  margin: 0 0 0 -1em;
   z-index: 501;
-  background: rgba(255, 255, 255, .75);
   cursor: pointer;
+  background-color: inherit;
+
+  &.minimized {
+    background-color: rgba(255, 255, 255, .75);
+  }
 }
 
 #tools-wrapper {

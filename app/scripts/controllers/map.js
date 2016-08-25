@@ -170,12 +170,11 @@ app.controller('MapCtrl', [
     });
 
     $scope.sidebar.on('show', function() {
-      $scope.minimizeMenu();
+      $scope.minimized = true;
     });
 
     $scope.sidebar.on('hide', function() {
-      $scope.minimizeMenu();
-      $scope.$apply();
+      $scope.minimized = false;
     });
 
     $scope.setDefaultView = function() {
@@ -321,14 +320,6 @@ app.controller('MapCtrl', [
         }
       });
     });
-
-    $scope.minimizeMenu = function() {
-      if ($scope.minimized === false) {
-        $scope.minimized = true;
-      } else {
-        $scope.minimized = false;
-      }
-    };
 
     $scope.$on('show-second-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {
