@@ -73,18 +73,6 @@ app.controller('AlaskaWildfiresCtrl', [
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
     };
 
-    // Is the map currently zoomed in to a marker?
-    // This is true if the
-    $scope.firePopopIsOpen = function() {
-      if (
-        undefined === $scope.zoomLevel &&
-        undefined === $scope.mapCenter
-        ) {
-        return false;
-      }
-      return true;
-    };
-
     // This function loads the additional fire polygons
     $scope.onLoad = function(mapObj, secondMapObj) {
 
@@ -169,11 +157,6 @@ app.controller('AlaskaWildfiresCtrl', [
                 })
               .on('click',
                 function zoomToFirePolygon(e) {
-                  if ($scope.firePopopIsOpen()) {
-                    $scope.zoomLevel = $scope.mapObj.getZoom();
-                    $scope.mapCenter = $scope.mapObj.getCenter();
-                    $scope.$apply();
-                  }
                   $scope.mapObj.fitBounds(layer.getBounds(),
                     {
                       animate: true,
@@ -183,17 +166,6 @@ app.controller('AlaskaWildfiresCtrl', [
                 }
               )
               .bindPopup(popupContents, popupOptions)
-              .on('popupclose',
-                function restoreZoomLevel(e) {
-                  if (false !== $scope.firePopopIsOpen()) {
-                    $scope.mapObj.setZoom($scope.zoomLevel);
-                    $scope.mapObj.panTo($scope.mapCenter);
-                    $scope.zoomLevel = undefined;
-                    $scope.mapCenter = undefined;
-                    $scope.$apply();
-                  }
-                }
-              )
               .addTo($scope.fireMarkerCluster);
             }
           }).addTo($scope.mapObj);
