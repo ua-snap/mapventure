@@ -11,7 +11,7 @@ angular.module('mapventureApp')
     return {
       templateUrl: 'views/menuToggle.html',
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
+      link: function postLink() {
       }
     };
   });
