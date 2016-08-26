@@ -12,6 +12,7 @@ var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
   '$scope',
+  '$rootScope',
   '$controller',
   '$http',
   '$routeParams',
@@ -20,7 +21,7 @@ app.controller('MapCtrl', [
   'Map',
   'Slug',
   'MapRegistry',
-  function($scope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
+  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
 
     var GEOSERVER_URL = Map.geoserverUrl();
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
@@ -67,6 +68,15 @@ app.controller('MapCtrl', [
     // The Proceed button on the splash screen
     // should be dimmed until Map is loaded.
     $scope.showMapButtonDisabled = true;
+
+    // Clean up when we leave a specific map.
+    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+      if ($scope.tour) {
+        $scope.tour.end();
+        $scope.tour = undefined;
+      }
+      Map.setReady(false);
+    });
 
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
