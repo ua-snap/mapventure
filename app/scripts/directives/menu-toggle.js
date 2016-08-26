@@ -7,7 +7,7 @@
  * # menuToggle
  */
 angular.module('mapventureApp')
-  .directive('menuToggle', function () {
+  .directive('menuToggle', function() {
     return {
       templateUrl: 'views/menuToggle.html',
       restrict: 'E',
