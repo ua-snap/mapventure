@@ -71,7 +71,7 @@ app.controller('MapCtrl', [
 
     // Clean up when we leave a specific map.
     $rootScope.$on('$locationChangeStart', function(event, next, current) {
-      if($scope.tour) {
+      if ($scope.tour) {
         $scope.tour.end();
         $scope.tour = undefined;
       }
