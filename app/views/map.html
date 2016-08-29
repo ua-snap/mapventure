@@ -40,9 +40,8 @@
       &nbsp;
       About this map&hellip;
     </label>
-    <label id="downloadMap" class="btn btn-primary info" ng-click="downloadMap(map.id)">
-      <span ng-show="progress <= 0" class="glyphicon glyphicon-download-alt"></span>
-      <img ng-show="progress > 0" src="images/spinning.gif"/>
+    <label ng-show="distribution_url" id="downloadMap" class="btn btn-primary info" ng-click="downloadMap(map.id)">
+      <span class="glyphicon glyphicon-download-alt"></span>
       &nbsp;
       Download data
     </label>
