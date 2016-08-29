@@ -278,7 +278,7 @@ app.controller('MapCtrl', [
 
     $scope.checkDownload = function(mapId) {
       $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-        if (data.distribution_url != "") {
+        if (data.distribution_url != '') {
           $scope.distribution_url = true;
         }
       });
@@ -286,7 +286,7 @@ app.controller('MapCtrl', [
 
     $scope.downloadMap = function(mapId) {
       $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-        if (data.distribution_url != "") {
+        if (data.distribution_url != '') {
           window.open(data.distribution_url);
           $scope.distribution_url = true;
         }
