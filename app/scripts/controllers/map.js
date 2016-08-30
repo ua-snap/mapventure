@@ -100,7 +100,6 @@ app.controller('MapCtrl', [
       // Reversing the layers makes the order
       // match what we see in GeoNode's map editor.
       $scope.map.layers.reverse();
-      console.log($scope.map);
 
       // These need to be separate instances because we listen for events differently on each.
       var baseLayer = $scope.getBaseLayer();
