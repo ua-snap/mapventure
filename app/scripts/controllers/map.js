@@ -47,9 +47,6 @@ app.controller('MapCtrl', [
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
-    // Distirbution URL
-    $scope.distribution_url = undefined;
-
     // If the Layer menu is minimized?
     $scope.minimized = false;
 
