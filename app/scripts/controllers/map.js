@@ -47,10 +47,6 @@ app.controller('MapCtrl', [
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
-    // For the download progress bar
-    $scope.progress = 0;
-    $scope.processID = 0;
-
     // If the Layer menu is minimized?
     $scope.minimized = false;
 
@@ -90,7 +86,7 @@ app.controller('MapCtrl', [
 
       $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
         var converter = new showdown.Converter();
-        $scope.abstract = converter.makeHtml(data.abstract);;
+        $scope.abstract = converter.makeHtml(data.abstract);
       });
 
       // Attach class name for custom CSS hooks
@@ -271,48 +267,6 @@ app.controller('MapCtrl', [
         $scope.showLayer(layerName);
       } else {
         $scope.hideLayer(layerName);
-      }
-    };
-
-    $scope.downloadMap = function(mapId) {
-      if ($scope.processID === 0) {
-        $http.get(GEONODE_URL + '/maps/' + mapId + '/immeddownload').then(function(response) {
-          $scope.processID = response.data.id;
-          $scope.checkDownload($scope.processID);
-        });
-      } else {
-        $scope.checkDownload($scope.processID);
-      }
-    };
-
-    $scope.checkDownload = function(processID) {
-      ngDialog.open({
-        template: 'mapDownload',
-        scope: $scope
-      });
-
-      if ($scope.progress <= 0) {
-        $scope.progress = 0;
-        var checkStatus = setInterval(function() {
-          $.ajax({
-            type: 'GET',
-            url: GEOSERVER_URL + '/rest/process/batchDownload/status/' + processID
-          })
-          .done(function(result) {
-            $scope.progress = result.process.progress.toFixed(2);
-            if (result.process.status === 'FINISHED') {
-              window.open(GEOSERVER_URL + '/rest/process/batchDownload/download/' +  processID, '_blank');
-              $scope.progress = -1;
-              $scope.processID = 0;
-              clearInterval(checkStatus);
-            } else if (result.process.status === 'ERROR') {
-              $scope.progress = -2;
-              $scope.processID = 0;
-              clearInterval(checkStatus);
-            }
-            $scope.$apply();
-          });
-        }, 1000);
       }
     };
 
