@@ -12,6 +12,7 @@ var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
   '$scope',
+  '$rootScope',
   '$controller',
   '$http',
   '$routeParams',
@@ -20,7 +21,7 @@ app.controller('MapCtrl', [
   'Map',
   'Slug',
   'MapRegistry',
-  function($scope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
+  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
 
     var GEOSERVER_URL = Map.geoserverUrl();
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
@@ -46,10 +47,6 @@ app.controller('MapCtrl', [
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
-    // For the download progress bar
-    $scope.progress = 0;
-    $scope.processID = 0;
-
     // If the Layer menu is minimized?
     $scope.minimized = false;
 
@@ -68,6 +65,15 @@ app.controller('MapCtrl', [
     // should be dimmed until Map is loaded.
     $scope.showMapButtonDisabled = true;
 
+    // Clean up when we leave a specific map.
+    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+      if ($scope.tour) {
+        $scope.tour.end();
+        $scope.tour = undefined;
+      }
+      Map.setReady(false);
+    });
+
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
 
@@ -80,8 +86,7 @@ app.controller('MapCtrl', [
 
       $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
         var converter = new showdown.Converter();
-        var content = converter.makeHtml(data.abstract);
-        angular.element('#splashOverviewContent').html(content);
+        $scope.abstract = converter.makeHtml(data.abstract);
       });
 
       // Attach class name for custom CSS hooks
@@ -170,12 +175,11 @@ app.controller('MapCtrl', [
     });
 
     $scope.sidebar.on('show', function() {
-      $scope.minimizeMenu();
+      $scope.minimized = true;
     });
 
     $scope.sidebar.on('hide', function() {
-      $scope.minimizeMenu();
-      $scope.$apply();
+      $scope.minimized = false;
     });
 
     $scope.setDefaultView = function() {
@@ -266,48 +270,6 @@ app.controller('MapCtrl', [
       }
     };
 
-    $scope.downloadMap = function(mapId) {
-      if ($scope.processID === 0) {
-        $http.get(GEONODE_URL + '/maps/' + mapId + '/immeddownload').then(function(response) {
-          $scope.processID = response.data.id;
-          $scope.checkDownload($scope.processID);
-        });
-      } else {
-        $scope.checkDownload($scope.processID);
-      }
-    };
-
-    $scope.checkDownload = function(processID) {
-      ngDialog.open({
-        template: 'mapDownload',
-        scope: $scope
-      });
-
-      if ($scope.progress <= 0) {
-        $scope.progress = 0;
-        var checkStatus = setInterval(function() {
-          $.ajax({
-            type: 'GET',
-            url: GEOSERVER_URL + '/rest/process/batchDownload/status/' + processID
-          })
-          .done(function(result) {
-            $scope.progress = result.process.progress.toFixed(2);
-            if (result.process.status === 'FINISHED') {
-              window.open(GEOSERVER_URL + '/rest/process/batchDownload/download/' +  processID, '_blank');
-              $scope.progress = -1;
-              $scope.processID = 0;
-              clearInterval(checkStatus);
-            } else if (result.process.status === 'ERROR') {
-              $scope.progress = -2;
-              $scope.processID = 0;
-              clearInterval(checkStatus);
-            }
-            $scope.$apply();
-          });
-        }, 1000);
-      }
-    };
-
     $scope.$on('show-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {
         if (showLayers.indexOf(layerName) !== -1) {
@@ -321,14 +283,6 @@ app.controller('MapCtrl', [
         }
       });
     });
-
-    $scope.minimizeMenu = function() {
-      if ($scope.minimized === false) {
-        $scope.minimized = true;
-      } else {
-        $scope.minimized = false;
-      }
-    };
 
     $scope.$on('show-second-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {

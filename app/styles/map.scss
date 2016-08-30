@@ -1,11 +1,20 @@
 #minimize-layer-div {
+  display: block;
   position: absolute;
   left: 15px;
   top: 4em;
   padding: 1em;
+
+  // Negative margin to left-align, but keep ample
+  // whitespace padding
+  margin: 0 0 0 -1em;
   z-index: 501;
-  background: rgba(255, 255, 255, .75);
   cursor: pointer;
+  background-color: inherit;
+
+  &.minimized {
+    background-color: rgba(255, 255, 255, .75);
+  }
 }
 
 #tools-wrapper {
@@ -33,13 +42,20 @@
   }
   .mapTools {
     margin: 1em 0;
-    label {
+    label, a {
       display: block;
       margin: 1ex 0;
       text-align: left !important;
       width: 16em;
     }
+
+    #showDualMaps {
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
+    }
   }
+
 }
 
 .layer-menu.clear {
@@ -82,7 +98,7 @@
     position: absolute;
     width: 50%;
     right: 50%;
-    border-right: 1px solid #888;
+    border-right: 2px solid rgba(0, 0, 0, .5);
   }
 
   #secondmap {
@@ -122,28 +138,40 @@
 }
 
 .splash-screen {
-  position: absolute;
+  position: fixed;
   left: 0;
   height: 100%;
   width: 100%;
   background-color: rgba(150, 168, 48, 0.8);
   z-index:5000;
   .billboard {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, .8);
+    width: 80%;
+    margin: 4rem auto;
+
+    @media screen and (max-height: 480px), screen and (max-width: 480px) {
+      padding-bottom: 6rem;
+      position: absolute;
+      left: 10%;
+      height: 100%;
+      overflow-y: scroll;
+    }
+
     h2 {
       margin: 0 0 2rem 0;
       line-height: 120%;
       padding: 0;
     }
-    width: 45rem;
-    margin: 3rem auto;
-    padding: 3rem;
-    background-color: rgba(255, 255, 255, .8);
+
     .buttons {
-      margin-top: 2em;
+      button {
+        margin-right: 1.5rem;
+      }
       a {
         cursor: pointer;
         display: inline-block;
-        margin-left: 1.25em;
+        margin-top: 2em;
         font-size: 10pt;
       }
     }

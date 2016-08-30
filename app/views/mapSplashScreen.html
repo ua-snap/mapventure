@@ -1,0 +1,13 @@
+<div ng-hide="hideSplash" class="fade splash-screen">
+  <div class="billboard">
+    <div class="abstract" ng-bind-html="abstract"></div>
+    <div class="buttons">
+      <button type="button" class="btn btn-lg btn-success" ng-click="hideSplash=true; startTour()" ng-disabled="showMapButtonDisabled" disabled="disabled">
+        Take a tour of this map&hellip;
+      </button>
+      <a ng-click="hideSplash=true" ng-disabled="showMapButtonDisabled" disabled="disabled">
+        No thanks, just show me the map.
+      </a>
+    </div>
+  </div>
+</div>

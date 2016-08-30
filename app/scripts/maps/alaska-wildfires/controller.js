@@ -73,18 +73,6 @@ app.controller('AlaskaWildfiresCtrl', [
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
     };
 
-    // Is the map currently zoomed in to a marker?
-    // This is true if the
-    $scope.firePopopIsOpen = function() {
-      if (
-        undefined === $scope.zoomLevel &&
-        undefined === $scope.mapCenter
-        ) {
-        return false;
-      }
-      return true;
-    };
-
     // This function loads the additional fire polygons
     $scope.onLoad = function(mapObj, secondMapObj) {
 
@@ -146,21 +134,28 @@ app.controller('AlaskaWildfiresCtrl', [
               var icon = feature.properties.ACTIVENOW == 1 ?
                 activeFireIcon : inactiveFireIcon;
 
-              var dateString = moment.unix(
-                feature.properties.UPDATETIME / 1000 // microseconds
-              ).format('MMMM Do, h:mm:ss a');
-
               var popupOptions = {
                 maxWidth: 200,
               };
-              var cause = 'Cause: ' + feature.properties.GENERALCAU;
-              var popupContents = '<h1>' + feature.properties.NAME + '</h1>';
-              popupContents += '<h2>' + feature.properties.ACRES + ' acres</h2>';
-              if (cause) {
-                popupContents += '<h3>' + cause + '</h3>';
-              }
-              popupContents += '<p class="updated">Last updated ' + dateString + '</p>';
-              layer.bindPopup(popupContents, popupOptions);
+
+              var popupContents = _.template('\
+<h1><%= title %></h1>\
+<h2><%= acres %></h2>\
+<h3><%= cause %></h3>\
+<p class="updated"><%= updated %></p>\
+              ')(
+                {
+                  title: feature.properties.NAME,
+                  acres: feature.properties.ACRES + ' acres',
+                  cause: feature.properties.GENERALCAU,
+                  updated: moment.utc(
+                      moment.unix(
+                        feature.properties.UPDATETIME / 1000
+                      )
+                    ).format('MMMM Do, h:mm a')
+                }
+              );
+
               L.marker(
                 coordsToLatLng(getCentroid2(feature.geometry.coordinates[0][0])),
                 {
@@ -169,11 +164,6 @@ app.controller('AlaskaWildfiresCtrl', [
                 })
               .on('click',
                 function zoomToFirePolygon(e) {
-                  if ($scope.firePopopIsOpen()) {
-                    $scope.zoomLevel = $scope.mapObj.getZoom();
-                    $scope.mapCenter = $scope.mapObj.getCenter();
-                    $scope.$apply();
-                  }
                   $scope.mapObj.fitBounds(layer.getBounds(),
                     {
                       animate: true,
@@ -183,17 +173,6 @@ app.controller('AlaskaWildfiresCtrl', [
                 }
               )
               .bindPopup(popupContents, popupOptions)
-              .on('popupclose',
-                function restoreZoomLevel(e) {
-                  if (false !== $scope.firePopopIsOpen()) {
-                    $scope.mapObj.setZoom($scope.zoomLevel);
-                    $scope.mapObj.panTo($scope.mapCenter);
-                    $scope.zoomLevel = undefined;
-                    $scope.mapCenter = undefined;
-                    $scope.$apply();
-                  }
-                }
-              )
               .addTo($scope.fireMarkerCluster);
             }
           }).addTo($scope.mapObj);
