@@ -80,9 +80,6 @@ app.controller('MapCtrl', [
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
 
-      // Check to see if there is a distribution URL set in GeoNode
-      $scope.checkDownload($scope.map.id);
-
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
       var mapInstanceController = $controller(// jshint ignore:line
@@ -106,6 +103,7 @@ app.controller('MapCtrl', [
       // Reversing the layers makes the order
       // match what we see in GeoNode's map editor.
       $scope.map.layers.reverse();
+      console.log($scope.map);
 
       // These need to be separate instances because we listen for events differently on each.
       var baseLayer = $scope.getBaseLayer();
@@ -274,23 +272,6 @@ app.controller('MapCtrl', [
       } else {
         $scope.hideLayer(layerName);
       }
-    };
-
-    $scope.checkDownload = function(mapId) {
-      $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-        if (data.distribution_url != '') {
-          $scope.distribution_url = true;
-        }
-      });
-    };
-
-    $scope.downloadMap = function(mapId) {
-      $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-        if (data.distribution_url != '') {
-          window.open(data.distribution_url);
-          $scope.distribution_url = true;
-        }
-      });
     };
 
     $scope.$on('show-layers', function(event, showLayers) {

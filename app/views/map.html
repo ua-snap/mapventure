@@ -40,11 +40,11 @@
       &nbsp;
       About this map&hellip;
     </label>
-    <label ng-show="distribution_url" id="downloadMap" class="btn btn-primary info" ng-click="downloadMap(map.id)">
+    <a ng-show="map.distribution_url" id="downloadMap" class="btn btn-primary info" ng-href="{{map.distribution_url}}">
       <span class="glyphicon glyphicon-download-alt"></span>
       &nbsp;
       Download data
-    </label>
+    </a>
     <label id="showDualMaps" class="btn btn-primary info" ng-click="showDualMaps()">
       <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
       <span ng-hide="dualMaps">|</span>
