@@ -72,6 +72,9 @@ app.controller('MapCtrl', [
         $scope.tour = undefined;
       }
       Map.setReady(false);
+
+      // Ensure per-map CSS is removed
+      angular.element('body').removeClass('_' + $scope.map.uuid);
     });
 
     Map.layers($routeParams.mapId).success(function(data) {
