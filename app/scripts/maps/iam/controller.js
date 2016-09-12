@@ -129,8 +129,10 @@ angular.module('mapventureApp')
         {
           'name': 'St. Lawrence Island area',
           'latlng': [63.726247, -170.498930],
-          'description': '\
-<p><strong>In the St. Lawrence Island area, 17 environmental, 4 economic and 3 cultural datasets overlap.</strong></p>'
+          'description': '<p>Near St. Lawrence Island, the decreasing Arctic sea ice means that increased shipping activity is impacting traditional resources.</p>\
+<p>Important overlapping management concerns here include seabirds, seals, and shipping lanes.\
+You can explore these overlapping concerns by turning layers on and off on this map.</p>\
+<p><a href="#http://www.pewtrusts.org/en/research-and-analysis/analysis/2013/08/14/dispatch-from-alaskas-st-lawrence-island">Read more</a> about commercial shipping and St. Lawrence Island.</p>'
         },
         {
           'name': 'Point Hope area',
