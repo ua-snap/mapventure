@@ -23,9 +23,7 @@ app.controller('MapCtrl', [
   'MapRegistry',
   function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
 
-    var GEOSERVER_URL = Map.geoserverUrl();
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
-    var GEONODE_URL = Map.geonodeUrl();
     var GEONODE_API_URL = Map.geonodeApiUrl();
 
     /*
@@ -66,7 +64,7 @@ app.controller('MapCtrl', [
     $scope.showMapButtonDisabled = true;
 
     // Clean up when we leave a specific map.
-    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+    $rootScope.$on('$locationChangeStart', function() {
       if ($scope.tour) {
         $scope.tour.end();
         $scope.tour = undefined;
@@ -366,11 +364,11 @@ app.controller('MapCtrl', [
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
       content = content.concat(
-        '<img id="legend" src="' +
+        '<img id= "legend" src="' +
         GEOSERVER_WMS_URL +
         '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' +
         layerName +
-        '" alt="legend" />'
+        '" onerror="this.style.display=\'none\'" />'
       );
       content = content.concat(converter.makeHtml(layer.capability.abstract));
       $scope.sidebar.setContent(content).show();
