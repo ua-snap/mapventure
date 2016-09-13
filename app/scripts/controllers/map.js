@@ -242,14 +242,6 @@ app.controller('MapCtrl', [
       Map.setReady(true);
     };
 
-    // This variable must be watched to allow for the sidebar
-    // of Leaflet to hide and show the layer menu
-    $scope.$watch('minimized');
-
-    // This variable must be set to be watched or else the
-    // Leaflet event does not update the ngHide function properly.
-    $scope.$watch('showMapButtonDisabled');
-
     $scope.showLayer = function(layerName) {
       $scope.layers[layerName].obj.addTo($scope.mapObj);
       $scope.layers[layerName].visible = true;
