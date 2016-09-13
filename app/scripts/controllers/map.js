@@ -172,14 +172,6 @@ app.controller('MapCtrl', [
       position: 'left'
     });
 
-    $scope.sidebar.on('show', function() {
-      $scope.minimized = true;
-    });
-
-    $scope.sidebar.on('hide', function() {
-      $scope.minimized = false;
-    });
-
     $scope.setDefaultView = function() {
       $scope.mapObj.setView(
         $scope.mapDefaults.center,
