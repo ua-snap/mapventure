@@ -19,9 +19,8 @@ app.controller('MapCtrl', [
   '$timeout',
   'ngDialog',
   'Map',
-  'Slug',
   'MapRegistry',
-  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
+  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry) {
 
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
     var GEONODE_API_URL = Map.geonodeApiUrl();
@@ -87,11 +86,9 @@ app.controller('MapCtrl', [
         $scope.abstract = converter.makeHtml(data.abstract);
       });
 
-      // Attach class name for custom CSS hooks
-      // for this map.  Class name is a slugified
-      // version of the map's title.
-      //
-      // TODO: isolate this entire thing in a
+      // Attach UUID of map ID for custom CSS hooks
+      // for this map.
+      // TODO?: isolate this entire thing in a
       // directive of its own?
       angular.element('body').addClass('_' + $scope.map.uuid);
 
