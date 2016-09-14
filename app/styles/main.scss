@@ -26,7 +26,7 @@ html, body {
 }
 
 h1, h2, h3, h4 {
-  color: $snapGray !important;
+  color: $snapGray;
   font-family: 'Lato', serif;
   font-weight: bold;
 }
@@ -155,9 +155,22 @@ body, .middle, .middle .container-fluid {
 .mapList {
   margin-top: 2em;
   cursor: pointer;
-  .list-group-item-heading {
-    font-size: 16pt;
-    color: #333 !important;
+
+  h4.list-group-item-heading {
+    font-size: 18pt;
+    color: $link-color;
+    &:hover {
+      color: $link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
+  }
+  .link {
+    color: $link-color;
+    font-weight: 600;
+    &:hover {
+      color: $link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
   }
   .markdown {
     // Tame a few of the styles so they aren't so brash here
