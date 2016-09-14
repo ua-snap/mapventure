@@ -141,13 +141,13 @@ app.controller('AlaskaWildfiresCtrl', [
               var popupContents = _.template('\
 <h1><%= title %></h1>\
 <h2><%= acres %></h2>\
-<h3><%= cause %></h3>\
-<p class="updated"><%= updated %></p>\
+<h3>Cause: <%= cause %></h3>\
+<p class="updated" data-toggle="tooltip" data-placement="bottom" title="Perimeter and status of this fire was last updated on <%= updated %>">Updated <%= updated %></p>\
               ')(
                 {
                   title: feature.properties.NAME,
                   acres: feature.properties.ACRES + ' acres',
-                  cause: feature.properties.GENERALCAU,
+                  cause: feature.properties.GENERALCAU || 'Unknown',
                   updated: moment.utc(
                       moment.unix(
                         feature.properties.UPDATETIME / 1000
@@ -172,6 +172,9 @@ app.controller('AlaskaWildfiresCtrl', [
                   );
                 }
               )
+              .on('popupopen', function() {
+                $('p.updated').tooltip();
+              })
               .bindPopup(popupContents, popupOptions)
               .addTo($scope.fireMarkerCluster);
             }
