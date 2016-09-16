@@ -46,7 +46,6 @@ module.exports = function(config) {
       'bower_components/leaflet.sync/L.Map.Sync.js',
       'bower_components/ng-dialog/js/ngDialog.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'bower_components/angular-slugify/angular-slugify.js',
       'bower_components/moment/moment.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/angular-markdown-filter/markdown.js',

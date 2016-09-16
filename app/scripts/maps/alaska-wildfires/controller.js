@@ -162,16 +162,6 @@ app.controller('AlaskaWildfiresCtrl', [
                   riseOnHover: true,
                   icon: icon
                 })
-              .on('click',
-                function zoomToFirePolygon(e) {
-                  $scope.mapObj.fitBounds(layer.getBounds(),
-                    {
-                      animate: true,
-                      maxZoom: 9
-                    }
-                  );
-                }
-              )
               .on('popupopen', function() {
                 $('p.updated').tooltip();
               })

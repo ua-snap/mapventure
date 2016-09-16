@@ -20,7 +20,6 @@ angular
     'ui.sortable',
     'ui.bootstrap',
     'config',
-    'slugifier',
     'angularMoment',
     'markdown'
   ])
