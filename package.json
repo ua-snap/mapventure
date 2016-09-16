@@ -39,5 +39,8 @@
   "scripts": {
     "test": "grunt test",
     "prepublish": "unset GIT_WORK_TREE && npm install bower && rm -rf ./bower_components && bower install"
+  },
+  "dependencies": {
+    "grunt-sass-globbing": "^1.5.1"
   }
 }
