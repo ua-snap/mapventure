@@ -35,9 +35,9 @@ angular.module('mapventureApp')
             e.description
           ).on('click', function zoomToMarker(e) {
             $scope.mapObj.setView([
-              e.latlng.lat + .5,
-              e.latlng.lng - 4
-            ], 3);
+              e.latlng.lat + 4,
+              e.latlng.lng - 15
+            ]);
             $scope.activateAllLayers();
           }).addTo(mapObj);
         });
@@ -129,22 +129,38 @@ angular.module('mapventureApp')
         {
           'name': 'St. Lawrence Island area',
           'latlng': [63.726247, -170.498930],
-          'description': '<p>Near St. Lawrence Island, the decreasing Arctic sea ice means that increased shipping activity is impacting traditional resources.</p>\
-<p>Important overlapping management concerns here include seabirds, seals, and shipping lanes.\
-You can explore these overlapping concerns by turning layers on and off on this map.</p>\
-<p><a href="#http://www.pewtrusts.org/en/research-and-analysis/analysis/2013/08/14/dispatch-from-alaskas-st-lawrence-island">Read more</a> about commercial shipping and St. Lawrence Island.</p>'
+          'description': '<p>In the St. Lawrence Island area 17 environmental, 4 economic and 3 cultural datasets overlap.</p>\
+<ul>\
+  <li>Nutrient-rich waters create a highly productive marine ecosystem and key habitat for many species.</li>\
+  <li>1500 island inhabitants depend on subsistence harvest.</li>\
+  <li>Risks for increased vessel traffic include: air and water pollution, underwater noise pollution, and interference with subsistence activities.</li>\
+</ul>\
+<p><a target="_blank" href="http://www.pewtrusts.org/en/research-and-analysis/analysis/2013/08/14/dispatch-from-alaskas-st-lawrence-island">Read more</a> about commercial shipping and St. Lawrence Island.</p>'
         },
         {
           'name': 'Point Hope area',
           'latlng': [68.299069, -166.739916],
           'description': '\
-<p><strong>In the Point Hope area, 17 environmental, 5 economic and 4 cultural datasets overlap.</strong></p>'
+<p>In the Point Hope area, 17 environmental, 5 economic and 4 cultural datasets overlap.</p>\
+<ul>\
+  <li>Excellent access to marine mammals, ice conditions allow easy boat launchings into open leads early in the spring whaling season.</li>\
+  <li>Increasingly vulnerable to ice jams and flooding due to storm intensity, erosion and late sea ice freeze up.</li>\
+  <li>Changes in climate are influencing food and water security. The mental health of Arctic people is also affected by life-altering changes in their environment and traditions.</li>\
+</ul>\
+<p><a target="_blank" href="https://www.theguardian.com/travel/2015/jul/16/alaska-point-hope-whaling-climate">Read more</a> about whale hunting in Point Hope.</p>\
+'
         },
         {
           'name': 'Prudhoe Bay area',
           'latlng': [70.456491,  -148.755187],
           'description': '\
-<p><strong>In the Prudhoe Bay area, 19 environmental, 8 economic and 5 cultural datasets overlap.</strong></p>'
+<p>In the Prudhoe Bay area, 19 environmental, 8 economic and 5 cultural datasets overlap.</p>\
+<ul>\
+  <li>The timing, quantity, and quality of sea ice affect resource development, maritime traffic, wildlife health, food security, and coastal erosion.</li>\
+  <li>The Prudhoe Bay Oilfields and TransAlaska Pipeline produce air pollution and oil spills.</li>\
+  <li>Resource extraction required frozen conditions to transport heavy equipment and maintain infrastructure.</li>\
+</ul>\
+'
         }
       ];
     }]);

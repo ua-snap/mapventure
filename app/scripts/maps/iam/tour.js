@@ -59,7 +59,7 @@ angular.module('mapventureApp')
             content: '\
 <p>Each layer contains multiple datasets grouped by:</p>\
 <h4>Environmental</h4>\
-<ul><li>Sensitive areas</li><li>Fish</li><li>Mammals</li><li>Birds</li></ul>\
+<ul><li>Signficant ecological areas</li><li>Mammals</li><li>Birds</li><li>Fish</li></ul>\
 <h4>Economic</h4>\
 <ul><li>Transportation</li><li>Oil infrastructure</li></ul>\
 <h4>Cultural</h4>\
