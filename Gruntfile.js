@@ -12,6 +12,7 @@ module.exports = function (grunt) {
   // Load the ng-constant functionality into the Gruntfile
   grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks("grunt-jscs");
+  grunt.loadNpmTasks('grunt-sass-globbing');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -59,7 +60,7 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer:server']
+        tasks: ['sass_globbing', 'compass:server', 'autoprefixer:server']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -252,6 +253,14 @@ module.exports = function (grunt) {
       sass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
+      }
+    },
+
+    sass_globbing: {
+      target: {
+        files: {
+          '<%= yeoman.app %>/styles/plugins.scss': '<%= yeoman.app %>/scripts/maps/**/*.scss'
+        }
       }
     },
 
@@ -518,6 +527,7 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'jscs',
+      'sass_globbing',
       'concurrent:server',
       'autoprefixer:server',
       'ngconstant:development',
@@ -559,7 +569,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'sass_globbing'
   ]);
 
   grunt.registerTask('default', [

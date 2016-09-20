@@ -19,13 +19,10 @@ app.controller('MapCtrl', [
   '$timeout',
   'ngDialog',
   'Map',
-  'Slug',
   'MapRegistry',
-  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, Slug, MapRegistry) {
+  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry) {
 
-    var GEOSERVER_URL = Map.geoserverUrl();
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
-    var GEONODE_URL = Map.geonodeUrl();
     var GEONODE_API_URL = Map.geonodeApiUrl();
 
     /*
@@ -66,12 +63,15 @@ app.controller('MapCtrl', [
     $scope.showMapButtonDisabled = true;
 
     // Clean up when we leave a specific map.
-    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+    $rootScope.$on('$locationChangeStart', function() {
       if ($scope.tour) {
         $scope.tour.end();
         $scope.tour = undefined;
       }
       Map.setReady(false);
+
+      // Ensure per-map CSS is removed
+      angular.element('body').removeClass('_' + $scope.map.uuid);
     });
 
     Map.layers($routeParams.mapId).success(function(data) {
@@ -89,11 +89,9 @@ app.controller('MapCtrl', [
         $scope.abstract = converter.makeHtml(data.abstract);
       });
 
-      // Attach class name for custom CSS hooks
-      // for this map.  Class name is a slugified
-      // version of the map's title.
-      //
-      // TODO: isolate this entire thing in a
+      // Attach UUID of map ID for custom CSS hooks
+      // for this map.
+      // TODO?: isolate this entire thing in a
       // directive of its own?
       angular.element('body').addClass('_' + $scope.map.uuid);
 
@@ -174,14 +172,6 @@ app.controller('MapCtrl', [
       position: 'left'
     });
 
-    $scope.sidebar.on('show', function() {
-      $scope.minimized = true;
-    });
-
-    $scope.sidebar.on('hide', function() {
-      $scope.minimized = false;
-    });
-
     $scope.setDefaultView = function() {
       $scope.mapObj.setView(
         $scope.mapDefaults.center,
@@ -243,14 +233,6 @@ app.controller('MapCtrl', [
       });
       Map.setReady(true);
     };
-
-    // This variable must be watched to allow for the sidebar
-    // of Leaflet to hide and show the layer menu
-    $scope.$watch('minimized');
-
-    // This variable must be set to be watched or else the
-    // Leaflet event does not update the ngHide function properly.
-    $scope.$watch('showMapButtonDisabled');
 
     $scope.showLayer = function(layerName) {
       $scope.layers[layerName].obj.addTo($scope.mapObj);
@@ -366,11 +348,11 @@ app.controller('MapCtrl', [
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
       content = content.concat(
-        '<img id="legend" src="' +
+        '<img id= "legend" src="' +
         GEOSERVER_WMS_URL +
         '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' +
         layerName +
-        '" alt="legend" />'
+        '" onerror="this.style.display=\'none\'" />'
       );
       content = content.concat(converter.makeHtml(layer.capability.abstract));
       $scope.sidebar.setContent(content).show();
