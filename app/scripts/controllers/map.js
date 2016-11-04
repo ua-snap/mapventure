@@ -235,7 +235,6 @@ app.controller('MapCtrl', [
     };
 
     $scope.showLayer = function(layerName) {
-      console.log('showLayer: showing ' + layerName)
       $scope.layers[layerName].obj.addTo($scope.mapObj);
       $scope.layers[layerName].visible = true;
     };

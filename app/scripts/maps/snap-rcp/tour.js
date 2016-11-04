@@ -28,8 +28,8 @@ angular.module('mapventureApp')
           {
             backdrop: true,
             title: 'What do the four RCPs describe?',
-            content: '<ul>' + '<li>RCP 2.6: Radiative forcing peaks at ~3 W/m&sup2; mid-century and declines to 2.6 W/m&sup2; by 2100. Greenhouse gas emissions drop substantially over time.</li>' + '<li>RCPs 4.5 and 6.0: Radiative forcing stabilizes soon after 2100 at 4.5 and 6.0 W/m&sup2;, respectively, due to technologies and strategies that curb emissions.</li>' + '<li>RCP 8.5: Very high greenhouse gas concentrations. Radiative forcing values reach 8.5 W/m&sup2; by 2100 and continue to rise into the next century.</li>' + '</ul>'
-              + '<figure><img src="images/rcp-variation.png"/><figcaption>Atmospheric concentrations of carbon dioxide, methane, and nitrous oxide for the 4 RCPs through the end of the 21st century.</figcaption></figure>',
+            content: '<ul>' + '<li>RCP 2.6: Radiative forcing peaks at ~3 W/m&sup2; mid-century and declines to 2.6 W/m&sup2; by 2100. Greenhouse gas emissions drop substantially over time.</li>' + '<li>RCPs 4.5 and 6.0: Radiative forcing stabilizes soon after 2100 at 4.5 and 6.0 W/m&sup2;, respectively, due to technologies and strategies that curb emissions.</li>' + '<li>RCP 8.5: Very high greenhouse gas concentrations. Radiative forcing values reach 8.5 W/m&sup2; by 2100 and continue to rise into the next century.</li>' + '</ul>' +
+              '<figure><img src="images/rcp-variation.png"/><figcaption>Atmospheric concentrations of carbon dioxide, methane, and nitrous oxide for the 4 RCPs through the end of the 21st century.</figcaption></figure>',
           },
           {
             backdrop: true,
@@ -52,7 +52,7 @@ angular.module('mapventureApp')
             content: 'This is an example of a decadal average of mean annual temperature for the 2010s and 2090s. Viewed side-by-side with the same color scale, it&rsquo;s apparent how mean annual temperature is projected to increase. Increases in temperature are particularly notable in northern Alaska where the darkest blue is almost entirely replaced with lighter shades, denoting warmer temperatures.',
             onShow: function(e) {
               scope.minimized = true;
-              if(false === scope.dualMaps) {
+              if (false === scope.dualMaps) {
                 scope.$broadcast('start-tour-dual-maps');
                 scope.$broadcast('show-dual-maps', []);
               }
@@ -74,7 +74,7 @@ angular.module('mapventureApp')
             content: 'A second example of a shift in climate patterns is illustrated by the Length of Growing Season layer, which is measured in days. Length of growing season is defined by the dates between when the running mean temperature crosses 0&deg;C in the spring and fall (this generally approximates the ice-free season, but hard frosts could occur even on days that are considered ice-free by this metric if the mean temperature is above 0&deg;C). Overall, by the end of the 21st century the growing season shows a strong warming trend with a longer ice-free season, most notable in the south where the growing season increases by as much as 30 days.',
             onShow: function() {
               scope.minimized = true;
-              if(false === scope.dualMaps) {
+              if (false === scope.dualMaps) {
                 scope.$broadcast('start-tour-dual-maps');
                 scope.$broadcast('show-dual-maps', []);
               }

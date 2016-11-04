@@ -1,0 +1,23 @@
+._c5598096-7f76-11e6-9e4c-00163edb1deb {
+
+    // Override things to give a more consistent look
+    // when doing several "introduction" steps
+    #step-0, #step-1, #step-2, #step-3, #step-4 {
+        position: absolute;
+        width: 80%;
+        max-width: none;
+        left: 10% !important;
+        top: 2em !important;
+
+        .popover-content {
+          p, li {
+            font-size: 16px;
+          }
+
+          figcaption {
+            text-align: center;
+            color: #888;
+          }
+        }
+    }
+}
