@@ -6,7 +6,7 @@
  * Tour for the IAM Map
  */
 angular.module('mapventureApp')
-  .factory('SnapRcpTour', function() {
+  .factory('SnapRcpTour', function($timeout) {
     var service = {};
 
     service.getTour = function(scope) {
@@ -52,17 +52,16 @@ angular.module('mapventureApp')
             content: 'This is an example of a decadal average of mean annual temperature for the 2010s and 2090s. Viewed side-by-side with the same color scale, it&rsquo;s apparent how mean annual temperature is projected to increase. Increases in temperature are particularly notable in northern Alaska where the darkest blue is almost entirely replaced with lighter shades, denoting warmer temperatures.',
             onShow: function(e) {
               scope.minimized = true;
-              if (false === scope.dualMaps) {
-                scope.$broadcast('start-tour-dual-maps');
-                scope.$broadcast('show-dual-maps', []);
-              }
-              scope.mapObj.setView(
-                [65, -155],
-                2
-              );
+              scope.$broadcast('show-dual-maps');
               scope.$broadcast('show-layers', ['tas_decadal_mean_annual_mean_c_5modelavg_rcp60_2010_2019']);
               scope.$broadcast('show-second-layers', ['tas_2090s_fixed_3572']);
               scope.synchronizeMaps();
+              $timeout(function() {
+                scope.mapObj.setView(
+                  [65, -155],
+                  2
+                );
+              }, 250);
             }
           },
           {
@@ -71,17 +70,16 @@ angular.module('mapventureApp')
             content: 'A second example of a shift in climate patterns is illustrated by the Length of Growing Season layer, which is measured in days. Length of growing season is defined by the dates between when the running mean temperature crosses 0&deg;C in the spring and fall (this generally approximates the ice-free season, but hard frosts could occur even on days that are considered ice-free by this metric if the mean temperature is above 0&deg;C). Overall, by the end of the 21st century the growing season shows a strong warming trend with a longer ice-free season, most notable in the south where the growing season increases by as much as 30 days.',
             onShow: function() {
               scope.minimized = true;
-              if (false === scope.dualMaps) {
-                scope.$broadcast('start-tour-dual-maps');
-                scope.$broadcast('show-dual-maps', []);
-              }
-              scope.mapObj.setView(
-                [65, -155],
-                2
-              );
+              scope.$broadcast('show-dual-maps');
               scope.$broadcast('show-layers', ['logs_5modelavg_rcp60_2010_2019_3857']);
               scope.$broadcast('show-second-layers', ['logs_5modelavg_rcp60_2090_2099_3572']);
               scope.synchronizeMaps();
+              $timeout(function() {
+                scope.mapObj.setView(
+                  [65, -155],
+                  2
+                );
+              }, 250);
             }
           },
           {
