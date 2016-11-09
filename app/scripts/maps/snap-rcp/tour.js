@@ -56,16 +56,13 @@ angular.module('mapventureApp')
                 scope.$broadcast('start-tour-dual-maps');
                 scope.$broadcast('show-dual-maps', []);
               }
+              scope.mapObj.setView(
+                [65, -155],
+                2
+              );
               scope.$broadcast('show-layers', ['tas_decadal_mean_annual_mean_c_5modelavg_rcp60_2010_2019']);
               scope.$broadcast('show-second-layers', ['tas_2090s_fixed_3572']);
-              scope.$broadcast('show-sync-maps', []);
-              scope.mapObj.setView(
-                [-165, 75],
-                2,
-                {
-                  reset: true
-                }
-              );
+              scope.synchronizeMaps();
             }
           },
           {
@@ -78,16 +75,13 @@ angular.module('mapventureApp')
                 scope.$broadcast('start-tour-dual-maps');
                 scope.$broadcast('show-dual-maps', []);
               }
+              scope.mapObj.setView(
+                [65, -155],
+                2
+              );
               scope.$broadcast('show-layers', ['logs_5modelavg_rcp60_2010_2019_3857']);
               scope.$broadcast('show-second-layers', ['logs_5modelavg_rcp60_2090_2099_3572']);
-              scope.$broadcast('show-sync-maps', []);
-              scope.mapObj.setView(
-                [-165, 75],
-                2,
-                {
-                  reset: true
-                }
-              );
+              scope.synchronizeMaps();
             }
           },
           {
