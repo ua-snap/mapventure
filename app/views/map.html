@@ -45,14 +45,14 @@
       &nbsp;
       Download data
     </a>
-    <label id="showDualMaps" class="btn btn-primary info" ng-click="showDualMaps()">
+    <label id="showDualMaps" class="btn btn-primary info" ng-click="toggleDualMaps()">
       <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
       <span ng-hide="dualMaps">|</span>
       <span class="glyphicon glyphicon-unchecked"></span>
       &nbsp;
       Split / single map
     </label>
-    <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="syncDualMaps()">
+    <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="toggleSynchronizeMaps()">
       <span class="glyphicon glyphicon-flash"></span>
       &nbsp;
       Synchronize maps
