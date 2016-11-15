@@ -559,6 +559,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'ngconstant:development',
     'ngconstant:production',
+    'sass_globbing', // Needs to come before concurrent:dist
     'concurrent:dist',
     'autoprefixer',
     'ngtemplates',
@@ -570,8 +571,7 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'sass_globbing'
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
