@@ -316,7 +316,7 @@ app.controller('MapCtrl', [
         $scope.mapObj.panTo([65, -150]);
         $scope.secondMapObj.panTo([65, -150]);
       }, 250);
-    }
+    };
 
     $scope.hideDualMaps = function() {
       $scope.dualMaps = false;
@@ -327,7 +327,7 @@ app.controller('MapCtrl', [
         $scope.mapObj.invalidateSize();
         $scope.mapObj.panTo([65, -150]);
       }, 250);
-    }
+    };
 
     $scope.toggleDualMaps = function() {
       if ($scope.dualMaps === false) {
@@ -347,7 +347,7 @@ app.controller('MapCtrl', [
       $scope.syncMaps = false;
       $scope.mapObj.unsync($scope.secondMapObj);
       $scope.secondMapObj.unsync($scope.mapObj);
-    }
+    };
 
     $scope.toggleSynchronizeMaps = function() {
       if ($scope.syncMaps === false) {
