@@ -102,6 +102,8 @@ app.controller('MapCtrl', [
       // These need to be separate instances because we listen for events differently on each.
       var baseLayer = $scope.getBaseLayer();
       var secondBaseLayer = $scope.getBaseLayer();
+      var placeLayer = $scope.getPlaceLayer();
+      var secondPlaceLayer = $scope.getPlaceLayer();
 
       // Move to a per-map service?
       $scope.mapDefaults = angular.extend({
@@ -113,18 +115,24 @@ app.controller('MapCtrl', [
         }, $scope.mapOptions
       );
 
+      // Don't add the place layer if not defined
+      var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
+      var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
+
       var firstMapOptions = angular.extend({
-          layers: [
-            baseLayer
-          ]
+          layers: layers
         },
         $scope.mapDefaults);
       $scope.mapObj = L.map('snapmapapp', firstMapOptions);
-
+      $scope.mapObj.on('move', function(e) {
+        console.log(e);
+        console.log($scope.mapObj);
+        console.log($scope.mapObj.getCenter());
+        console.log($scope.mapObj.getZoom());
+        console.log($scope.mapObj.getBounds());
+      });
       var secondMapOptions = angular.extend({
-          layers: [
-            secondBaseLayer
-          ]
+          layers: secondLayers
         },
         $scope.mapDefaults);
       $scope.secondMapObj = L.map('secondmap', secondMapOptions);

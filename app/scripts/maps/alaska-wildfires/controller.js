@@ -35,7 +35,7 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.mapOptions = {
       zoom: 5,
       minZoom: 5,
-      maxZoom: 11,
+      maxZoom: 20,
       center: [65, -158.5],
       maxBounds: new L.latLngBounds(
         L.latLng(71.3, -200),
@@ -72,7 +72,12 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
-      return new L.tileLayer.wms('http://osm.iarc.uaf.edu:8888/wms', baseConfiguration);
+      return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
+    };
+
+    // Return a new instance of a placename layer.
+    $scope.getPlaceLayer = function() {
+      return undefined;
     };
 
     // This function loads the additional fire polygons
