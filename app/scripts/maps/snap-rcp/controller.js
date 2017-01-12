@@ -32,7 +32,7 @@ angular.module('mapventureApp')
       var proj = new L.Proj.CRS('EPSG:3572',
         '+proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
         {
-          resolutions: [8192, 4096, 2048, 1024, 512, 256, 128],
+          resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64],
           origin: [-4234288.146966308, -4234288.146966307]
         }
       );
@@ -48,18 +48,30 @@ angular.module('mapventureApp')
       $scope.mapOptions = {
         zoom: 1,
         minZoom: 0,
-        maxZoom: 5,
+        maxZoom: 14,
         center: [64, -165]
       };
 
       // Base layer configuration for pan-Arctic map.
       var baseConfiguration = {
-        layers: ['geonode:ne_10m_coastline'],
+        layers: ['arctic_osm_3572'],
         transparent: true,
+        srs: 'EPSG:3572',
         format: 'image/png',
         version: '1.3',
         continuousWorld: true, // needed for non-3857 projs
-        zIndex: null
+        zIndex: 0
+      };
+
+      // Place names layer configuration for pan-Arctic map.
+      var placeConfiguration = {
+        layers: ['arctic_places_osm_3572'],
+        transparent: true,
+        srs: 'EPSG:3572',
+        format: 'image/png',
+        version: '1.3',
+        continuousWorld: true, // needed for non-3857 projs
+        zIndex: 100
       };
 
       // Return a new instance of a base layer.
@@ -67,5 +79,14 @@ angular.module('mapventureApp')
         return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
       };
 
-      $scope.layerOptions = function() {};
+      // Return a new instance of a placename layer.
+      $scope.getPlaceLayer = function() {
+        return new L.tileLayer.wms(Map.geoserverWmsUrl(), placeConfiguration);
+      };
+
+      $scope.layerOptions = function() {
+        return {
+          opacity: 0.8
+        };
+      };
     }]);
