@@ -124,13 +124,6 @@ app.controller('MapCtrl', [
         },
         $scope.mapDefaults);
       $scope.mapObj = L.map('snapmapapp', firstMapOptions);
-      $scope.mapObj.on('move', function(e) {
-        console.log(e);
-        console.log($scope.mapObj);
-        console.log($scope.mapObj.getCenter());
-        console.log($scope.mapObj.getZoom());
-        console.log($scope.mapObj.getBounds());
-      });
       var secondMapOptions = angular.extend({
           layers: secondLayers
         },
