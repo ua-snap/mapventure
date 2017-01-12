@@ -59,7 +59,8 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test', 'karma']
       },
       compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}',
+                '<%= yeoman.app %>/scripts/maps/{,*/}*.{scss,sass}'],
         tasks: ['sass_globbing', 'compass:server', 'autoprefixer:server']
       },
       gruntfile: {
@@ -558,6 +559,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'ngconstant:development',
     'ngconstant:production',
+    'sass_globbing', // Needs to come before concurrent:dist
     'concurrent:dist',
     'autoprefixer',
     'ngtemplates',
@@ -569,8 +571,7 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'sass_globbing'
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [

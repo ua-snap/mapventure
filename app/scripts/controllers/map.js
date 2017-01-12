@@ -102,6 +102,8 @@ app.controller('MapCtrl', [
       // These need to be separate instances because we listen for events differently on each.
       var baseLayer = $scope.getBaseLayer();
       var secondBaseLayer = $scope.getBaseLayer();
+      var placeLayer = $scope.getPlaceLayer();
+      var secondPlaceLayer = $scope.getPlaceLayer();
 
       // Move to a per-map service?
       $scope.mapDefaults = angular.extend({
@@ -113,18 +115,17 @@ app.controller('MapCtrl', [
         }, $scope.mapOptions
       );
 
+      // Don't add the place layer if not defined
+      var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
+      var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
+
       var firstMapOptions = angular.extend({
-          layers: [
-            baseLayer
-          ]
+          layers: layers
         },
         $scope.mapDefaults);
       $scope.mapObj = L.map('snapmapapp', firstMapOptions);
-
       var secondMapOptions = angular.extend({
-          layers: [
-            secondBaseLayer
-          ]
+          layers: secondLayers
         },
         $scope.mapDefaults);
       $scope.secondMapObj = L.map('secondmap', secondMapOptions);
@@ -296,7 +297,7 @@ app.controller('MapCtrl', [
 
     $scope.$on('show-sync-maps', function() {
       $scope.$evalAsync(function() {
-        $scope.syncDualMaps();
+        $scope.synchronizeMaps();
       });
     });
 
@@ -310,34 +311,50 @@ app.controller('MapCtrl', [
     };
 
     $scope.showDualMaps = function() {
+      $scope.dualMaps = true;
+      $timeout(function() {
+        $scope.mapObj.invalidateSize();
+        $scope.mapObj.panTo([65, -150]);
+        $scope.secondMapObj.panTo([65, -150]);
+      }, 250);
+    };
+
+    $scope.hideDualMaps = function() {
+      $scope.dualMaps = false;
+      if ($scope.syncMaps === true) {
+        $scope.synchronizeMaps();
+      }
+      $timeout(function() {
+        $scope.mapObj.invalidateSize();
+        $scope.mapObj.panTo([65, -150]);
+      }, 250);
+    };
+
+    $scope.toggleDualMaps = function() {
       if ($scope.dualMaps === false) {
-        $scope.dualMaps = true;
-        $timeout(function() {
-          $scope.mapObj.invalidateSize();
-          $scope.mapObj.panTo([65, -150]);
-          $scope.secondMapObj.panTo([65, -150]);
-        }, 250);
+        $scope.showDualMaps();
       } else {
-        $scope.dualMaps = false;
-        if ($scope.syncMaps === true) {
-          $scope.syncDualMaps();
-        }
-        $timeout(function() {
-          $scope.mapObj.invalidateSize();
-          $scope.mapObj.panTo([65, -150]);
-        }, 250);
+        $scope.hideDualMaps();
       }
     };
 
-    $scope.syncDualMaps = function() {
+    $scope.synchronizeMaps = function() {
+      $scope.syncMaps = true;
+      $scope.mapObj.sync($scope.secondMapObj);
+      $scope.secondMapObj.sync($scope.mapObj);
+    };
+
+    $scope.unsynchronizeMaps = function() {
+      $scope.syncMaps = false;
+      $scope.mapObj.unsync($scope.secondMapObj);
+      $scope.secondMapObj.unsync($scope.mapObj);
+    };
+
+    $scope.toggleSynchronizeMaps = function() {
       if ($scope.syncMaps === false) {
-        $scope.syncMaps = true;
-        $scope.mapObj.sync($scope.secondMapObj);
-        $scope.secondMapObj.sync($scope.mapObj);
+        $scope.synchronizeMaps();
       } else {
-        $scope.syncMaps = false;
-        $scope.mapObj.unsync($scope.secondMapObj);
-        $scope.secondMapObj.unsync($scope.mapObj);
+        $scope.unsynchronizeMaps();
       }
     };
 

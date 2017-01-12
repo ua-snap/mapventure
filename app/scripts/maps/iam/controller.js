@@ -105,7 +105,7 @@ angular.module('mapventureApp')
 
       // Base layer configuration for pan-Arctic map.
       var baseConfiguration = {
-        layers: ['geonode:ne_10m_coastline', 'geonode:iam_area_alaska_albers'],
+        layers: ['arctic_osm_3572', 'geonode:iam_area_alaska_albers'],
         transparent: true,
         format: 'image/png',
         version: '1.3',
@@ -113,9 +113,25 @@ angular.module('mapventureApp')
         zIndex: null
       };
 
+      // Place names layer configuration for pan-Arctic map.
+      var placeConfiguration = {
+        layers: ['arctic_places_osm_3572'],
+        transparent: true,
+        srs: 'EPSG:3572',
+        format: 'image/png',
+        version: '1.3',
+        continuousWorld: true, // needed for non-3857 projs
+        zIndex: 100
+      };
+
       // Return a new instance of a base layer.
       $scope.getBaseLayer = function() {
         return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
+      };
+
+      // Return a new instance of a placename layer.
+      $scope.getPlaceLayer = function() {
+        return new L.tileLayer.wms(Map.geoserverWmsUrl(), placeConfiguration);
       };
 
       $scope.layerOptions = function() {

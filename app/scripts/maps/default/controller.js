@@ -42,6 +42,16 @@ angular.module('mapventureApp')
         return undefined;
       };
 
+      // Used to specify a layer of place names
+      // that will be kept at the highest z-index to keep
+      // it above any data that is displayed.  If
+      // this function returns null or undefined,
+      // it isn't instantiated.  Otherwise, it needs
+      // to be a Leaflet layer.
+      $scope.getPlaceLayer = function() {
+        return undefined;
+      };
+
       // Called after the data has been loaded,
       // this function can be used to modify & hook into
       // map events.  $scope is inherited from the parent

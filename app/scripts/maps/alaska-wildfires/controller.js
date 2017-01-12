@@ -35,16 +35,18 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.mapOptions = {
       zoom: 5,
       minZoom: 5,
-      maxZoom: 11,
-      // maxBounds: new L.latLngBounds(
-      //   L.latLng(70.5, -175),
-      //   L.latLng(50, -135)
-      // )
+      maxZoom: 20,
+      center: [65, -158.5],
+      maxBounds: new L.latLngBounds(
+        L.latLng(71.3, -200),
+        L.latLng(51, -128)
+      )
     };
 
     // Base layer configuration.
     var baseConfiguration = {
-      layers: 'MapProxy:osm',
+      layers: 'alaska_osm',
+      srs: 'EPSG:3338',
       transparent: true,
       format: 'image/png',
       version: '1.3',
@@ -71,6 +73,11 @@ app.controller('AlaskaWildfiresCtrl', [
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
+    };
+
+    // Return a new instance of a placename layer.
+    $scope.getPlaceLayer = function() {
+      return undefined;
     };
 
     // This function loads the additional fire polygons

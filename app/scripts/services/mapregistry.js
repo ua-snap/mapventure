@@ -19,7 +19,8 @@ angular.module('mapventureApp')
     // when attempting to instantiate the controller.
     var registry = {
       'd5a90928-2119-11e6-92e2-08002742f21f': 'AlaskaWildfires',
-      '6dd7678c-5dc7-11e6-9ccd-00163edb1deb': 'Iam'
+      '6dd7678c-5dc7-11e6-9ccd-00163edb1deb': 'Iam',
+      'c5598096-7f76-11e6-9e4c-00163edb1deb': 'SnapRcp'
     };
 
     // Public API here
