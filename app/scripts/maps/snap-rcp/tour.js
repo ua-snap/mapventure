@@ -85,7 +85,7 @@ angular.module('mapventureApp')
           {
             backdrop: true,
             title: 'How to get and use this data',
-            content: '(TBD.  Point of this step is to encourage the user to check out individual layers and/or some buttons that may go to a Github repo and/or our CKAN instance).'
+            content: '<h4>Get this data</h4> <p>You can <a href="http://ckan.snap.uaf.edu">download this and related data sets</a> from our data distribution server.</p> <h4>Using this data: spatial subsets</h4> <p>One example of how to use this data is to extract a subset of the data for a given area of interest.  <a href="https://github.com/ua-snap/data-recipes/tree/master/extract_by_polygon">This R script</a> can be adapted to subset a timeseries of this data for a region specified by a shapefile, producing CSV output that can the be graphed or visualized in other ways.</p>'
           }
         ]
       });
