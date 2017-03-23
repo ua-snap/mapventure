@@ -362,6 +362,7 @@ app.controller('MapCtrl', [
       var layer = _.find($scope.map.layers, function(layer) {
         return layer.name === layerName;
       });
+
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
       content = content.concat(

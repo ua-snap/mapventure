@@ -54,6 +54,17 @@ app.controller('AlaskaWildfiresCtrl', [
       zIndex: null
     };
 
+    // Place names layer configuration for Alaska
+    var placeConfiguration = {
+      layers: ['alaska_places_osm_3338'],
+      transparent: true,
+      srs: 'EPSG:3338',
+      format: 'image/png',
+      version: '1.3',
+      continuousWorld: true, // needed for non-3857 projs
+      zIndex: 100
+    };
+
     var FireIcon = L.Icon.extend({
       options: {
         iconUrl: 'images/fire.svg',
@@ -77,7 +88,7 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // Return a new instance of a placename layer.
     $scope.getPlaceLayer = function() {
-      return undefined;
+      return new L.tileLayer.wms(Map.geoserverWmsUrl(), placeConfiguration);
     };
 
     // This function loads the additional fire polygons
