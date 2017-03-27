@@ -125,7 +125,13 @@ angular.module('mapventureApp')
             orphan: true,
             content: 'Thanks for checking this out!  This map is for general information only. If you need the newest information on current fires, <a href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire" target="_blank">visit the AICC web map</a>.',
             onShow: function() {
-
+              scope.minimized = false;
+            },
+            onShown: function() {
+              scope.$broadcast('hide-sync-maps', []);
+              scope.$broadcast('hide-dual-maps', []);
+              scope.$broadcast('show-layers', ['fireareahistory']);
+              scope.$broadcast('show-layers', ['active_fires'])
             },
             onHide: function() {
             }

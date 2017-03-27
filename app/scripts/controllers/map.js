@@ -295,9 +295,21 @@ app.controller('MapCtrl', [
       });
     });
 
+    $scope.$on('hide-dual-maps', function() {
+      $scope.$evalAsync(function() {
+        $scope.hideDualMaps();
+      });
+    });
+
     $scope.$on('show-sync-maps', function() {
       $scope.$evalAsync(function() {
         $scope.synchronizeMaps();
+      });
+    });
+
+    $scope.$on('hide-sync-maps', function() {
+      $scope.$evalAsync(function() {
+        $scope.unsynchronizeMaps();
       });
     });
 
