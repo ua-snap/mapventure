@@ -164,7 +164,7 @@ app.controller('AlaskaWildfiresCtrl', [
               ')(
                 {
                   title: feature.properties.NAME,
-                  acres: feature.properties.ACRES + ' acres',
+                  acres: Math.ceil(feature.properties.ACRES) + ' acres',
                   cause: feature.properties.GENERALCAU || 'Unknown',
                   updated: moment.utc(
                       moment.unix(
