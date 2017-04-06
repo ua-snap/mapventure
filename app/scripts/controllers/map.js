@@ -377,7 +377,7 @@ app.controller('MapCtrl', [
     };
 
     $scope.startTour = function(tourStep) {
-      if (tourStep == null || tourStep == 0) {
+      if (null === tourStep || undefined === tourStep) {
         $scope.$emit('start-tour');
       }
     };
