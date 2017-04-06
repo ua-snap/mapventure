@@ -380,5 +380,9 @@ app.controller('MapCtrl', [
       $scope.$emit('start-tour');
     };
 
+    $scope.endTour = function() {
+      $scope.$emit('end-tour');
+    };
+
   }
 ]);

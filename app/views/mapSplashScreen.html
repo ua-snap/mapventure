@@ -6,7 +6,7 @@
         <span ng-show="tour._current == 0 || tour._current == null">Take a tour of this map&hellip;</span>
         <span ng-show="tour._current > 0">Continue Tour&hellip;</span>
       </button>
-      <a ng-click="hideSplash=true" ng-disabled="showMapButtonDisabled" disabled="disabled">
+      <a ng-click="hideSplash=true; endTour()" ng-disabled="showMapButtonDisabled" disabled="disabled">
         No thanks, just show me the map.
       </a>
     </div>
