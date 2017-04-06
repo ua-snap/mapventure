@@ -131,7 +131,7 @@ angular.module('mapventureApp')
               scope.$broadcast('hide-sync-maps', []);
               scope.$broadcast('hide-dual-maps', []);
               scope.$broadcast('show-layers', ['fireareahistory']);
-              scope.$broadcast('show-layers', ['active_fires'])
+              scope.$broadcast('show-layers', ['active_fires']);
             },
             onHide: function() {
             }
