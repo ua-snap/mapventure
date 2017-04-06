@@ -376,8 +376,8 @@ app.controller('MapCtrl', [
       $scope.sidebar.setContent(content).show();
     };
 
-    $scope.startTour = function(tour_step) {
-      if (tour_step == null || tour_step == 0) {
+    $scope.startTour = function(tourStep) {
+      if (tourStep == null || tourStep == 0) {
         $scope.$emit('start-tour');
       }
     };
