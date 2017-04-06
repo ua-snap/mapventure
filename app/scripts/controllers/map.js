@@ -44,13 +44,8 @@ app.controller('MapCtrl', [
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
-    // If the Layer menu is minimized?
+    // Toggle for layer menu to be minimized
     $scope.minimized = false;
-
-    // Two variables to use to keep the last map center/zoom
-    // so we can restore after an auto-zoom
-    $scope.mapCenter = undefined;
-    $scope.zoomLevel = undefined;
 
     // Dual maps boolean
     $scope.dualMaps = false;
@@ -105,10 +100,8 @@ app.controller('MapCtrl', [
       var placeLayer = $scope.getPlaceLayer();
       var secondPlaceLayer = $scope.getPlaceLayer();
 
-      // Move to a per-map service?
+      // MapOptions resolved by individual map configuration
       $scope.mapDefaults = angular.extend({
-          center: [65, -150],
-          zoom: 1,
           crs: $scope.crs,
           zoomControl: false,
           scrollWheelZoom: true
@@ -172,16 +165,6 @@ app.controller('MapCtrl', [
     $scope.sidebar = L.control.sidebar('info-sidebar', {
       position: 'left'
     });
-
-    $scope.setDefaultView = function() {
-      $scope.mapObj.setView(
-        $scope.mapDefaults.center,
-        $scope.mapDefaults.zoom,
-        {
-          reset: true
-        }
-      );
-    };
 
     $scope.activateAllLayers = function() {
       _.each($scope.layers, function(layerObj, layerName) {
