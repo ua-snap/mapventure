@@ -38,7 +38,7 @@ app.controller('AlaskaWildfiresCtrl', [
       maxZoom: 20,
       center: [65, -158.5],
       maxBounds: new L.latLngBounds(
-        L.latLng(71.3, -200),
+        L.latLng(71.3, -220),
         L.latLng(51, -128)
       )
     };
