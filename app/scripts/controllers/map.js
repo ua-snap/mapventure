@@ -108,6 +108,16 @@ app.controller('MapCtrl', [
         }, $scope.mapOptions
       );
 
+      $scope.setDefaultView = function() {
+      $scope.mapObj.setView(
+        $scope.mapDefaults.center,
+        $scope.mapDefaults.zoom,
+        {
+          reset: true
+        }
+      );
+    };
+
       // Don't add the place layer if not defined
       var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
       var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
