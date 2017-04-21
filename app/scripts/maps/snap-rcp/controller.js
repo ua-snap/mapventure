@@ -32,7 +32,7 @@ angular.module('mapventureApp')
       var proj = new L.Proj.CRS('EPSG:3572',
         '+proj=laea +lat_0=90 +lon_0=-150 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
         {
-          resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64],
+          resolutions: [4096, 2048, 1024, 512, 256, 128, 64],
           origin: [-4234288.146966308, -4234288.146966307]
         }
       );
@@ -46,10 +46,14 @@ angular.module('mapventureApp')
 
       // General options for Leaflet configuration.
       $scope.mapOptions = {
-        zoom: 1,
+        zoom: 0,
         minZoom: 0,
-        maxZoom: 14,
-        center: [64, -165]
+        maxZoom: 5,
+        center: [64, -165],
+        maxBounds: new L.latLngBounds(
+          L.latLng(71.3, -200),
+          L.latLng(51, -128)
+        )
       };
 
       // Base layer configuration for pan-Arctic map.
