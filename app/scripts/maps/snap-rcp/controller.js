@@ -51,8 +51,8 @@ angular.module('mapventureApp')
         maxZoom: 5,
         center: [64, -165],
         maxBounds: new L.latLngBounds(
-          L.latLng(71.3, -200),
-          L.latLng(51, -128)
+          L.latLng(70, 220),
+          L.latLng(55, 180)
         )
       };
 
