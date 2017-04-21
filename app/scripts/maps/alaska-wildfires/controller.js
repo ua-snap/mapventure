@@ -21,7 +21,7 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
         {
-          resolutions: [65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
+          resolutions: [2048, 1024, 512, 256, 128, 64, 32, 16],
 
           // Origin should be lower-left coordinate
           // in projected space.  Use GeoServer to
@@ -33,9 +33,9 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // General options for Leaflet configuration.
     $scope.mapOptions = {
-      zoom: 5,
-      minZoom: 5,
-      maxZoom: 20,
+      zoom: 0,
+      minZoom: 0,
+      maxZoom: 5,
       center: [65, -158.5],
       maxBounds: new L.latLngBounds(
         L.latLng(70, 220),
