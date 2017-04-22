@@ -163,7 +163,8 @@ app.controller('MapCtrl', [
     });
 
     $scope.sidebar = L.control.sidebar('info-sidebar', {
-      position: 'left'
+      position: 'left',
+      autoPan: false
     });
 
     $scope.activateAllLayers = function() {
