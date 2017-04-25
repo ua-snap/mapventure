@@ -107,34 +107,24 @@ angular.module('mapventureApp')
             element: '#minimize-layer-div',
             content: 'With two maps active, you can see fires in the context of landscape and history.  You can use this button to hide the layers, making it easy to see both maps.',
             onShow: function() {
-              scope.$broadcast('start-tour-dual-maps');
               scope.$broadcast('show-dual-maps', []);
               scope.$broadcast('show-second-layers', ['alaska_landcover_2010']);
               scope.$broadcast('show-layers', ['fireareahistory']);
             },
             onShown: function() {
               scope.$broadcast('show-sync-maps', []);
-              scope.minimized = true;
             },
             onHide: function() {
-
+              scope.$broadcast('hide-sync-maps', []);
+              scope.$broadcast('hide-dual-maps', []);
+              scope.$broadcast('show-layers', ['fireareahistory']);
+              scope.$broadcast('show-layers', ['active_fires']);
             }
           },
           {
             title: 'End of tour!',
             orphan: true,
-            content: 'Thanks for checking this out!  This map is for general information only. If you need the newest information on current fires, <a href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire" target="_blank">visit the AICC web map</a>.',
-            onShow: function() {
-              scope.minimized = false;
-            },
-            onShown: function() {
-              scope.$broadcast('hide-sync-maps', []);
-              scope.$broadcast('hide-dual-maps', []);
-              scope.$broadcast('show-layers', ['fireareahistory']);
-              scope.$broadcast('show-layers', ['active_fires']);
-            },
-            onHide: function() {
-            }
+            content: 'Thanks for checking this out!  This map is for general information only. If you need the newest information on current fires, <a href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire" target="_blank">visit the AICC web map</a>.'
           }
         ]
       });
