@@ -90,6 +90,9 @@ app.controller('MapCtrl', [
       // directive of its own?
       angular.element('body').addClass('_' + $scope.map.uuid);
 
+      // Set title of window to this map's title
+      angular.element('title').text($scope.map.title);
+
       // Reversing the layers makes the order
       // match what we see in GeoNode's map editor.
       $scope.map.layers.reverse();
