@@ -44,13 +44,8 @@ app.controller('MapCtrl', [
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
-    // If the Layer menu is minimized?
+    // Toggle for layer menu to be minimized
     $scope.minimized = false;
-
-    // Two variables to use to keep the last map center/zoom
-    // so we can restore after an auto-zoom
-    $scope.mapCenter = undefined;
-    $scope.zoomLevel = undefined;
 
     // Dual maps boolean
     $scope.dualMaps = false;
@@ -95,6 +90,9 @@ app.controller('MapCtrl', [
       // directive of its own?
       angular.element('body').addClass('_' + $scope.map.uuid);
 
+      // Set title of window to this map's title
+      angular.element('title').text($scope.map.title);
+
       // Reversing the layers makes the order
       // match what we see in GeoNode's map editor.
       $scope.map.layers.reverse();
@@ -105,15 +103,23 @@ app.controller('MapCtrl', [
       var placeLayer = $scope.getPlaceLayer();
       var secondPlaceLayer = $scope.getPlaceLayer();
 
-      // Move to a per-map service?
+      // MapOptions resolved by individual map configuration
       $scope.mapDefaults = angular.extend({
-          center: [65, -150],
-          zoom: 1,
           crs: $scope.crs,
           zoomControl: false,
           scrollWheelZoom: true
         }, $scope.mapOptions
       );
+
+      $scope.setDefaultView = function() {
+      $scope.mapObj.setView(
+        $scope.mapDefaults.center,
+        $scope.mapDefaults.zoom,
+        {
+          reset: true
+        }
+      );
+    };
 
       // Don't add the place layer if not defined
       var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
@@ -170,18 +176,9 @@ app.controller('MapCtrl', [
     });
 
     $scope.sidebar = L.control.sidebar('info-sidebar', {
-      position: 'left'
+      position: 'left',
+      autoPan: false
     });
-
-    $scope.setDefaultView = function() {
-      $scope.mapObj.setView(
-        $scope.mapDefaults.center,
-        $scope.mapDefaults.zoom,
-        {
-          reset: true
-        }
-      );
-    };
 
     $scope.activateAllLayers = function() {
       _.each($scope.layers, function(layerObj, layerName) {
@@ -295,9 +292,21 @@ app.controller('MapCtrl', [
       });
     });
 
+    $scope.$on('hide-dual-maps', function() {
+      $scope.$evalAsync(function() {
+        $scope.hideDualMaps();
+      });
+    });
+
     $scope.$on('show-sync-maps', function() {
       $scope.$evalAsync(function() {
         $scope.synchronizeMaps();
+      });
+    });
+
+    $scope.$on('hide-sync-maps', function() {
+      $scope.$evalAsync(function() {
+        $scope.unsynchronizeMaps();
       });
     });
 
@@ -362,6 +371,7 @@ app.controller('MapCtrl', [
       var layer = _.find($scope.map.layers, function(layer) {
         return layer.name === layerName;
       });
+
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
       content = content.concat(
@@ -375,8 +385,14 @@ app.controller('MapCtrl', [
       $scope.sidebar.setContent(content).show();
     };
 
-    $scope.startTour = function() {
-      $scope.$emit('start-tour');
+    $scope.startTour = function(tourStep) {
+      if (null === tourStep || undefined === tourStep) {
+        $scope.$emit('start-tour');
+      }
+    };
+
+    $scope.endTour = function() {
+      $scope.$emit('end-tour');
     };
 
   }

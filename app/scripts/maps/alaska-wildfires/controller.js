@@ -21,7 +21,7 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
         {
-          resolutions: [65536, 32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
+          resolutions: [2048, 1024, 512, 256, 128, 64],
 
           // Origin should be lower-left coordinate
           // in projected space.  Use GeoServer to
@@ -33,13 +33,13 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // General options for Leaflet configuration.
     $scope.mapOptions = {
-      zoom: 5,
-      minZoom: 5,
-      maxZoom: 20,
+      zoom: 0,
+      minZoom: 0,
+      maxZoom: 5,
       center: [65, -158.5],
       maxBounds: new L.latLngBounds(
-        L.latLng(71.3, -200),
-        L.latLng(51, -128)
+        L.latLng(70, 220),
+        L.latLng(55, 180)
       )
     };
 
@@ -52,6 +52,17 @@ app.controller('AlaskaWildfiresCtrl', [
       version: '1.3',
       continuousWorld: true, // needed for non-3857 projs
       zIndex: null
+    };
+
+    // Place names layer configuration for Alaska
+    var placeConfiguration = {
+      layers: ['alaska_places_osm_3338'],
+      transparent: true,
+      srs: 'EPSG:3338',
+      format: 'image/png',
+      version: '1.3',
+      continuousWorld: true, // needed for non-3857 projs
+      zIndex: 100
     };
 
     var FireIcon = L.Icon.extend({
@@ -77,7 +88,7 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // Return a new instance of a placename layer.
     $scope.getPlaceLayer = function() {
-      return undefined;
+      return new L.tileLayer.wms(Map.geoserverWmsUrl(), placeConfiguration);
     };
 
     // This function loads the additional fire polygons
@@ -153,7 +164,7 @@ app.controller('AlaskaWildfiresCtrl', [
               ')(
                 {
                   title: feature.properties.NAME,
-                  acres: feature.properties.ACRES + ' acres',
+                  acres: Math.ceil(feature.properties.ACRES) + ' acres',
                   cause: feature.properties.GENERALCAU || 'Unknown',
                   updated: moment.utc(
                       moment.unix(

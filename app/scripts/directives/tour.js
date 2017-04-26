@@ -42,6 +42,10 @@ app.directive('tour', [
         scope.tour.restart();
       });
 
+      scope.$on('end-tour', function() {
+        scope.tour.end();
+      });
+
     }
   };
 }]);
