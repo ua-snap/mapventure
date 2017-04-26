@@ -41,7 +41,7 @@ angular.module('mapventureApp')
           {
             title: 'Fires in history',
             element: '#fireareahistory',
-            content: 'This layer shows all mapped fire perimeters 1940&mdash;2015.  It can be interesting to look for areas of repeated burn, or where a fire is burning today compared to older fire scars.',
+            content: 'This layer shows all mapped fire perimeters 1940&mdash;2016.  It can be interesting to look for areas of repeated burn, or where a fire is burning today compared to older fire scars.',
             onShow: function() {
               $('#fireareahistory')
                 .addClass('bling')
