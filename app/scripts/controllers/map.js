@@ -188,11 +188,13 @@ app.controller('MapCtrl', [
 
     $scope.showSecondLayer = function(layerName) {
       $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
+      $scope.showSecondMapDefinedLayer(layerName);
       $scope.layers[layerName].secondvisible = true;
     };
 
     $scope.hideSecondLayer = function(layerName) {
       $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
+      $scope.hideSecondMapDefinedLayer(layerName);
       $scope.layers[layerName].secondvisible = false;
     };
 
@@ -232,13 +234,31 @@ app.controller('MapCtrl', [
       Map.setReady(true);
     };
 
+    $scope.showMapDefinedLayer = function(layerName) {
+      // Will be defined in map controller if used at all
+    };
+
+    $scope.showSecondMapDefinedLayer = function(layerName) {
+      // Will be defined in map controller if used at all
+    };
+
+    $scope.hideMapDefinedLayer = function(layerName) {
+      // Will be defined in map controller if used at all
+    };
+
+    $scope.hideSecondMapDefinedLayer = function(layerName) {
+      // Will be defined in map controller if used at all
+    };
+
     $scope.showLayer = function(layerName) {
       $scope.layers[layerName].obj.addTo($scope.mapObj);
+      $scope.showMapDefinedLayer(layerName);
       $scope.layers[layerName].visible = true;
     };
 
     $scope.hideLayer = function(layerName) {
       $scope.mapObj.removeLayer($scope.layers[layerName].obj);
+      $scope.hideMapDefinedLayer(layerName);
       $scope.layers[layerName].visible = false;
     };
 
