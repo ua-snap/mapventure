@@ -21,7 +21,8 @@ angular
     'ui.bootstrap',
     'config',
     'angularMoment',
-    'markdown'
+    'markdown',
+    'plotly'
   ])
   .config(function($routeProvider, MapProvider, ENV) {
     $routeProvider

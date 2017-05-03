@@ -194,6 +194,18 @@ app.controller('AlaskaWildfiresCtrl', [
 
     $scope.layerOptions = function() {};
 
+    $scope.graphLayout.title = 'Large Fire Seasons';
+
+    $http.get('/2017.json').then(function success(res) {
+      $scope.graphData = [{
+        name: '2017',
+        x: res.data.dates,
+        y: res.data.acres
+      }];
+    },
+    function error() {
+      $scope.graphData = false;
+    });
   }
 ]);
 
