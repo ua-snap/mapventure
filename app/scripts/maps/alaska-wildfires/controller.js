@@ -15,9 +15,10 @@ app.controller('AlaskaWildfiresCtrl', [
   '$scope',
   'Map',
   '$http',
-  function($scope, Map, $http) {
+  '$q',
+  function($scope, Map, $http, $q) {
 
-    $scope.defaultLayers = ['active_fires'];
+    $scope.defaultLayers = ['fires_2017'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
         {
@@ -65,22 +66,6 @@ app.controller('AlaskaWildfiresCtrl', [
       zIndex: 100
     };
 
-    var FireIcon = L.Icon.extend({
-      options: {
-        iconUrl: 'images/fire.svg',
-        iconSize:     [25, 36],
-        shadowSize:   [0, 0], // no shadow!
-        iconAnchor:   [16, 34], // point of the icon which will correspond to marker's location
-        shadowAnchor: [0, 0],  // the same for the shadow
-        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
-      }
-    });
-
-    var activeFireIcon = new FireIcon();
-    var inactiveFireIcon = new FireIcon({
-      iconUrl: 'images/inactive-fire.svg'
-    });
-
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
@@ -93,217 +78,205 @@ app.controller('AlaskaWildfiresCtrl', [
 
     // This function loads the additional fire polygons
     $scope.onLoad = function(mapObj, secondMapObj) {
+    };
 
-      // Query features for the entire scope of AK (3338 coords)
-      var baseUrl = Map.geoserverUrl() + '/wfs?service=wfs&version=2.0.0&request=GetFeature&typeName=geonode:active_fires&srsName=EPSG:3338&outputFormat=application/json&bbox=';
-      var requestUrl = baseUrl +
-        '-2255938.4795,' +
-        '449981.1884,' +
-        '1646517.6368,' +
-        '2676986.5642';
-      $http.get(requestUrl).then(function success(res) {
-        $scope.fireInfoPopup = res;
-      },
-      function error() {
-        $scope.fireInfoPopup = false;
+    $scope.firePolygons = null;
+    $scope.fireMarkers = null;
+    $scope.secondFirePolygons = null;
+    $scope.secondFireMarkers = null;
+
+    // This will be the container for the fire markers & popups.
+    $scope.fireLayerGroup = L.layerGroup();
+    $scope.secondFireLayerGroup = L.layerGroup();
+
+    $scope.fetchFireData = function() {
+      return $q(function(resolve, reject) {
+
+        if($scope.firePolygons == null) {
+          // Query features for the entire scope of AK (3338 coords)
+          var requestUrl = 'http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/';
+          $http.get(requestUrl).then(function success(res) {
+            if (res) {
+              $scope.firePolygons = getGeoJsonLayer(res.data);
+              $scope.fireMarkers = getFireMarkers(res.data);
+              $scope.secondFirePolygons = getGeoJsonLayer(res.data);
+              $scope.secondFireMarkers = getFireMarkers(res.data);
+
+              // Add layers to the LayerGroup we're using here.
+              $scope.fireLayerGroup
+                .addLayer($scope.firePolygons)
+                .addLayer($scope.fireMarkers);
+              $scope.secondFireLayerGroup
+                .addLayer($scope.secondFirePolygons)
+                .addLayer($scope.secondFireMarkers);
+
+
+              resolve();
+            }
+          },
+          function error() {
+            // TODO: handle this error with a popup warning
+            $scope.fireInfoPopup = false;
+            reject();
+          });
+        } else {
+          resolve();
+        }
       });
+    }
 
-      $scope.fireMarkerCluster = L.markerClusterGroup();
-      $scope.firePolygons = L.markerClusterGroup();
-      $scope.fireInfoPopup = false;
-      $scope.$watch('fireInfoPopup', function(e) {
-        if (e) {
-          var coordsToLatLng = function(coords) {
-            var xy = {
-              x: coords[0],
-              y: coords[1]
-            };
-            var p = $scope.mapObj.options.crs.projection.unproject(xy);
-            return p;
-          };
+    $scope.getFireLayerGroup = function() {
+        return $scope.fireLayerGroup;
+    }
 
-          $scope.firePolygons = L.geoJson(e.data, {
-            // Active fire polygons are red-ish,
-            // inactive are grey.
-            style: function(feature) {
-              if (feature.properties.ACTIVENOW == 1) {
-                return {
-                  color: '#ff0000',
-                  fillColor: '#E83C18',
-                  opacity: 1,
-                  weight: 2,
-                  fillOpacity: 1
-                };
-              } else {
-                return {
-                  color: '#888888',
-                  fillColor: '#888888',
-                  opacity: 1,
-                  weight: 3,
-                  fillOpacity: 1
-                };
-              }
-            },
-            coordsToLatLng: coordsToLatLng,
-            onEachFeature: function(feature, layer) {
-              this.layer = layer;
-              this.feature = feature;
+    // For any polygon features, return a marker with a bound popup.
+    var getFireMarkers = function(geoJson) {
+      var fireMarkers = [];
+      var popupOptions = {
+        maxWidth: 200,
+      };
+      _.each(geoJson.features, function(feature) {
+        if (feature.geometry.type == 'Polygon') {
 
-              // Assign active/inactive fire icon.
-              var icon = feature.properties.ACTIVENOW == 1 ?
-                activeFireIcon : inactiveFireIcon;
+          // Reverse order from what we need
+          var coords = getCentroid2(feature.geometry.coordinates[0]);
 
-              var popupOptions = {
-                maxWidth: 200,
-              };
+          fireMarkers.push(
+            L.marker(new L.latLng([coords[1], coords[0]])).bindPopup(getFireMarkerPopupContents(
+              {
+                title: feature.properties.NAME,
+                acres: Math.ceil(feature.properties.ESTIMATEDTOTALACRES) + ' acres',
+                cause: feature.properties.GENERALCAUSE || 'Unknown',
+                updated: moment.utc(moment.unix(feature.properties.LASTUPDATETIME / 1000)).format('MMMM Do, h:mm a')
+              }, popupOptions))
+          );
+        }
+      });
+      return L.layerGroup(fireMarkers);
+    };
 
-              var popupContents = _.template('\
+    // Builds and returns a complete GeoJSON layer for display on the map
+    var getGeoJsonLayer = function(geoJson) {
+
+      return L.geoJson(geoJson, {
+        style: styleFirePolygons,
+        pointToLayer: firePointFeatureHandler
+      });
+    };
+
+    // Returns the style object for use in painting polygon outlines,
+    // red if active, grey if out.
+    // Used in getGeoJsonLayer function.
+    var styleFirePolygons = function(feature) {
+      if (feature.properties.OUTDATE == null) {
+        return {
+          color: '#ff0000',
+          fillColor: '#E83C18',
+          opacity: .8,
+          weight: 2,
+          fillOpacity: .3
+        };
+      } else {
+        return {
+          color: '#888888',
+          fillColor: '#888888',
+          opacity: .8,
+          weight: 3,
+          fillOpacity: 1
+        };
+      }
+    };
+
+    var geojsonMarkerOptions = {
+      radius: 3,
+      weight: 1,
+      opacity: .7,
+      fillOpacity: 0.2
+    };
+
+    // This handler is only used for point features (no polygon).
+    // It returns a Leaflet divIcon marker with classes
+    // for active/inactive, and if the size of the fire is
+    // less than an acre, the class 'small' is attached.
+    var firePointFeatureHandler = function(geoJson, latLng) {
+      var isActive;
+      var zIndex;
+      if(geoJson.properties.OUTDATE == null) {
+        isActive = 'active';
+        zIndex = 1000;
+      } else {
+        isActive = 'inactive';
+        zIndex = 300;
+      }
+      var acres = parseFloat(geoJson.properties.ESTIMATEDTOTALACRES).toFixed(1);
+      if(acres <= 1) {
+        isActive += ' small';
+        acres = ' ';
+      }
+      var icon = L.divIcon({
+        className: isActive,
+        html: '<span class="'+isActive+'">' + acres + '</span'
+      });
+      return L.marker(latLng, {
+        icon: icon,
+        zIndexOffset: zIndex
+      });
+    };
+
+    var getFireMarkerPopupContents = function(fireInfo) {
+      return _.template('\
 <h1><%= title %></h1>\
 <h2><%= acres %></h2>\
 <h3>Cause: <%= cause %></h3>\
 <p class="updated" data-toggle="tooltip" data-placement="bottom" title="Perimeter and status of this fire was last updated on <%= updated %>">Updated <%= updated %></p>\
               ')(
-                {
-                  title: feature.properties.NAME,
-                  acres: Math.ceil(feature.properties.ACRES) + ' acres',
-                  cause: feature.properties.GENERALCAU || 'Unknown',
-                  updated: moment.utc(
-                      moment.unix(
-                        feature.properties.UPDATETIME / 1000
-                      )
-                    ).format('MMMM Do, h:mm a')
-                }
-              );
-
-              L.marker(
-                coordsToLatLng(getCentroid2(feature.geometry.coordinates[0][0])),
-                {
-                  riseOnHover: true,
-                  icon: icon
-                })
-              .on('popupopen', function() {
-                $('p.updated').tooltip();
-              })
-              .bindPopup(popupContents, popupOptions)
-              .addTo($scope.fireMarkerCluster);
-            }
-          }).addTo($scope.mapObj);
-          $scope.mapObj.addLayer($scope.fireMarkerCluster);
+        {
+          title: fireInfo.title,
+          acres: fireInfo.acres,
+          cause: fireInfo.cause,
+          updated: fireInfo.updated
         }
-      });
+      );
     };
-
-    $scope.secondFireMarkerCluster = L.markerClusterGroup();
-    $scope.secondFirePolygons = L.markerClusterGroup();
-    $scope.$watch('fireInfoPopup', function(e) {
-      if (e) {
-        var coordsToLatLng = function(coords) {
-          var xy = {
-            x: coords[0],
-            y: coords[1]
-          };
-          var p = $scope.mapObj.options.crs.projection.unproject(xy);
-          return p;
-        };
-
-        $scope.secondFirePolygons = L.geoJson(e.data, {
-          // Active fire polygons are red-ish,
-          // inactive are grey.
-          style: function(feature) {
-            if (feature.properties.ACTIVENOW == 1) {
-              return {
-                color: '#ff0000',
-                fillColor: '#E83C18',
-                opacity: 1,
-                weight: 2,
-                fillOpacity: 1
-              };
-            } else {
-              return {
-                color: '#888888',
-                fillColor: '#888888',
-                opacity: 1,
-                weight: 3,
-                fillOpacity: 1
-              };
-            }
-          },
-          coordsToLatLng: coordsToLatLng,
-          onEachFeature: function(feature, layer) {
-            this.layer = layer;
-            this.feature = feature;
-
-            // Assign active/inactive fire icon.
-            var icon = feature.properties.ACTIVENOW == 1 ?
-              activeFireIcon : inactiveFireIcon;
-
-            var popupOptions = {
-              maxWidth: 200,
-            };
-
-            var popupContents = _.template('\
-<h1><%= title %></h1>\
-<h2><%= acres %></h2>\
-<h3>Cause: <%= cause %></h3>\
-<p class="updated" data-toggle="tooltip" data-placement="bottom" title="Perimeter and status of this fire was last updated on <%= updated %>">Updated <%= updated %></p>\
-            ')(
-              {
-                title: feature.properties.NAME,
-                acres: Math.ceil(feature.properties.ACRES) + ' acres',
-                cause: feature.properties.GENERALCAU || 'Unknown',
-                updated: moment.utc(
-                    moment.unix(
-                      feature.properties.UPDATETIME / 1000
-                    )
-                  ).format('MMMM Do, h:mm a')
-              }
-            );
-
-            L.marker(
-              coordsToLatLng(getCentroid2(feature.geometry.coordinates[0][0])),
-              {
-                riseOnHover: true,
-                icon: icon
-              })
-            .on('popupopen', function() {
-              $('p.updated').tooltip();
-            })
-            .bindPopup(popupContents, popupOptions)
-            .addTo($scope.secondFireMarkerCluster);
-          }
-        });
-      }
-    });
 
     $scope.layerOptions = function() {};
 
+    $scope.addLocalLayers = function() {
+      $scope.map.layers[0] = {
+        'name': 'fires_2017',
+        'title': 'All fires, 2017',
+        'getObject': $scope.getFireLayerGroup,
+        'local': true
+      }
+    };
+
     $scope.showMapDefinedLayer = function(layerName) {
-      if (layerName == 'active_fires') {
-        $scope.mapObj.removeLayer('active_fires');
-        $scope.mapObj.addLayer($scope.fireMarkerCluster);
-        $scope.mapObj.addLayer($scope.firePolygons);
+
+      if (layerName == 'fires_2017') {
+        $scope.fetchFireData().then(function(){
+          $scope.mapObj.addLayer($scope.fireLayerGroup);
+        });
+        return false;
       }
     };
 
     $scope.hideMapDefinedLayer = function(layerName) {
-      if (layerName == 'active_fires') {
-        $scope.mapObj.removeLayer($scope.fireMarkerCluster);
-        $scope.mapObj.removeLayer($scope.firePolygons);
+      if (layerName == 'fires_2017') {
+        $scope.mapObj.removeLayer($scope.fireLayerGroup);
       }
     };
 
     $scope.showSecondMapDefinedLayer = function(layerName) {
-      if (layerName == 'active_fires') {
-        $scope.secondMapObj.removeLayer('active_fires');
-        $scope.secondMapObj.addLayer($scope.secondFireMarkerCluster);
-        $scope.secondMapObj.addLayer($scope.secondFirePolygons);
+      if (layerName == 'fires_2017') {
+        $scope.fetchFireData().then(function(){
+          $scope.secondMapObj.addLayer($scope.secondFireLayerGroup);
+        });
       }
     };
 
     $scope.hideSecondMapDefinedLayer = function(layerName) {
-      if (layerName == 'active_fires') {
-        $scope.secondMapObj.removeLayer($scope.secondFireMarkerCluster);
-        $scope.secondMapObj.removeLayer($scope.secondFirePolygons);
+      if (layerName == 'fires_2017') {
+        $scope.secondMapObj.removeLayer($scope.secondFireLayerGroup);
       }
     };
 

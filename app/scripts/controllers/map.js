@@ -121,38 +121,41 @@ app.controller('MapCtrl', [
       );
     };
 
-      // Don't add the place layer if not defined
-      var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
-      var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
+    // Don't add the place layer if not defined
+    var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
+    var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
 
-      var firstMapOptions = angular.extend({
-          layers: layers
-        },
-        $scope.mapDefaults);
-      $scope.mapObj = L.map('snapmapapp', firstMapOptions);
-      var secondMapOptions = angular.extend({
-          layers: secondLayers
-        },
-        $scope.mapDefaults);
-      $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+    var firstMapOptions = angular.extend({
+        layers: layers
+      },
+      $scope.mapDefaults);
+    $scope.mapObj = L.map('snapmapapp', firstMapOptions);
+    var secondMapOptions = angular.extend({
+        layers: secondLayers
+      },
+      $scope.mapDefaults);
+    $scope.secondMapObj = L.map('secondmap', secondMapOptions);
 
-      // Correct default location of default Leaflet markers.
-      L.Icon.Default.imagePath = Map.leafletImagePath();
+    // Correct default location of default Leaflet markers.
+    L.Icon.Default.imagePath = Map.leafletImagePath();
 
-      // Attach event handlers per-map.
-      // The onLoad() function is defined in the
-      // instance map and attached to this common
-      // scope.
-      $scope.onLoad($scope.mapObj, $scope.secondMapObj, $scope);
+    // Attach event handlers per-map.
+    // The onLoad() function is defined in the
+    // instance map and attached to this common
+    // scope.
+    $scope.onLoad($scope.mapObj, $scope.secondMapObj, $scope);
 
-      // This checks for the 'load' event from Leaflet which means that the basemap
-      // has completely loaded.
-      baseLayer.on('load', function() {
-        $scope.showMapButtonDisabled = false;
-        $scope.$apply();
-      });
+      // Attach local layers, if any
+      $scope.addLocalLayers();
 
-      $scope.addLayers();
+    // This checks for the 'load' event from Leaflet which means that the basemap
+    // has completely loaded.
+    baseLayer.on('load', function() {
+      $scope.showMapButtonDisabled = false;
+      $scope.$apply();
+    });
+
+    $scope.addLayers();
 
       // Show default layers
       angular.forEach($scope.defaultLayers, function(layerName) {
@@ -186,29 +189,15 @@ app.controller('MapCtrl', [
       });
     };
 
-    $scope.showSecondLayer = function(layerName) {
-      $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
-      $scope.showSecondMapDefinedLayer(layerName);
-      $scope.layers[layerName].secondvisible = true;
-    };
 
-    $scope.hideSecondLayer = function(layerName) {
-      $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
-      $scope.hideSecondMapDefinedLayer(layerName);
-      $scope.layers[layerName].secondvisible = false;
-    };
-
-    $scope.toggleSecondLayer = function(layerName) {
-        if ($scope.secondMapObj.hasLayer($scope.layers[layerName].secondObj) === false) {
-          $scope.showSecondLayer(layerName);
-        } else {
-          $scope.hideSecondLayer(layerName);
-        }
-      };
+    // Maps can implement local layers, which are handled/drawn specially.
+    $scope.addLocalLayers = function() {
+      return;
+    }
 
     $scope.addLayers = function() {
 
-      var layerOptions = angular.extend({
+      var wmsLayerOptions = angular.extend({
         continuousWorld: true,
         transparent: true,
         tiled: 'true',
@@ -218,18 +207,23 @@ app.controller('MapCtrl', [
       }, $scope.layerOptions());
 
       angular.forEach($scope.map.layers, function(layer) {
-        // Strip the 'geonode:' prefix, not sure how that's used in
-        // GeoExplorer or MapLoom's versions of things.
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
 
-        layerOptions = angular.extend(layerOptions, {
-          layers: 'geonode:' + layer.name,
-          name: layer.name
-        });
+        if(true !== layer.local) {
+          angular.extend(wmsLayerOptions, {
+            layers: 'geonode:' + layer.name,
+            name: layer.name
+          });
 
-        $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, layerOptions);
-        $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, layerOptions);
+          $scope.layers[layer.name].obj = L.tileLayer.wms(GEOSERVER_WMS_URL, wmsLayerOptions);
+          $scope.layers[layer.name].secondObj = L.tileLayer.wms(GEOSERVER_WMS_URL, wmsLayerOptions);
+        } else {
+          // Flag this as nonlocal layer so other code can handle it
+          $scope.layers[layer.name].local = true;
+          $scope.layers[layer.name].obj = layer.getObject();
+          $scope.layers[layer.name].secondObj = layer.getObject();
+        }
       });
       Map.setReady(true);
     };
@@ -251,24 +245,52 @@ app.controller('MapCtrl', [
     };
 
     $scope.showLayer = function(layerName) {
-      $scope.layers[layerName].obj.addTo($scope.mapObj);
-      $scope.showMapDefinedLayer(layerName);
       $scope.layers[layerName].visible = true;
+      $scope.showMapDefinedLayer(layerName);
+      if(true !== $scope.layers[layerName].local) {
+        $scope.layers[layerName].obj.addTo($scope.mapObj);
+      }
     };
 
     $scope.hideLayer = function(layerName) {
-      $scope.mapObj.removeLayer($scope.layers[layerName].obj);
       $scope.hideMapDefinedLayer(layerName);
+      if(true !== $scope.layers[layerName].local) {
+        $scope.mapObj.removeLayer($scope.layers[layerName].obj);
+      }
       $scope.layers[layerName].visible = false;
     };
 
     $scope.toggleLayer = function(layerName) {
-      if ($scope.mapObj.hasLayer($scope.layers[layerName].obj) === false) {
+      if ($scope.layers[layerName].visible !== true) {
         $scope.showLayer(layerName);
       } else {
         $scope.hideLayer(layerName);
       }
     };
+
+    $scope.showSecondLayer = function(layerName) {
+      $scope.layers[layerName].secondvisible = true;
+      $scope.showSecondMapDefinedLayer(layerName);
+      if(true !== $scope.layers[layerName].local) {
+        $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
+      }
+    };
+
+    $scope.hideSecondLayer = function(layerName) {
+      $scope.hideSecondMapDefinedLayer(layerName);
+      if(true !== $scope.layers[layerName].local) {
+        $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
+      }
+      $scope.layers[layerName].secondvisible = false;
+    };
+
+    $scope.toggleSecondLayer = function(layerName) {
+        if ($scope.layers[layerName].secondvisible !== true) {
+          $scope.showSecondLayer(layerName);
+        } else {
+          $scope.hideSecondLayer(layerName);
+        }
+      };
 
     $scope.$on('show-layers', function(event, showLayers) {
       angular.forEach($scope.layers, function(value, layerName) {

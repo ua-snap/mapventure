@@ -26,6 +26,32 @@
     }
   }
 
+  div.leaflet-marker-icon span {
+    color: white;
+    font-weight: bold;
+    border-radius: 1em;
+    margin: 1ex;
+    padding: .5ex;
+
+    &.active {
+      background-color: rgba(200, 56, 20, .85);
+      z-index: 10000;
+    }
+
+    &.inactive {
+      background-color: rgba(100, 100, 100, .6);
+      z-index: 500;
+    }
+
+    &.small {
+      border-radius: 50%;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      z-index: 300;
+    }
+  }
+
   #splashOverviewContent {
     h1 {
       margin: 0 0 1ex 0 !important;
