@@ -144,9 +144,10 @@ app.controller('AlaskaWildfiresCtrl', [
             L.marker(new L.latLng([coords[1], coords[0]])).bindPopup(getFireMarkerPopupContents(
               {
                 title: feature.properties.NAME,
-                acres: Math.ceil(feature.properties.ESTIMATEDTOTALACRES) + ' acres',
-                cause: feature.properties.GENERALCAUSE || 'Unknown',
-                updated: moment.utc(moment.unix(feature.properties.LASTUPDATETIME / 1000)).format('MMMM Do, h:mm a')
+                acres: feature.properties.ESTIMATEDTOTALACRES,
+                cause: feature.properties.GENERALCAUSE,
+                updated: feature.properties.LASTUPDATETIME,
+                outdate: feature.properties.OUTDATE
               }, popupOptions))
           );
         }
@@ -200,6 +201,9 @@ app.controller('AlaskaWildfiresCtrl', [
     var firePointFeatureHandler = function(geoJson, latLng) {
       var isActive;
       var zIndex;
+      var popupOptions = {
+        maxWidth: 200,
+      };
       if (geoJson.properties.OUTDATE == null) {
         isActive = 'active';
         zIndex = 1000;
@@ -219,21 +223,37 @@ app.controller('AlaskaWildfiresCtrl', [
       return L.marker(latLng, {
         icon: icon,
         zIndexOffset: zIndex
-      });
+      }).bindPopup(getFireMarkerPopupContents(
+        {
+          title: geoJson.properties.NAME,
+          acres: geoJson.properties.ESTIMATEDTOTALACRES,
+          cause: geoJson.properties.GENERALCAUSE,
+          updated: geoJson.properties.LASTUPDATETIME,
+          outdate: geoJson.properties.OUTDATE
+        }, popupOptions));
     };
 
+    // fireInfo must contain properties title, acres, cause, updated, outdate
     var getFireMarkerPopupContents = function(fireInfo) {
+
+      var acres = parseFloat(fireInfo.acres).toFixed(2) + ' acres';
+      var cause = fireInfo.cause || 'Unknown';
+      var updated = moment.utc(moment.unix(fireInfo.updated / 1000)).format('MMMM Do, h:mm a');
+      var out = (fireInfo.outdate) ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
+
       return _.template('\
 <h1><%= title %></h1>\
 <h2><%= acres %></h2>\
 <h3>Cause: <%= cause %></h3>\
+<%= out %>\
 <p class="updated" data-toggle="tooltip" data-placement="bottom" title="Perimeter and status of this fire was last updated on <%= updated %>">Updated <%= updated %></p>\
               ')(
         {
           title: fireInfo.title,
-          acres: fireInfo.acres,
-          cause: fireInfo.cause,
-          updated: fireInfo.updated
+          acres: acres,
+          cause: cause,
+          updated: updated,
+          out: out
         }
       );
     };
@@ -245,7 +265,12 @@ app.controller('AlaskaWildfiresCtrl', [
         'name': 'fires_2017',
         'title': 'All fires, 2017',
         'getObject': $scope.getFireLayerGroup,
-        'local': true
+        'local': true,
+        'capability': {
+          'title': 'All fires, 2017',
+          'legend': false,
+          'abstract': 'This layer shows all fires from 2017.  Small fires (1 acre or less) are shown as dots.  Larger fires with no mapped perimeter show the number of acres of the fire.  Larger fires with mapped perimeters have a marker that can be clicked on for more information.\n\nActive fires are shown in red, and inactive fires are shown in grey.'
+        }
       });
     };
 

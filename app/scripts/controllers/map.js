@@ -415,13 +415,15 @@ app.controller('MapCtrl', [
 
       var converter = new showdown.Converter();
       var content = '<h3>' + layer.capability.title + '</h3>';
-      content = content.concat(
-        '<img id= "legend" src="' +
-        GEOSERVER_WMS_URL +
-        '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' +
-        layerName +
-        '" onerror="this.style.display=\'none\'" />'
-      );
+      if (false !== layer.capability.legend) {
+        content = content.concat(
+          '<img id= "legend" src="' +
+          GEOSERVER_WMS_URL +
+          '?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=' +
+          layerName +
+          '" onerror="this.style.display=\'none\'" />'
+        );
+      }
       content = content.concat(converter.makeHtml(layer.capability.abstract));
       $scope.sidebar.setContent(content).show();
     };
