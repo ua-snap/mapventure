@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc directive
- * @name mapventureApp.directive:mapList
+ * @name mapventureApp.directive:graph
  * @description
- * # mapList
+ * # graph
  */
 angular.module('mapventureApp')
   .directive('graph', function() {
