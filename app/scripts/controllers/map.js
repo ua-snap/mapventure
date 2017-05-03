@@ -121,41 +121,41 @@ app.controller('MapCtrl', [
       );
     };
 
-    // Don't add the place layer if not defined
-    var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
-    var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
+      // Don't add the place layer if not defined
+      var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
+      var secondLayers = secondPlaceLayer ? [secondBaseLayer, secondPlaceLayer] : [secondBaseLayer];
 
-    var firstMapOptions = angular.extend({
+      var firstMapOptions = angular.extend({
         layers: layers
       },
       $scope.mapDefaults);
-    $scope.mapObj = L.map('snapmapapp', firstMapOptions);
-    var secondMapOptions = angular.extend({
+      $scope.mapObj = L.map('snapmapapp', firstMapOptions);
+      var secondMapOptions = angular.extend({
         layers: secondLayers
       },
       $scope.mapDefaults);
-    $scope.secondMapObj = L.map('secondmap', secondMapOptions);
+      $scope.secondMapObj = L.map('secondmap', secondMapOptions);
 
-    // Correct default location of default Leaflet markers.
-    L.Icon.Default.imagePath = Map.leafletImagePath();
+      // Correct default location of default Leaflet markers.
+      L.Icon.Default.imagePath = Map.leafletImagePath();
 
-    // Attach event handlers per-map.
-    // The onLoad() function is defined in the
-    // instance map and attached to this common
-    // scope.
-    $scope.onLoad($scope.mapObj, $scope.secondMapObj, $scope);
+      // Attach event handlers per-map.
+      // The onLoad() function is defined in the
+      // instance map and attached to this common
+      // scope.
+      $scope.onLoad($scope.mapObj, $scope.secondMapObj, $scope);
 
       // Attach local layers, if any
       $scope.addLocalLayers();
 
-    // This checks for the 'load' event from Leaflet which means that the basemap
-    // has completely loaded.
-    baseLayer.on('load', function() {
+      // This checks for the 'load' event from Leaflet which means that the basemap
+      // has completely loaded.
+      baseLayer.on('load', function() {
       $scope.showMapButtonDisabled = false;
       $scope.$apply();
     });
 
-    $scope.addLayers();
+      $scope.addLayers();
 
       // Show default layers
       angular.forEach($scope.defaultLayers, function(layerName) {
@@ -189,11 +189,10 @@ app.controller('MapCtrl', [
       });
     };
 
-
     // Maps can implement local layers, which are handled/drawn specially.
     $scope.addLocalLayers = function() {
       return;
-    }
+    };
 
     $scope.addLayers = function() {
 
@@ -210,7 +209,7 @@ app.controller('MapCtrl', [
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
 
-        if(true !== layer.local) {
+        if (true !== layer.local) {
           angular.extend(wmsLayerOptions, {
             layers: 'geonode:' + layer.name,
             name: layer.name
@@ -247,14 +246,14 @@ app.controller('MapCtrl', [
     $scope.showLayer = function(layerName) {
       $scope.layers[layerName].visible = true;
       $scope.showMapDefinedLayer(layerName);
-      if(true !== $scope.layers[layerName].local) {
+      if (true !== $scope.layers[layerName].local) {
         $scope.layers[layerName].obj.addTo($scope.mapObj);
       }
     };
 
     $scope.hideLayer = function(layerName) {
       $scope.hideMapDefinedLayer(layerName);
-      if(true !== $scope.layers[layerName].local) {
+      if (true !== $scope.layers[layerName].local) {
         $scope.mapObj.removeLayer($scope.layers[layerName].obj);
       }
       $scope.layers[layerName].visible = false;
@@ -271,14 +270,14 @@ app.controller('MapCtrl', [
     $scope.showSecondLayer = function(layerName) {
       $scope.layers[layerName].secondvisible = true;
       $scope.showSecondMapDefinedLayer(layerName);
-      if(true !== $scope.layers[layerName].local) {
+      if (true !== $scope.layers[layerName].local) {
         $scope.layers[layerName].secondObj.addTo($scope.secondMapObj);
       }
     };
 
     $scope.hideSecondLayer = function(layerName) {
       $scope.hideSecondMapDefinedLayer(layerName);
-      if(true !== $scope.layers[layerName].local) {
+      if (true !== $scope.layers[layerName].local) {
         $scope.secondMapObj.removeLayer($scope.layers[layerName].secondObj);
       }
       $scope.layers[layerName].secondvisible = false;

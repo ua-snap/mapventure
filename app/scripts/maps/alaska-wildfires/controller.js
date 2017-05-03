@@ -92,7 +92,7 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.fetchFireData = function() {
       return $q(function(resolve, reject) {
 
-        if($scope.firePolygons == null) {
+        if ($scope.firePolygons == null) {
           // Query features for the entire scope of AK (3338 coords)
           var requestUrl = 'http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/';
           $http.get(requestUrl).then(function success(res) {
@@ -110,7 +110,6 @@ app.controller('AlaskaWildfiresCtrl', [
                 .addLayer($scope.secondFirePolygons)
                 .addLayer($scope.secondFireMarkers);
 
-
               resolve();
             }
           },
@@ -123,11 +122,11 @@ app.controller('AlaskaWildfiresCtrl', [
           resolve();
         }
       });
-    }
+    };
 
     $scope.getFireLayerGroup = function() {
-        return $scope.fireLayerGroup;
-    }
+      return $scope.fireLayerGroup;
+    };
 
     // For any polygon features, return a marker with a bound popup.
     var getFireMarkers = function(geoJson) {
@@ -201,7 +200,7 @@ app.controller('AlaskaWildfiresCtrl', [
     var firePointFeatureHandler = function(geoJson, latLng) {
       var isActive;
       var zIndex;
-      if(geoJson.properties.OUTDATE == null) {
+      if (geoJson.properties.OUTDATE == null) {
         isActive = 'active';
         zIndex = 1000;
       } else {
@@ -209,13 +208,13 @@ app.controller('AlaskaWildfiresCtrl', [
         zIndex = 300;
       }
       var acres = parseFloat(geoJson.properties.ESTIMATEDTOTALACRES).toFixed(1);
-      if(acres <= 1) {
+      if (acres <= 1) {
         isActive += ' small';
         acres = ' ';
       }
       var icon = L.divIcon({
         className: isActive,
-        html: '<span class="'+isActive+'">' + acres + '</span'
+        html: '<span class="' + isActive + '">' + acres + '</span'
       });
       return L.marker(latLng, {
         icon: icon,
@@ -242,18 +241,18 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.layerOptions = function() {};
 
     $scope.addLocalLayers = function() {
-      $scope.map.layers[0] = {
+      $scope.map.layers.unshift({
         'name': 'fires_2017',
         'title': 'All fires, 2017',
         'getObject': $scope.getFireLayerGroup,
         'local': true
-      }
+      });
     };
 
     $scope.showMapDefinedLayer = function(layerName) {
 
       if (layerName == 'fires_2017') {
-        $scope.fetchFireData().then(function(){
+        $scope.fetchFireData().then(function() {
           $scope.mapObj.addLayer($scope.fireLayerGroup);
         });
         return false;
@@ -268,7 +267,7 @@ app.controller('AlaskaWildfiresCtrl', [
 
     $scope.showSecondMapDefinedLayer = function(layerName) {
       if (layerName == 'fires_2017') {
-        $scope.fetchFireData().then(function(){
+        $scope.fetchFireData().then(function() {
           $scope.secondMapObj.addLayer($scope.secondFireLayerGroup);
         });
       }
