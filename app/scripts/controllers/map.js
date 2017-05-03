@@ -69,6 +69,12 @@ app.controller('MapCtrl', [
       angular.element('body').removeClass('_' + $scope.map.uuid);
     });
 
+    // Maps can override the Abstract overview of the map for
+    // the splash screen, here.
+    $scope.getAbstract = function() {
+      return null;
+    };
+
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
 
@@ -79,10 +85,14 @@ app.controller('MapCtrl', [
         {$scope: $scope}
       );
 
-      $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-        var converter = new showdown.Converter();
-        $scope.abstract = converter.makeHtml(data.abstract);
-      });
+      if($scope.getAbstract()) {
+        $scope.abstract = $scope.getAbstract();
+      } else {
+        $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
+          var converter = new showdown.Converter();
+          $scope.abstract = converter.makeHtml(data.abstract);
+        });
+      }
 
       // Attach UUID of map ID for custom CSS hooks
       // for this map.

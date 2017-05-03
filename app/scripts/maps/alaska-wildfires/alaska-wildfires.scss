@@ -26,13 +26,45 @@
     }
   }
 
-  #splashOverviewContent {
+  .splash-screen .billboard {
+    box-shadow: 0px 10px 40px 0px rgba(0,0,0,0.75);
+    min-height: 550px;
+    max-width: 930px;
+    margin: 5em auto;
+    padding: 1ex;
+    background: no-repeat url("../images/scott-fire-fade.jpg") bottom left;
     h1 {
-      margin: 0 0 1ex 0 !important;
-      padding: 0 !important;
+      width: 75%;
+      font-size: 20pt;
+      padding: 1ex;
+      color: #000;
+    }
+    p {
+      padding: 1em;
     }
     ul {
+      li {
+      }
       margin-bottom: 1em;
+    }
+    .abstractWrapper {
+      @media screen and (max-width: 930px) {
+
+      }
+      @media screen and (min-width: 931px) {
+        max-width: 50%;
+      }
+      background: rgba(255, 255, 255, .8);
+      border-radius: 1ex;
+      margin: 1em;
+    }
+    .buttons {
+      margin: 1em;
+      padding-bottom: 1em;
+      a {
+        color: white;
+        font-weight: 700;
+      }
     }
   }
 }
