@@ -206,6 +206,7 @@ module.exports = function (grunt) {
           ENV: {
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
+            FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
             LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
@@ -218,6 +219,7 @@ module.exports = function (grunt) {
           ENV: {
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
+            FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
             LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }

@@ -23,7 +23,7 @@ angular
     'angularMoment',
     'markdown'
   ])
-  .config(function($routeProvider, MapProvider, ENV) {
+  .config(function($routeProvider, MapProvider, FireProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -58,5 +58,12 @@ angular
       MapProvider.setLeafletImagePath('bower_components/leaflet/dist/images');
     } else {
       MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
+    }
+
+    if (ENV.FIRE_FEATURES_URL === undefined) {
+      // Set the default fire features URL here if environment variable isn't set during Grunt build
+      FireProvider.setFeaturesUrl('http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/');
+    } else {
+      FireProvider.setFeaturesUrl(ENV.FIRE_FEATURES_URL);
     }
   });
