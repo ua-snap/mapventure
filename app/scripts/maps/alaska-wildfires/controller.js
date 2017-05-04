@@ -66,6 +66,22 @@ app.controller('AlaskaWildfiresCtrl', [
       zIndex: 100
     };
 
+    var FireIcon = L.Icon.extend({
+      options: {
+        iconUrl: 'images/active_fire.png',
+        iconSize:     [30, 35],
+        shadowSize:   [0, 0], // no shadow!
+        iconAnchor:   [16, 34], // point of the icon which will correspond to marker's location
+        shadowAnchor: [0, 0],  // the same for the shadow
+        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+      }
+    });
+
+    var activeFireIcon = new FireIcon();
+    var inactiveFireIcon = new FireIcon({
+      iconUrl: 'images/inactive_fire.png'
+    });
+
     // Return a new instance of a base layer.
     $scope.getBaseLayer = function() {
       return new L.tileLayer.wms(Map.geoserverWmsUrl(), baseConfiguration);
@@ -139,9 +155,11 @@ app.controller('AlaskaWildfiresCtrl', [
 
           // Reverse order from what we need
           var coords = getCentroid2(feature.geometry.coordinates[0]);
+          var icon = feature.properties.OUTDATE == null ?
+                activeFireIcon : inactiveFireIcon;
 
           fireMarkers.push(
-            L.marker(new L.latLng([coords[1], coords[0]])).bindPopup(getFireMarkerPopupContents(
+            L.marker(new L.latLng([coords[1], coords[0]]),{icon: icon}).bindPopup(getFireMarkerPopupContents(
               {
                 title: feature.properties.NAME,
                 acres: feature.properties.ESTIMATEDTOTALACRES,
