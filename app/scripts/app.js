@@ -53,5 +53,10 @@ angular
       MapProvider.setGeoserverUrl(ENV.GEOSERVER_URL);
     }
 
-    MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
+    if (ENV.LEAFLET_IMAGE_PATH === undefined) {
+      // Set the default Leaflet image path here if environment variable isn't set during Grunt build
+      MapProvider.setLeafletImagePath('bower_components/leaflet/dist/images');
+    } else {
+      MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
+    }
   });
