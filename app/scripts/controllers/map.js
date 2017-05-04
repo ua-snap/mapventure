@@ -85,7 +85,7 @@ app.controller('MapCtrl', [
         {$scope: $scope}
       );
 
-      if($scope.getAbstract()) {
+      if ($scope.getAbstract()) {
         $scope.abstract = $scope.getAbstract();
       } else {
         $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {

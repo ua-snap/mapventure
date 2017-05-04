@@ -66,18 +66,18 @@ app.controller('AlaskaWildfiresCtrl', [
     };
 
     $scope.getAbstract = function() {
-     return '<h1>Wildfire is a big deal in Alaska. With this map you can see current locations and sizes of wildfires and explore them in the context of long&mdash;term fire history, land cover types, and other data layers.</h1>'+
-      '<div class="abstractWrapper">'+
-      '<p>This is not an operational management tool. For the most current fire management information, we direct you to the following websites:</p>'+
-      '<ul>'+
-      '<li><a href="https://fire.ak.blm.gov" target="_blank">Alaska Interagency Coordination Center (AICC)</a></li>'+
-      '<li><a href="http://fire.ak.blm.gov/content/aicc/sitreport/current.pdf" target="_blank">Current AICC Situation Report</a></li>'+
-      '<li><a href="https://akfireinfo.com/" target="_blank">Alaska Wildland Fire Information</a></li>'+
-      '</ul>'+
-      '<p>Full credit goes to the Alaska Fire Service, State of Alaska, and the Alaska Interagency Coordination Center for all their hard work fighting fires and maintaining the data!</p>'+
-      '</div>'+
-      '';
-    }
+      return '<h1>Wildfire is a big deal in Alaska. With this map you can see current locations and sizes of wildfires and explore them in the context of long&mdash;term fire history, land cover types, and other data layers.</h1>' +
+       '<div class="abstractWrapper">' +
+       '<p>This is not an operational management tool. For the most current fire management information, we direct you to the following websites:</p>' +
+       '<ul>' +
+       '<li><a href="https://fire.ak.blm.gov" target="_blank">Alaska Interagency Coordination Center (AICC)</a></li>' +
+       '<li><a href="http://fire.ak.blm.gov/content/aicc/sitreport/current.pdf" target="_blank">Current AICC Situation Report</a></li>' +
+       '<li><a href="https://akfireinfo.com/" target="_blank">Alaska Wildland Fire Information</a></li>' +
+       '</ul>' +
+       '<p>Full credit goes to the Alaska Fire Service, State of Alaska, and the Alaska Interagency Coordination Center for all their hard work fighting fires and maintaining the data!</p>' +
+       '</div>' +
+       '';
+    };
     var FireIcon = L.Icon.extend({
       options: {
         iconUrl: 'images/fire.svg',
