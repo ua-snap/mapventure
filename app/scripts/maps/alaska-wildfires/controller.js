@@ -66,7 +66,7 @@ app.controller('AlaskaWildfiresCtrl', [
     };
 
     $scope.getAbstract = function() {
-      return '<h1>Wildfire is a big deal in Alaska. With this map you can see current locations and sizes of wildfires and explore them in the context of long&mdash;term fire history, land cover types, and other data layers.</h1>' +
+      return '<h1>Wildfire is a big deal in Alaska. With this map you can see current locations and sizes of wildfires and explore them in the context of long-term fire history, land cover types, and other data layers.</h1>' +
        '<div class="abstractWrapper">' +
        '<p>This is not an operational management tool. For the most current fire management information, we direct you to the following websites:</p>' +
        '<ul>' +
