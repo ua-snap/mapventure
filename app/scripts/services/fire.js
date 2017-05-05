@@ -12,14 +12,14 @@ angular.module('mapventureApp')
     // URL to fire features JSON endpoint
     var FEATURES_URL;
 
-    this.setFeaturesUrl = function (path) {
+    this.setFeaturesUrl = function(path) {
       FEATURES_URL = path;
     };
 
     // Method for instantiating
     this.$get = function($http) {
       return {
-        getFeatures: function () {
+        getFeatures: function() {
           return $http.get(FEATURES_URL);
         }
       };
