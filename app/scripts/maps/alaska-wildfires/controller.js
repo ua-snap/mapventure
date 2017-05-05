@@ -111,30 +111,30 @@ app.controller('AlaskaWildfiresCtrl', [
 
         if ($scope.firePolygons == null) {
           // Query features for the entire scope of AK (3338 coords)
-          var requestUrl = Fire.featuresUrl();
-          $http.get(requestUrl).then(function success(res) {
-            if (res) {
-              $scope.firePolygons = getGeoJsonLayer(res.data);
-              $scope.fireMarkers = getFireMarkers(res.data);
-              $scope.secondFirePolygons = getGeoJsonLayer(res.data);
-              $scope.secondFireMarkers = getFireMarkers(res.data);
+          Fire.getFeatures()
+            .then(function success(res) {
+              if (res) {
+                $scope.firePolygons = getGeoJsonLayer(res.data);
+                $scope.fireMarkers = getFireMarkers(res.data);
+                $scope.secondFirePolygons = getGeoJsonLayer(res.data);
+                $scope.secondFireMarkers = getFireMarkers(res.data);
 
-              // Add layers to the LayerGroup we're using here.
-              $scope.fireLayerGroup
-                .addLayer($scope.firePolygons)
-                .addLayer($scope.fireMarkers);
-              $scope.secondFireLayerGroup
-                .addLayer($scope.secondFirePolygons)
-                .addLayer($scope.secondFireMarkers);
+                // Add layers to the LayerGroup we're using here.
+                $scope.fireLayerGroup
+                  .addLayer($scope.firePolygons)
+                  .addLayer($scope.fireMarkers);
+                $scope.secondFireLayerGroup
+                  .addLayer($scope.secondFirePolygons)
+                  .addLayer($scope.secondFireMarkers);
 
-              resolve();
-            }
-          },
-          function error() {
-            // TODO: handle this error with a popup warning
-            $scope.fireInfoPopup = false;
-            reject();
-          });
+                resolve();
+              }
+            },
+            function error() {
+              // TODO: handle this error with a popup warning
+              $scope.fireInfoPopup = false;
+              reject();
+            });
         } else {
           resolve();
         }
