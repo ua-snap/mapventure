@@ -14,9 +14,10 @@ var app = angular.module('mapventureApp');
 app.controller('AlaskaWildfiresCtrl', [
   '$scope',
   'Map',
+  'Fire',
   '$http',
   '$q',
-  function($scope, Map, $http, $q) {
+  function($scope, Map, Fire, $http, $q) {
 
     $scope.defaultLayers = ['fires_2017'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
@@ -110,7 +111,7 @@ app.controller('AlaskaWildfiresCtrl', [
 
         if ($scope.firePolygons == null) {
           // Query features for the entire scope of AK (3338 coords)
-          var requestUrl = 'http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/';
+          var requestUrl = Fire.featuresUrl();
           $http.get(requestUrl).then(function success(res) {
             if (res) {
               $scope.firePolygons = getGeoJsonLayer(res.data);
