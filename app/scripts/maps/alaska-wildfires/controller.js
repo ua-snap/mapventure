@@ -293,16 +293,19 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.layerOptions = function() {};
 
     $scope.graphLayout.title = 'Large Fire Seasons';
+    $scope.graphData = [];
 
-    $http.get('/2017.json').then(function success(res) {
-      $scope.graphData = [{
-        name: '2017',
-        x: res.data.dates,
-        y: res.data.acres
-      }];
-    },
-    function error() {
-      $scope.graphData = false;
+    ['2017', '2016'].forEach(function (year) {
+      Fire.getTimeSeries(year).then(function success(res) {
+        $scope.graphData.push({
+          name: year,
+          x: res.data.dates,
+          y: res.data.acres
+        });
+      },
+      function error() {
+        // TODO: What to do if one or more data sets fails to load?
+      });
     });
 
     $scope.addLocalLayers = function() {

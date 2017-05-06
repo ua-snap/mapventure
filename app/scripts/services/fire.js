@@ -21,6 +21,9 @@ angular.module('mapventureApp')
       return {
         getFeatures: function() {
           return $http.get(FEATURES_URL);
+        },
+        getTimeSeries: function(year) {
+          return $http.get('/' + year + '.json');
         }
       };
     };
