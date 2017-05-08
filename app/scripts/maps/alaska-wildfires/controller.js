@@ -295,16 +295,19 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.graphLayout.title = 'Large Fire Seasons';
     $scope.graphData = [];
 
-    ['2017', '2016'].forEach(function (year) {
-      Fire.getTimeSeries(year).then(function success(res) {
-        $scope.graphData.push({
-          name: year,
-          x: res.data.dates,
-          y: res.data.acres
+    // Sort provided years by most acres burned in descending order.
+    Fire.getHighestYears(['2016', '2017']).then(function(years) {
+      years.forEach(function(year) {
+        Fire.getTimeSeries(year).then(function success(res) {
+          $scope.graphData.push({
+            name: year,
+            x: res.data.dates,
+            y: res.data.acres
+          });
+        },
+        function error() {
+          // TODO: What to do if one or more data sets fails to load?
         });
-      },
-      function error() {
-        // TODO: What to do if one or more data sets fails to load?
       });
     });
 
