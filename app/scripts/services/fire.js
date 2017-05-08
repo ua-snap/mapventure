@@ -25,7 +25,7 @@ angular.module('mapventureApp')
         getTimeSeries: function(year) {
           return $http.get('/' + year + '.json');
         },
-        getHighestYears: function(years) {
+        getHighestYears: function(years, numberOfYears) {
           // Pair each year with its total acres burned (last day of data).
           // Create an array of these pairings (an array of arrays) for sorting
           // in the next step.
@@ -45,9 +45,12 @@ angular.module('mapventureApp')
 
             // With the pairings now sorted, return a new array of just the
             // sorted years without their acres burned values.
-            return yearAreaArray.map(function(yearWithArea) {
+            var sortedYears = yearAreaArray.map(function(yearWithArea) {
               return yearWithArea[0];
             });
+
+            // Return a subset of sorted years.
+            return sortedYears.slice(0, numberOfYears);
           });
         }
       };

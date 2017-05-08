@@ -296,7 +296,7 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.graphData = [];
 
     // Sort provided years by most acres burned in descending order.
-    Fire.getHighestYears(['2016', '2017']).then(function(years) {
+    Fire.getHighestYears(['2016', '2017'], 2).then(function(years) {
       years.forEach(function(year) {
         Fire.getTimeSeries(year).then(function success(res) {
           $scope.graphData.push({
