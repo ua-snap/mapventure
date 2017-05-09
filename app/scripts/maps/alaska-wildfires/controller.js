@@ -337,29 +337,16 @@ app.controller('AlaskaWildfiresCtrl', [
     });
 
     $scope.graphData = [];
-
-    var currentYear = moment().format('YYYY');
-
-    // Get the five years with the most acres burned.
-    var topYears = Fire.getHighestYears(_.range(2004, currentYear - 1), 5);
-
-    topYears.then(function(years) {
-      // Add the current year to the list of years to graph, regardless of
-      // how it ranks amongst the years with the "most acres burned".
-      years.push(currentYear);
-
-      years.forEach(function(year) {
-        Fire.getTimeSeries(year).then(function success(res) {
+    Fire.getTimeSeries().then(function(timeSeries) {
+      for (var year in timeSeries) {
+        if (timeSeries.hasOwnProperty(year)) {
           $scope.graphData.push({
             name: year,
-            x: res.data.dates,
-            y: res.data.acres
+            x: timeSeries[year].dates,
+            y: timeSeries[year].acres
           });
-        },
-        function error() {
-          // TODO: What to do if one or more data sets fails to load?
-        });
-      });
+        }
+      }
     });
 
     $scope.addLocalLayers = function() {

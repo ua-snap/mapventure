@@ -19,38 +19,33 @@ angular.module('mapventureApp')
     // Method for instantiating
     this.$get = function($http) {
       return {
+        // This fetches current fire positions from a GeoJSON endpoint.
         getFeatures: function() {
           return $http.get(FEATURES_URL);
         },
-        getTimeSeries: function(year) {
-          return $http.get('/' + year + '.json');
-        },
-        getHighestYears: function(years, numberOfYears) {
-          // Pair each year with its total acres burned (last day of data).
-          // Create an array of these pairings (an array of arrays) for sorting
-          // in the next step.
-          var yearsWithArea = years.map(function(year) {
-            return $http.get('/' + year + '.json').then(function(res) {
-              return [year, res.data.acres.slice(-1)[0]];
-            });
+        // This fetches JSON daily time series data from the five historical
+        // years with the most acres burned. It also fetches current acres
+        // burned data for the current year and combines the historical years
+        // and current year into a single dataset.
+        getTimeSeries: function() {
+          var historical = $http.get('/historical.json').then(function(res) {
+            return res.data;
+          }, function(err) {
+            // TODO: What do we do if this fails to load?
           });
 
-          // Wait for all the HTTP requests / pairings to complete in the
-          // previous step before sorting our array of arrays.
-          return Promise.all(yearsWithArea).then(function(yearAreaArray) {
-            // Sort in descending order.
-            yearAreaArray.sort(function(a, b) {
-              return b[1] - a[1];
-            });
+          var current = $http.get('/current.json').then(function(res) {
+            return res.data;
+          }, function(err) {
+            // TODO: What do we do if this fails to load?
+          });
 
-            // With the pairings now sorted, return a new array of just the
-            // sorted years without their acres burned values.
-            var sortedYears = yearAreaArray.map(function(yearWithArea) {
-              return yearWithArea[0];
+          return Promise.all([historical, current]).then(function(datasets) {
+            var timeSeries = {};
+            datasets.forEach(function(dataset) {
+              $.extend(timeSeries, dataset);
             });
-
-            // Return a subset of sorted years.
-            return sortedYears.slice(0, numberOfYears);
+            return timeSeries;
           });
         }
       };
