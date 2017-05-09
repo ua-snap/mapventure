@@ -24,16 +24,16 @@ angular.module('mapventureApp')
           },
           {
             title: 'This season&rsquo;s fires',
-            element: '#active_fires',
+            element: '#fires_2017',
             content: 'This map uses hourly data from the Alaska Interagency Coordination Center and shows only fires that have mapped perimeters. If you want to see every fire, check out the <a href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire" target="_blank">AICC’s web map</a>.',
             onShow: function() {
-              $('#active_fires')
+              $('#fires_2017')
                 .addClass('bling')
                 .removeClass('no-bling');
-              scope.$broadcast('show-layers', ['active_fires']);
+              scope.$broadcast('show-layers', ['fires_2017']);
             },
             onHide: function() {
-              $('#active_fires')
+              $('#fires_2017')
                 .removeClass('bling')
                 .addClass('no-bling');
             }
