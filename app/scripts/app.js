@@ -1,5 +1,8 @@
 'use strict';
 
+// Will be updated by `grunt-version` task to current version in package.json
+var version = '1.0.0-beta';
+
 /**
  * @ngdoc overview
  * @name mapventureApp
@@ -38,6 +41,8 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+    $('.version .number').text(version);
 
     if (ENV.GEONODE_URL === undefined) {
       // Set the default GeoNode URL here if environment variable isn't set during Grunt build
