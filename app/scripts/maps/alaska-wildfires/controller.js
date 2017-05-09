@@ -297,6 +297,9 @@ app.controller('AlaskaWildfiresCtrl', [
       titlefont: {
         size: 20
       },
+      font: {
+        family: 'Lato'
+      },
       margin: {
         b: 120,
         l: 120,
