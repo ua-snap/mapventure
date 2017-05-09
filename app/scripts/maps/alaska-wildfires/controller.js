@@ -292,47 +292,45 @@ app.controller('AlaskaWildfiresCtrl', [
 
     $scope.layerOptions = function() {};
 
-    $scope.graphLayout.title = 'Large Fire Seasons';
-
-    $scope.graphLayout.titlefont = {
-      size: 20
-    };
-
-    $scope.graphLayout.xaxis = {
-      title: 'Date',
+    $.extend($scope.graphLayout, {
+      title: 'Large Fire Seasons',
       titlefont: {
-        size: 18
+        size: 20
       },
-      type: 'category',
-      ticks: 'array',
-      tickvals: [
-        'May 1',
-        'June 1',
-        'July 1',
-        'August 1',
-        'September 1'
-      ],
-      ticktext: [
-        'May',
-        'June',
-        'July',
-        'August',
-        'September'
-      ]
-    };
-
-    $scope.graphLayout.yaxis = {
-      title: 'Cumulative Acres Burned',
-      titlefont: {
-        size: 18
+      margin: {
+        b: 120,
+        l: 120,
+        r: 120
+      },
+      xaxis: {
+        title: 'Date',
+        titlefont: {
+          size: 18
+        },
+        type: 'category',
+        ticks: 'array',
+        tickvals: [
+          'May 1',
+          'June 1',
+          'July 1',
+          'August 1',
+          'September 1'
+        ],
+        ticktext: [
+          'May',
+          'June',
+          'July',
+          'August',
+          'September'
+        ]
+      },
+      yaxis: {
+        title: 'Cumulative Acres Burned',
+        titlefont: {
+          size: 18
+        }
       }
-    };
-
-    $scope.graphLayout.margin = {
-      b: 120,
-      l: 120,
-      r: 120
-    };
+    });
 
     $scope.graphData = [];
 

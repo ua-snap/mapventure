@@ -13,6 +13,7 @@ angular.module('mapventureApp')
       restrict: 'E',
       controller: ['$scope', function ($scope) {
         $scope.graphVisible = false;
+        $scope.graphLayout = {};
 
         // Hard pixel values are needed to seamlessly fill <div> space.
         // This calculates the pixels based on our CSS rules:
@@ -21,10 +22,10 @@ angular.module('mapventureApp')
         //   width: 80%;
         // }
         // TODO: Explore better ways to do this in future versions of Plotly.
-        $scope.graphLayout = {
+        $.extend($scope.graphLayout, {
           width: $('body').width() * 0.8 - 64,
           height: $('body').height() * 0.8 - 64
-        };
+        });
 
         $scope.graphOptions = {
           showLink: false,
