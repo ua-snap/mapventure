@@ -179,10 +179,19 @@ body, .middle, .middle .container-fluid {
   }
 }
 
-.footer span.identity {
-  float: right;
-  display: inline-block;
-  padding-right: 1em;
+.footer {
+
+  & span.version span.number {
+    display: inline-block;
+    padding-right: 1em;
+    color: #333;
+  }
+
+  & span.identity {
+    float: right;
+    display: inline-block;
+    padding-right: 1em;
+  }
 }
 
 .tour-tour.popover {
