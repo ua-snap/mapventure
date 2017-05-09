@@ -12,8 +12,19 @@ angular.module('mapventureApp')
     // URL to fire features JSON endpoint
     var FEATURES_URL;
 
+    var HISTORICAL_DATA;
+    var CURRENT_DATA;
+
     this.setFeaturesUrl = function(path) {
       FEATURES_URL = path;
+    };
+
+    this.setHistoricalData = function(path) {
+      HISTORICAL_DATA = path;
+    };
+
+    this.setCurrentData = function(path) {
+      CURRENT_DATA = path;
     };
 
     // Method for instantiating
@@ -28,13 +39,13 @@ angular.module('mapventureApp')
         // burned data for the current year and combines the historical years
         // and current year into a single dataset.
         getTimeSeries: function() {
-          var historical = $http.get('/historical.json').then(function(res) {
+          var historical = $http.get(HISTORICAL_DATA).then(function(res) {
             return res.data;
           }, function(err) {
             // TODO: What do we do if this fails to load?
           });
 
-          var current = $http.get('/current.json').then(function(res) {
+          var current = $http.get(CURRENT_DATA).then(function(res) {
             return res.data;
           }, function(err) {
             // TODO: What do we do if this fails to load?
