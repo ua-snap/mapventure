@@ -336,8 +336,16 @@ app.controller('AlaskaWildfiresCtrl', [
 
     $scope.graphData = [];
 
-    // Sort provided years by most acres burned in descending order.
-    Fire.getHighestYears(['2016', '2017'], 2).then(function(years) {
+    var currentYear = moment().format('YYYY');
+
+    // Get the five years with the most acres burned.
+    var topYears = Fire.getHighestYears(_.range(2004, currentYear - 1), 5);
+
+    topYears.then(function(years) {
+      // Add the current year to the list of years to graph, regardless of
+      // how it ranks amongst the years with the "most acres burned".
+      years.push(currentYear);
+
       years.forEach(function(year) {
         Fire.getTimeSeries(year).then(function success(res) {
           $scope.graphData.push({
