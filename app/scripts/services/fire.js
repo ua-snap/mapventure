@@ -9,22 +9,18 @@
  */
 angular.module('mapventureApp')
   .provider('Fire', function FireProvider() {
-    // URL to fire features JSON endpoint
+    // URL to fire features GeoJSON endpoint
     var FEATURES_URL;
 
-    var HISTORICAL_DATA;
-    var CURRENT_DATA;
+    // URL to fire time series JSON endpoint
+    var TIME_SERIES_URL;
 
     this.setFeaturesUrl = function(path) {
       FEATURES_URL = path;
     };
 
-    this.setHistoricalData = function(path) {
-      HISTORICAL_DATA = path;
-    };
-
-    this.setCurrentData = function(path) {
-      CURRENT_DATA = path;
+    this.setTimeSeriesUrl = function(path) {
+      TIME_SERIES_URL = path;
     };
 
     // Method for instantiating
@@ -34,29 +30,14 @@ angular.module('mapventureApp')
         getFeatures: function() {
           return $http.get(FEATURES_URL);
         },
-        // This fetches JSON daily time series data from the five historical
-        // years with the most acres burned. It also fetches current acres
-        // burned data for the current year and combines the historical years
-        // and current year into a single dataset.
+        // This fetches acres-burned time series data from a JSON endpoint,
+        // which provides historical daily data from the most-burned years,
+        // as well as the daily-updated data for the current year.
         getTimeSeries: function() {
-          var historical = $http.get(HISTORICAL_DATA).then(function(res) {
+          return $http.get(TIME_SERIES_URL).then(function(res) {
             return res.data;
           }, function(err) {
             // TODO: What do we do if this fails to load?
-          });
-
-          var current = $http.get(CURRENT_DATA).then(function(res) {
-            return res.data;
-          }, function(err) {
-            // TODO: What do we do if this fails to load?
-          });
-
-          return Promise.all([historical, current]).then(function(datasets) {
-            var timeSeries = {};
-            datasets.forEach(function(dataset) {
-              $.extend(timeSeries, dataset);
-            });
-            return timeSeries;
           });
         }
       };

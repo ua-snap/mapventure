@@ -68,17 +68,10 @@ angular
       FireProvider.setFeaturesUrl(ENV.FIRE_FEATURES_URL);
     }
 
-    if (ENV.HISTORICAL_FIRE_DATA === undefined) {
-      // Set the default historical fire series file path here if environment variable isn't set during Grunt build
-      FireProvider.setHistoricalData('/data/alaska-wildfires/time-series/historical.json');
+    if (ENV.FIRE_TIME_SERIES_URL === undefined) {
+      // Set the default fire time series URL here if environment variable isn't set during Grunt build
+      FireProvider.setTimeSeriesUrl('http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/fire-time-series');
     } else {
-      FireProvider.setHistoricalData(ENV.HISTORICAL_FIRE_DATA);
-    }
-
-    if (ENV.CURRENT_FIRE_DATA === undefined) {
-      // Set the default current fire series file path here if environment variable isn't set during Grunt build
-      FireProvider.setCurrentData('/data/alaska-wildfires/time-series/current.json');
-    } else {
-      FireProvider.setCurrentData(ENV.CURRENT_FIRE_DATA);
+      FireProvider.setTimeSeriesUrl(ENV.FIRE_TIME_SERIES_URL);
     }
   });
