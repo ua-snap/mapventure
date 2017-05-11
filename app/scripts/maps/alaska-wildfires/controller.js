@@ -291,6 +291,63 @@ app.controller('AlaskaWildfiresCtrl', [
     };
 
     $scope.layerOptions = function() {};
+    $scope.graphButtonText = 'Graph large fire seasons';
+
+    $.extend($scope.graphLayout, {
+      title: 'Large Fire Seasons',
+      titlefont: {
+        size: 20
+      },
+      font: {
+        family: 'Lato'
+      },
+      margin: {
+        b: 120,
+        l: 120,
+        r: 120
+      },
+      xaxis: {
+        title: 'Date',
+        titlefont: {
+          size: 18
+        },
+        type: 'category',
+        ticks: 'array',
+        tickvals: [
+          'May 1',
+          'June 1',
+          'July 1',
+          'August 1',
+          'September 1'
+        ],
+        ticktext: [
+          'May',
+          'June',
+          'July',
+          'August',
+          'September'
+        ]
+      },
+      yaxis: {
+        title: 'Cumulative Acres Burned',
+        titlefont: {
+          size: 18
+        }
+      }
+    });
+
+    $scope.graphData = [];
+    Fire.getTimeSeries().then(function(timeSeries) {
+      for (var year in timeSeries) {
+        if (timeSeries.hasOwnProperty(year)) {
+          $scope.graphData.push({
+            name: year,
+            x: timeSeries[year].dates,
+            y: timeSeries[year].acres
+          });
+        }
+      }
+    });
 
     $scope.addLocalLayers = function() {
       $scope.map.layers.unshift({

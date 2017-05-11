@@ -2,6 +2,7 @@
 
 <tour></tour>
 <map-splash-screen></map-splash-screen>
+<graph></graph>
 
 <menu-toggle></menu-toggle>
 
@@ -61,6 +62,11 @@
       <span class="glyphicon glyphicon-question-sign"></span>
       &nbsp;
       Take a tour of this map&hellip;
+    </label>
+    <label class="btn btn-primary" ng-click="showGraph()" ng-show="graphButtonText">
+      <span class="glyphicon glyphicon-signal"></span>
+      &nbsp;
+      {{ graphButtonText }}&hellip;
     </label>
   </div>
 </div>
