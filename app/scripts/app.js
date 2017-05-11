@@ -63,14 +63,14 @@ angular
 
     if (ENV.FIRE_FEATURES_URL === undefined) {
       // Set the default fire features URL here if environment variable isn't set during Grunt build
-      FireProvider.setFeaturesUrl('http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/');
+      FireProvider.setFeaturesUrl('http://aicc-fire-api.openshift.snap.uaf.edu/');
     } else {
       FireProvider.setFeaturesUrl(ENV.FIRE_FEATURES_URL);
     }
 
     if (ENV.FIRE_TIME_SERIES_URL === undefined) {
       // Set the default fire time series URL here if environment variable isn't set during Grunt build
-      FireProvider.setTimeSeriesUrl('http://mv-aicc-fire-shim-mv-aicc-fire-shim.openshift.snap.uaf.edu/fire-time-series');
+      FireProvider.setTimeSeriesUrl('http://aicc-fire-api.openshift.snap.uaf.edu/fire-time-series');
     } else {
       FireProvider.setTimeSeriesUrl(ENV.FIRE_TIME_SERIES_URL);
     }
