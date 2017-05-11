@@ -294,7 +294,7 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.graphButtonText = 'Graph large fire seasons';
 
     $.extend($scope.graphLayout, {
-      title: 'Large Fire Seasons',
+      title: 'Cumulative Acres Burned',
       titlefont: {
         size: 20
       },
@@ -302,15 +302,10 @@ app.controller('AlaskaWildfiresCtrl', [
         family: 'Lato'
       },
       margin: {
-        b: 120,
         l: 120,
         r: 120
       },
       xaxis: {
-        title: 'Date',
-        titlefont: {
-          size: 18
-        },
         type: 'category',
         ticks: 'array',
         tickvals: [
