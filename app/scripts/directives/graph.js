@@ -13,7 +13,7 @@ angular.module('mapventureApp')
       restrict: 'E',
       controller: ['$scope', '$window', '$timeout', function($scope, $window, $timeout) {
         $scope.graphVisible = false;
-        $scope.graphLayout = {};
+        $scope.graphLayout = $scope.graphLayout || {};
 
         function resizeGraph() {
           $.extend($scope.graphLayout, {

@@ -291,7 +291,9 @@ app.controller('AlaskaWildfiresCtrl', [
     };
 
     $scope.layerOptions = function() {};
+
     $scope.graphButtonText = 'Graph large fire seasons';
+    $scope.graphLayout = $scope.graphLayout || {};
 
     $.extend($scope.graphLayout, {
       title: 'Large Fire Seasons',
