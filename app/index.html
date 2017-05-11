@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="bower_components/bootstrap-tour/build/css/bootstrap-tour-standalone.css" />
     <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog.css" />
     <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-default.css" />
-    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -34,7 +32,7 @@
 
     <div class="footer navbar-fixed-bottom">
       <div class="container-fluid">
-        <p><a ng-href="#/">See other maps</a> <span class="identity">Copyright &copy; 2016 SNAP / IARC / UAF</span></p>
+        <p><a ng-href="#/">See other maps</a> <span class="identity"><span class="version">V<span class="number"></span></span> Copyright &copy; <script>var today = new Date; var year = today.getFullYear(); document.write(year);</script> SNAP / IARC / UAF</span></p>
       </div>
     </div>
 
@@ -79,7 +77,8 @@
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular-moment/angular-moment.js"></script>
     <script src="bower_components/angular-markdown-filter/markdown.js"></script>
-    <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="bower_components/plotly.js/dist/plotly.js"></script>
+    <script src="bower_components/angular-plotly/src/angular-plotly.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -89,9 +88,13 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/map.js"></script>
         <script src="scripts/directives/maplist.js"></script>
-        <script src="scripts/services/map.js"></script>
         <script src="scripts/directives/tour.js"></script>
+        <script src="scripts/directives/graph.js"></script>
+        <script src="scripts/directives/menu-toggle.js"></script>
+        <script src="scripts/directives/map-splash-screen.js"></script>
+        <script src="scripts/services/map.js"></script>
         <script src="scripts/services/mapregistry.js"></script>
+        <script src="scripts/services/fire.js"></script>
         <script src="scripts/maps/alaska-wildfires/controller.js"></script>
         <script src="scripts/maps/alaska-wildfires/tour.js"></script>
         <script src="scripts/maps/default/controller.js"></script>
@@ -100,8 +103,6 @@
         <script src="scripts/maps/iam/tour.js"></script>
         <script src="scripts/maps/snap-rcp/controller.js"></script>
         <script src="scripts/maps/snap-rcp/tour.js"></script>
-        <script src="scripts/directives/menu-toggle.js"></script>
-        <script src="scripts/directives/map-splash-screen.js"></script>
         <!-- endbuild -->
 
 </body>

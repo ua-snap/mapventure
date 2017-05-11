@@ -1,5 +1,8 @@
 'use strict';
 
+// Will be updated by `grunt-version` task to current version in package.json
+var version = '1.0.0-beta';
+
 /**
  * @ngdoc overview
  * @name mapventureApp
@@ -21,9 +24,10 @@ angular
     'ui.bootstrap',
     'config',
     'angularMoment',
-    'markdown'
+    'markdown',
+    'plotly'
   ])
-  .config(function($routeProvider, MapProvider, ENV) {
+  .config(function($routeProvider, MapProvider, FireProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -39,6 +43,8 @@ angular
         redirectTo: '/'
       });
 
+    $('.version .number').text(version);
+
     if (ENV.GEONODE_URL === undefined) {
       // Set the default GeoNode URL here if environment variable isn't set during Grunt build
       MapProvider.setGeonodeUrl('http://localhost:8000');
@@ -53,5 +59,24 @@ angular
       MapProvider.setGeoserverUrl(ENV.GEOSERVER_URL);
     }
 
-    MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
+    if (ENV.LEAFLET_IMAGE_PATH === undefined) {
+      // Set the default Leaflet image path here if environment variable isn't set during Grunt build
+      MapProvider.setLeafletImagePath('bower_components/leaflet/dist/images');
+    } else {
+      MapProvider.setLeafletImagePath(ENV.LEAFLET_IMAGE_PATH);
+    }
+
+    if (ENV.FIRE_FEATURES_URL === undefined) {
+      // Set the default fire features URL here if environment variable isn't set during Grunt build
+      FireProvider.setFeaturesUrl('http://aicc-fire-api.openshift.snap.uaf.edu/');
+    } else {
+      FireProvider.setFeaturesUrl(ENV.FIRE_FEATURES_URL);
+    }
+
+    if (ENV.FIRE_TIME_SERIES_URL === undefined) {
+      // Set the default fire time series URL here if environment variable isn't set during Grunt build
+      FireProvider.setTimeSeriesUrl('http://aicc-fire-api.openshift.snap.uaf.edu/fire-time-series');
+    } else {
+      FireProvider.setTimeSeriesUrl(ENV.FIRE_TIME_SERIES_URL);
+    }
   });

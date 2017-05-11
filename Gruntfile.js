@@ -13,6 +13,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks("grunt-jscs");
   grunt.loadNpmTasks('grunt-sass-globbing');
+  grunt.loadNpmTasks('grunt-version');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -32,6 +33,12 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+
+    version: {
+      defaults: {
+        src: ['app/scripts/app.js']
+      }
+    },
 
     // Project settings
     yeoman: appConfig,
@@ -206,6 +213,7 @@ module.exports = function (grunt) {
           ENV: {
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
+            FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
             LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
@@ -218,6 +226,7 @@ module.exports = function (grunt) {
           ENV: {
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
+            FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
             LEAFLET_IMAGE_PATH: process.env.MV_LEAFLET_IMAGE_PATH
           }
         }
@@ -528,6 +537,7 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'jscs',
+      'version',
       'sass_globbing',
       'concurrent:server',
       'autoprefixer:server',
@@ -556,6 +566,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'jscs',
+    'version',
     'useminPrepare',
     'ngconstant:development',
     'ngconstant:production',

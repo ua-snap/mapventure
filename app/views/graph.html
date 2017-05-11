@@ -1,0 +1,8 @@
+<div class="graph-screen" ng-show="graphVisible">
+  <div>
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true" ng-click="hideGraph()">&times;</span>
+  </button>
+  <plotly plotly-data="graphData" plotly-layout="graphLayout" plotly-options="graphOptions"></plotly>
+  </div>
+</div>
