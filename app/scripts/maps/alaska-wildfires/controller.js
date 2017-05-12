@@ -388,11 +388,19 @@ app.controller('AlaskaWildfiresCtrl', [
     Fire.getTimeSeries().then(function(timeSeries) {
       for (var year in timeSeries) {
         if (timeSeries.hasOwnProperty(year)) {
-          $scope.graphData.push({
+          var yearData = {
             name: year,
             x: timeSeries[year].dates,
             y: timeSeries[year].acres
-          });
+          };
+
+          if (year === moment().format('YYYY')) {
+            yearData.mode = 'lines+markers';
+          } else {
+            yearData.mode = 'lines';
+          }
+
+          $scope.graphData.push(yearData);
         }
       }
     });
