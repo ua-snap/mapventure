@@ -44,11 +44,11 @@ angular.module('mapventureApp')
           displayLogo: false
         };
 
-        $scope.showGraph = function () {
+        $scope.showGraph = function() {
           $scope.graphVisible = true;
         };
 
-        $scope.hideGraph = function () {
+        $scope.hideGraph = function() {
           $scope.graphVisible = false;
         };
       }]
