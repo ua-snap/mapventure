@@ -122,6 +122,33 @@ angular.module('mapventureApp')
             }
           },
           {
+            title: 'Current vs. historical graph',
+            element: '#showGraph',
+            content: 'Display a time series graph showing the number of acres burned for the largest fire years compared to current year.',
+            onShow: function() {
+              $('#showGraph')
+                .addClass('zoom')
+                .removeClass('no-zoom');
+            },
+            onHide: function() {
+              $('#showGraph')
+                .addClass('no-zoom')
+                .removeClass('zoom');
+            }
+          },
+          {
+            title: 'Large fire seasons',
+            element: '.js-plotly-plot .legend',
+            content: 'This chart includes the largest fire seasons on record since 2004 and the current year for comparison.',
+            placement: 'left',
+            onShow: function() {
+              scope.$broadcast('show-graph', []);
+            },
+            onHide: function() {
+              scope.$broadcast('hide-graph', []);
+            }
+          },
+          {
             title: 'End of tour!',
             orphan: true,
             content: 'Thanks for checking this out!  This map is for general information only. If you need the newest information on current fires, <a href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire" target="_blank">visit the AICC web map</a>.'
