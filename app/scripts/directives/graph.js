@@ -41,7 +41,13 @@ angular.module('mapventureApp')
 
         $scope.graphOptions = {
           showLink: false,
-          displayLogo: false
+          displayLogo: false,
+          modeBarButtonsToRemove: [
+           'sendDataToCloud',
+           'select2d',
+           'lasso2d',
+           'resetScale2d'
+          ]
         };
 
         $scope.showGraph = function() {
