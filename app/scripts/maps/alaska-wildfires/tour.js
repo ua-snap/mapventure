@@ -122,6 +122,18 @@ angular.module('mapventureApp')
             }
           },
           {
+            title: 'How does this year compare to others?',
+            element: '.js-plotly-plot .legend',
+            content: 'This graph compares this year to all of the years when more than 1 million acres burned since daily records began in 2004. Are we on track for another big year?',
+            placement: 'left',
+            onShow: function() {
+              scope.$broadcast('show-graph', []);
+            },
+            onHide: function() {
+              scope.$broadcast('hide-graph', []);
+            }
+          },
+          {
             title: 'End of tour!',
             orphan: true,
             content: 'Thanks for checking this out!  This map is for general information only. If you need the newest information on current fires, <a href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire" target="_blank">visit the AICC web map</a>.'
