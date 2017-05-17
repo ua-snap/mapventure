@@ -291,59 +291,6 @@ app.controller('AlaskaWildfiresCtrl', [
     };
 
     $scope.layerOptions = function() {};
-    $scope.graphButtonText = 'Graph large fire seasons';
-    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since records began in 2004. Source data is from the <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
-
-    $.extend($scope.graphLayout, {
-      title: 'Large Fire Seasons',
-      titlefont: {
-        size: 20
-      },
-      font: {
-        family: 'Lato'
-      },
-      xaxis: {
-        title: 'Date',
-        titlefont: {
-          size: 18
-        },
-        type: 'category',
-        ticks: 'array',
-        tickvals: [
-          'May 1',
-          'June 1',
-          'July 1',
-          'August 1',
-          'September 1'
-        ],
-        ticktext: [
-          'May',
-          'June',
-          'July',
-          'August',
-          'September'
-        ]
-      },
-      yaxis: {
-        title: 'Cumulative Acres Burned',
-        titlefont: {
-          size: 18
-        }
-      }
-    });
-
-    $scope.graphData = [];
-    Fire.getTimeSeries().then(function(timeSeries) {
-      for (var year in timeSeries) {
-        if (timeSeries.hasOwnProperty(year)) {
-          $scope.graphData.push({
-            name: year,
-            x: timeSeries[year].dates,
-            y: timeSeries[year].acres
-          });
-        }
-      }
-    });
 
     $scope.addLocalLayers = function() {
       $scope.map.layers.unshift({
@@ -389,6 +336,70 @@ app.controller('AlaskaWildfiresCtrl', [
       }
     };
 
+    // Acres-burned time series graph configuration
+    $scope.graphButtonText = 'Graph large fire seasons';
+    $scope.graphLayout = $scope.graphLayout || {};
+    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since records began in 2004. Source data is from the <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
+
+    $.extend($scope.graphLayout, {
+      title: 'Large Fire Seasons',
+      titlefont: {
+        size: 20
+      },
+      font: {
+        family: 'Lato'
+      },
+      xaxis: {
+        title: 'Date',
+        titlefont: {
+          size: 18
+        },
+        type: 'category',
+        ticks: 'array',
+        tickvals: [
+          'May 1',
+          'June 1',
+          'July 1',
+          'August 1',
+          'September 1'
+        ],
+        ticktext: [
+          'May',
+          'June',
+          'July',
+          'August',
+          'September'
+        ]
+      },
+      yaxis: {
+        title: 'Cumulative Acres Burned',
+        titlefont: {
+          size: 18
+        }
+      }
+    });
+
+    // Acres-burned time series graph population
+    $scope.graphData = [];
+    Fire.getTimeSeries().then(function(timeSeries) {
+      for (var year in timeSeries) {
+        if (timeSeries.hasOwnProperty(year)) {
+          var yearData = {
+            name: year,
+            x: timeSeries[year].dates,
+            y: timeSeries[year].acres
+          };
+
+          if (year === moment().format('YYYY')) {
+            yearData.mode = 'lines+markers';
+          } else {
+            yearData.mode = 'lines';
+          }
+
+          $scope.graphData.push(yearData);
+        }
+      }
+    });
   }
 ]);
 
