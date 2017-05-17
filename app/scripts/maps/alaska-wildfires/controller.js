@@ -292,6 +292,51 @@ app.controller('AlaskaWildfiresCtrl', [
 
     $scope.layerOptions = function() {};
 
+    $scope.addLocalLayers = function() {
+      $scope.map.layers.unshift({
+        'name': 'fires_2017',
+        'title': 'All fires, 2017',
+        'getObject': $scope.getFireLayerGroup,
+        'local': true,
+        'capability': {
+          'title': 'All fires, 2017',
+          'legend': false,
+          'abstract': 'This layer shows all fires from 2017.  Small fires (1 acre or less) are shown as dots.  Larger fires with no mapped perimeter show the number of acres of the fire.  Larger fires with mapped perimeters have a marker that can be clicked on for more information.\n\nActive fires are shown in red, and inactive fires are shown in grey.'
+        }
+      });
+    };
+
+    $scope.showMapDefinedLayer = function(layerName) {
+
+      if (layerName == 'fires_2017') {
+        $scope.fetchFireData().then(function() {
+          $scope.mapObj.addLayer($scope.fireLayerGroup);
+        });
+        return false;
+      }
+    };
+
+    $scope.hideMapDefinedLayer = function(layerName) {
+      if (layerName == 'fires_2017') {
+        $scope.mapObj.removeLayer($scope.fireLayerGroup);
+      }
+    };
+
+    $scope.showSecondMapDefinedLayer = function(layerName) {
+      if (layerName == 'fires_2017') {
+        $scope.fetchFireData().then(function() {
+          $scope.secondMapObj.addLayer($scope.secondFireLayerGroup);
+        });
+      }
+    };
+
+    $scope.hideSecondMapDefinedLayer = function(layerName) {
+      if (layerName == 'fires_2017') {
+        $scope.secondMapObj.removeLayer($scope.secondFireLayerGroup);
+      }
+    };
+
+    // Acres-burned time series graph configuration
     $scope.graphButtonText = 'Graph large fire seasons';
     $scope.graphLayout = $scope.graphLayout || {};
 
@@ -338,63 +383,27 @@ app.controller('AlaskaWildfiresCtrl', [
       }
     });
 
+    // Acres-burned time series graph population
     $scope.graphData = [];
     Fire.getTimeSeries().then(function(timeSeries) {
       for (var year in timeSeries) {
         if (timeSeries.hasOwnProperty(year)) {
-          $scope.graphData.push({
+          var yearData = {
             name: year,
             x: timeSeries[year].dates,
             y: timeSeries[year].acres
-          });
+          };
+
+          if (year === moment().format('YYYY')) {
+            yearData.mode = 'lines+markers';
+          } else {
+            yearData.mode = 'lines';
+          }
+
+          $scope.graphData.push(yearData);
         }
       }
     });
-
-    $scope.addLocalLayers = function() {
-      $scope.map.layers.unshift({
-        'name': 'fires_2017',
-        'title': 'All fires, 2017',
-        'getObject': $scope.getFireLayerGroup,
-        'local': true,
-        'capability': {
-          'title': 'All fires, 2017',
-          'legend': false,
-          'abstract': 'This layer shows all fires from 2017.  Small fires (1 acre or less) are shown as dots.  Larger fires with no mapped perimeter show the number of acres of the fire.  Larger fires with mapped perimeters have a marker that can be clicked on for more information.\n\nActive fires are shown in red, and inactive fires are shown in grey.'
-        }
-      });
-    };
-
-    $scope.showMapDefinedLayer = function(layerName) {
-
-      if (layerName == 'fires_2017') {
-        $scope.fetchFireData().then(function() {
-          $scope.mapObj.addLayer($scope.fireLayerGroup);
-        });
-        return false;
-      }
-    };
-
-    $scope.hideMapDefinedLayer = function(layerName) {
-      if (layerName == 'fires_2017') {
-        $scope.mapObj.removeLayer($scope.fireLayerGroup);
-      }
-    };
-
-    $scope.showSecondMapDefinedLayer = function(layerName) {
-      if (layerName == 'fires_2017') {
-        $scope.fetchFireData().then(function() {
-          $scope.secondMapObj.addLayer($scope.secondFireLayerGroup);
-        });
-      }
-    };
-
-    $scope.hideSecondMapDefinedLayer = function(layerName) {
-      if (layerName == 'fires_2017') {
-        $scope.secondMapObj.removeLayer($scope.secondFireLayerGroup);
-      }
-    };
-
   }
 ]);
 
