@@ -122,24 +122,9 @@ angular.module('mapventureApp')
             }
           },
           {
-            title: 'Current vs. historical graph',
-            element: '#showGraph',
-            content: 'Display a time series graph showing the number of acres burned for the largest fire years compared to current year.',
-            onShow: function() {
-              $('#showGraph')
-                .addClass('zoom')
-                .removeClass('no-zoom');
-            },
-            onHide: function() {
-              $('#showGraph')
-                .addClass('no-zoom')
-                .removeClass('zoom');
-            }
-          },
-          {
-            title: 'Large fire seasons',
+            title: 'How does this year compare to others?',
             element: '.js-plotly-plot .legend',
-            content: 'This chart includes the largest fire seasons on record since 2004 and the current year for comparison.',
+            content: 'This graph compares this year to all of the years when more than 1 million acres burned since daily records began in 2004. Are we on track for another big year?',
             placement: 'left',
             onShow: function() {
               scope.$broadcast('show-graph', []);
