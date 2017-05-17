@@ -342,18 +342,18 @@ app.controller('AlaskaWildfiresCtrl', [
     $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since records began in 2004. Source data is from the <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
 
     $.extend($scope.graphLayout, {
-      title: 'Large Fire Seasons',
+      title: 'Cumulative Acres Burned',
       titlefont: {
         size: 20
       },
       font: {
         family: 'Lato'
       },
+      margin: {
+        l: 120,
+        r: 120
+      },
       xaxis: {
-        title: 'Date',
-        titlefont: {
-          size: 18
-        },
         type: 'category',
         ticks: 'array',
         tickvals: [
