@@ -361,6 +361,18 @@ app.controller('MapCtrl', [
       });
     });
 
+    $scope.$on('show-graph', function() {
+      $scope.$evalAsync(function() {
+        $scope.showGraph();
+      });
+    });
+
+    $scope.$on('hide-graph', function() {
+      $scope.$evalAsync(function() {
+        $scope.hideGraph();
+      });
+    });
+
     $scope.showMapInformation = function(mapId) {
       $http.get(GEONODE_API_URL + '/maps/' + mapId).success(function(data) {
         var converter = new showdown.Converter();

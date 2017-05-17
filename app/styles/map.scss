@@ -200,3 +200,7 @@
 .leaflet-container {
   background-color: #fff;
 }
+
+.popover[class*="tour-"] {
+  z-index: 6000;
+}
