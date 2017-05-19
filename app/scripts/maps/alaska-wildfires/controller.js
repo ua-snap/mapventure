@@ -269,10 +269,9 @@ app.controller('AlaskaWildfiresCtrl', [
     var getFireMarkerPopupContents = function(fireInfo) {
 
       var acres = fireInfo.acres + ' acres';
-      var updated = _.isEmpty(fireInfo.updated) ? '' :
-        '<p class="updated">Updated ' + fireInfo.updated + '</p>';
-      var out = _.isEmpty(fireInfo.outdate) ? '' : '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>';
-      var cause = _.isEmpty(fireInfo.cause) ? '' : '<h3>Cause: ' + fireInfo.cause + '</h3>';
+      var updated = fireInfo.updated ? '<p class="updated">Updated ' + fireInfo.updated + '</p>' : '';
+      var out = fireInfo.outdate ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
+      var cause = fireInfo.cause ? '<h3>Cause: ' + fireInfo.cause + '</h3>' : '';
 
       return _.template('\
 <h1><%= title %></h1>\
