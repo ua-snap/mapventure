@@ -178,7 +178,7 @@ app.controller('AlaskaWildfiresCtrl', [
                 title: feature.properties.NAME,
                 acres: feature.properties.acres,
                 cause: feature.properties.GENERALCAUSE,
-                updated: feature.properties.LASTUPDATETIME,
+                updated: feature.properties.updated,
                 outdate: feature.properties.OUTDATE
               }, popupOptions))
           );
@@ -260,7 +260,7 @@ app.controller('AlaskaWildfiresCtrl', [
           title: geoJson.properties.NAME,
           acres: geoJson.properties.acres,
           cause: geoJson.properties.GENERALCAUSE,
-          updated: geoJson.properties.LASTUPDATETIME,
+          updated: geoJson.properties.updated,
           outdate: geoJson.properties.OUTDATE
         }, popupOptions));
     };
@@ -270,7 +270,7 @@ app.controller('AlaskaWildfiresCtrl', [
 
       var acres = fireInfo.acres + ' acres';
       var updated = _.isEmpty(fireInfo.updated) ? '' :
-        '<p class="updated">Updated ' + moment.utc(moment.unix(fireInfo.updated / 1000)).format('MMMM Do, h:mm a') + '</p>';
+        '<p class="updated">Updated ' + fireInfo.updated + '</p>';
       var out = _.isEmpty(fireInfo.outdate) ? '' : '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>';
       var cause = _.isEmpty(fireInfo.cause) ? '' : '<h3>Cause: ' + fireInfo.cause + '</h3>';
 
