@@ -201,6 +201,10 @@
   background-color: #fff;
 }
 
+.leaflet-sidebar {
+  z-index: 4500;
+}
+
 .popover[class*="tour-"] {
-  z-index: 6000;
+  z-index: 4000;
 }
