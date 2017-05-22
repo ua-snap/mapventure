@@ -169,16 +169,16 @@ app.controller('AlaskaWildfiresCtrl', [
 
           // Reverse order from what we need
           var coords = getCentroid2(feature.geometry.coordinates[0]);
-          var icon = feature.properties.OUTDATE == null ?
+          var icon = isFireActive(feature.properties) ?
                 activeFireIcon : inactiveFireIcon;
 
           fireMarkers.push(
             L.marker(new L.latLng([coords[1], coords[0]]),{icon: icon}).bindPopup(getFireMarkerPopupContents(
               {
                 title: feature.properties.NAME,
-                acres: feature.properties.ESTIMATEDTOTALACRES,
+                acres: feature.properties.acres,
                 cause: feature.properties.GENERALCAUSE,
-                updated: feature.properties.LASTUPDATETIME,
+                updated: feature.properties.updated,
                 outdate: feature.properties.OUTDATE
               }, popupOptions))
           );
@@ -200,7 +200,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // red if active, grey if out.
     // Used in getGeoJsonLayer function.
     var styleFirePolygons = function(feature) {
-      if (feature.properties.OUTDATE == null) {
+      if (isFireActive(feature.properties)) {
         return {
           color: '#ff0000',
           fillColor: '#E83C18',
@@ -236,14 +236,14 @@ app.controller('AlaskaWildfiresCtrl', [
       var popupOptions = {
         maxWidth: 200,
       };
-      if (geoJson.properties.OUTDATE == null) {
+      if (isFireActive(geoJson.properties)) {
         isActive = 'active';
         zIndex = 1000;
       } else {
         isActive = 'inactive';
         zIndex = 300;
       }
-      var acres = parseFloat(geoJson.properties.ESTIMATEDTOTALACRES).toFixed(1);
+      var acres = parseFloat(geoJson.properties.acres).toFixed(1);
       if (acres <= 1) {
         isActive += ' small';
         acres = ' ';
@@ -258,9 +258,9 @@ app.controller('AlaskaWildfiresCtrl', [
       }).bindPopup(getFireMarkerPopupContents(
         {
           title: geoJson.properties.NAME,
-          acres: geoJson.properties.ESTIMATEDTOTALACRES,
+          acres: geoJson.properties.acres,
           cause: geoJson.properties.GENERALCAUSE,
-          updated: geoJson.properties.LASTUPDATETIME,
+          updated: geoJson.properties.updated,
           outdate: geoJson.properties.OUTDATE
         }, popupOptions));
     };
@@ -268,18 +268,17 @@ app.controller('AlaskaWildfiresCtrl', [
     // fireInfo must contain properties title, acres, cause, updated, outdate
     var getFireMarkerPopupContents = function(fireInfo) {
 
-      var acres = parseFloat(fireInfo.acres).toFixed(2) + ' acres';
-      var cause = fireInfo.cause || 'Unknown';
-      var updated = moment.utc(moment.unix(fireInfo.updated / 1000)).format('MMMM Do, h:mm a');
-      var out = (fireInfo.outdate) ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
+      var acres = fireInfo.acres + ' acres';
+      var updated = fireInfo.updated ? '<p class="updated">Updated ' + fireInfo.updated + '</p>' : '';
+      var out = fireInfo.outdate ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
+      var cause = fireInfo.cause ? '<h3>Cause: ' + fireInfo.cause + '</h3>' : '';
 
       return _.template('\
 <h1><%= title %></h1>\
 <h2><%= acres %></h2>\
-<h3>Cause: <%= cause %></h3>\
+<%= cause %>\
 <%= out %>\
-<p class="updated" data-toggle="tooltip" data-placement="bottom" title="Perimeter and status of this fire was last updated on <%= updated %>">Updated <%= updated %></p>\
-              ')(
+<%= updated %>')(
         {
           title: fireInfo.title,
           acres: acres,
@@ -288,6 +287,14 @@ app.controller('AlaskaWildfiresCtrl', [
           out: out
         }
       );
+    };
+
+    // There's a few places in the code that are making this check,
+    // and we've needed to swap it more than once to account
+    // for differing upstream data.  This function implements
+    // the logic to determine if a fire is active or not.
+    var isFireActive = function(fireFeatures) {
+      return fireFeatures.active;
     };
 
     $scope.layerOptions = function() {};
