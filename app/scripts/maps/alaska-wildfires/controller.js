@@ -169,16 +169,16 @@ app.controller('AlaskaWildfiresCtrl', [
 
           // Reverse order from what we need
           var coords = getCentroid2(feature.geometry.coordinates[0]);
-          var icon = feature.properties.OUTDATE == null ?
+          var icon = isFireActive(feature.properties) ?
                 activeFireIcon : inactiveFireIcon;
 
           fireMarkers.push(
             L.marker(new L.latLng([coords[1], coords[0]]),{icon: icon}).bindPopup(getFireMarkerPopupContents(
               {
                 title: feature.properties.NAME,
-                acres: feature.properties.ESTIMATEDTOTALACRES,
+                acres: feature.properties.acres,
                 cause: feature.properties.GENERALCAUSE,
-                updated: feature.properties.LASTUPDATETIME,
+                updated: feature.properties.updated,
                 outdate: feature.properties.OUTDATE
               }, popupOptions))
           );
@@ -200,7 +200,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // red if active, grey if out.
     // Used in getGeoJsonLayer function.
     var styleFirePolygons = function(feature) {
-      if (feature.properties.OUTDATE == null) {
+      if (isFireActive(feature.properties)) {
         return {
           color: '#ff0000',
           fillColor: '#E83C18',
@@ -236,14 +236,14 @@ app.controller('AlaskaWildfiresCtrl', [
       var popupOptions = {
         maxWidth: 200,
       };
-      if (geoJson.properties.OUTDATE == null) {
+      if (isFireActive(geoJson.properties)) {
         isActive = 'active';
         zIndex = 1000;
       } else {
         isActive = 'inactive';
         zIndex = 300;
       }
-      var acres = parseFloat(geoJson.properties.ESTIMATEDTOTALACRES).toFixed(1);
+      var acres = parseFloat(geoJson.properties.acres).toFixed(1);
       if (acres <= 1) {
         isActive += ' small';
         acres = ' ';
@@ -258,9 +258,9 @@ app.controller('AlaskaWildfiresCtrl', [
       }).bindPopup(getFireMarkerPopupContents(
         {
           title: geoJson.properties.NAME,
-          acres: geoJson.properties.ESTIMATEDTOTALACRES,
+          acres: geoJson.properties.acres,
           cause: geoJson.properties.GENERALCAUSE,
-          updated: geoJson.properties.LASTUPDATETIME,
+          updated: geoJson.properties.updated,
           outdate: geoJson.properties.OUTDATE
         }, popupOptions));
     };
@@ -268,18 +268,17 @@ app.controller('AlaskaWildfiresCtrl', [
     // fireInfo must contain properties title, acres, cause, updated, outdate
     var getFireMarkerPopupContents = function(fireInfo) {
 
-      var acres = parseFloat(fireInfo.acres).toFixed(2) + ' acres';
-      var cause = fireInfo.cause || 'Unknown';
-      var updated = moment.utc(moment.unix(fireInfo.updated / 1000)).format('MMMM Do, h:mm a');
-      var out = (fireInfo.outdate) ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
+      var acres = fireInfo.acres + ' acres';
+      var updated = fireInfo.updated ? '<p class="updated">Updated ' + fireInfo.updated + '</p>' : '';
+      var out = fireInfo.outdate ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
+      var cause = fireInfo.cause ? '<h3>Cause: ' + fireInfo.cause + '</h3>' : '';
 
       return _.template('\
 <h1><%= title %></h1>\
 <h2><%= acres %></h2>\
-<h3>Cause: <%= cause %></h3>\
+<%= cause %>\
 <%= out %>\
-<p class="updated" data-toggle="tooltip" data-placement="bottom" title="Perimeter and status of this fire was last updated on <%= updated %>">Updated <%= updated %></p>\
-              ')(
+<%= updated %>')(
         {
           title: fireInfo.title,
           acres: acres,
@@ -290,64 +289,15 @@ app.controller('AlaskaWildfiresCtrl', [
       );
     };
 
+    // There's a few places in the code that are making this check,
+    // and we've needed to swap it more than once to account
+    // for differing upstream data.  This function implements
+    // the logic to determine if a fire is active or not.
+    var isFireActive = function(fireFeatures) {
+      return fireFeatures.active;
+    };
+
     $scope.layerOptions = function() {};
-    $scope.graphButtonText = 'Graph large fire seasons';
-
-    $.extend($scope.graphLayout, {
-      title: 'Large Fire Seasons',
-      titlefont: {
-        size: 20
-      },
-      font: {
-        family: 'Lato'
-      },
-      margin: {
-        b: 120,
-        l: 120,
-        r: 120
-      },
-      xaxis: {
-        title: 'Date',
-        titlefont: {
-          size: 18
-        },
-        type: 'category',
-        ticks: 'array',
-        tickvals: [
-          'May 1',
-          'June 1',
-          'July 1',
-          'August 1',
-          'September 1'
-        ],
-        ticktext: [
-          'May',
-          'June',
-          'July',
-          'August',
-          'September'
-        ]
-      },
-      yaxis: {
-        title: 'Cumulative Acres Burned',
-        titlefont: {
-          size: 18
-        }
-      }
-    });
-
-    $scope.graphData = [];
-    Fire.getTimeSeries().then(function(timeSeries) {
-      for (var year in timeSeries) {
-        if (timeSeries.hasOwnProperty(year)) {
-          $scope.graphData.push({
-            name: year,
-            x: timeSeries[year].dates,
-            y: timeSeries[year].acres
-          });
-        }
-      }
-    });
 
     $scope.addLocalLayers = function() {
       $scope.map.layers.unshift({
@@ -393,6 +343,70 @@ app.controller('AlaskaWildfiresCtrl', [
       }
     };
 
+    // Acres-burned time series graph configuration
+    $scope.graphButtonText = 'Graph large fire seasons';
+    $scope.graphLayout = $scope.graphLayout || {};
+    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since records began in 2004. Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
+
+    $.extend($scope.graphLayout, {
+      title: 'Cumulative Acres Burned',
+      titlefont: {
+        size: 20
+      },
+      font: {
+        family: 'Lato'
+      },
+      margin: {
+        l: 120,
+        r: 120
+      },
+      xaxis: {
+        type: 'category',
+        ticks: 'array',
+        tickvals: [
+          'May 1',
+          'June 1',
+          'July 1',
+          'August 1',
+          'September 1'
+        ],
+        ticktext: [
+          'May',
+          'June',
+          'July',
+          'August',
+          'September'
+        ]
+      },
+      yaxis: {
+        title: 'Cumulative Acres Burned',
+        titlefont: {
+          size: 18
+        }
+      }
+    });
+
+    // Acres-burned time series graph population
+    $scope.graphData = [];
+    Fire.getTimeSeries().then(function(timeSeries) {
+      for (var year in timeSeries) {
+        if (timeSeries.hasOwnProperty(year)) {
+          var yearData = {
+            name: year,
+            x: timeSeries[year].dates,
+            y: timeSeries[year].acres
+          };
+
+          if (year === moment().format('YYYY')) {
+            yearData.mode = 'lines+markers';
+          } else {
+            yearData.mode = 'lines';
+          }
+
+          $scope.graphData.push(yearData);
+        }
+      }
+    });
   }
 ]);
 
