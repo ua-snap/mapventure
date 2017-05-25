@@ -11,11 +11,14 @@ angular.module('mapventureApp')
     var service = {};
     service.getTour = function(scope) {
       return new Tour({
+        onEnd: function() {
+          scope.$broadcast('show-layers', ['fires_2017']);
+        },
         steps: [
           {
             title: 'This season&rsquo;s fires',
             element: '#fires_2017',
-            content: '<p>This layer shows fires that occurred or are actively burning this year.</p>',
+            content: '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p>',
             onShow: function() {
               $('#fires_2017')
                 .addClass('bling')

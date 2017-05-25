@@ -308,7 +308,7 @@ app.controller('AlaskaWildfiresCtrl', [
         'capability': {
           'title': 'All fires, 2017',
           'legend': false,
-          'abstract': 'This layer shows all fires from 2017.  Small fires (1 acre or less) are shown as dots.  Larger fires with no mapped perimeter show the number of acres of the fire.  Larger fires with mapped perimeters have a marker that can be clicked on for more information.\n\nActive fires are shown in red, and inactive fires are shown in grey.'
+          'abstract': '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p><p>We update our map each hour from the source data available at the <a href="https://fire.ak.blm.gov" target="_blank" rel="externa">AICC</a> web site.</p><p><em>Where do most fires occur?  Where do most of the large fires occur?</em></p>'
         }
       });
     };
@@ -346,7 +346,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // Acres-burned time series graph configuration
     $scope.graphButtonText = 'Graph large fire seasons';
     $scope.graphLayout = $scope.graphLayout || {};
-    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since records began in 2004. Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
+    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since daily records began in 2004. Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
 
     $.extend($scope.graphLayout, {
       title: 'Cumulative Acres Burned',
