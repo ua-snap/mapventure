@@ -11,6 +11,9 @@ angular.module('mapventureApp')
     var service = {};
     service.getTour = function(scope) {
       return new Tour({
+        onEnd: function() {
+          scope.$broadcast('show-layers', ['fires_2017']);
+        },
         steps: [
           {
             title: 'This season&rsquo;s fires',
