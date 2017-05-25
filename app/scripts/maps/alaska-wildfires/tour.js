@@ -15,7 +15,7 @@ angular.module('mapventureApp')
           {
             title: 'This season&rsquo;s fires',
             element: '#fires_2017',
-            content: '<p>This layer shows fires that occurred or are actively burning this year.</p>',
+            content: '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p>',
             onShow: function() {
               $('#fires_2017')
                 .addClass('bling')
