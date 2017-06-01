@@ -100,7 +100,7 @@
     right: 50%;
     border-right: 2px solid rgba(0, 0, 0, .5);
 
-    .leaflet-right .leaflet-control {
+    .leaflet-right {
       margin-right: 10px;
       margin-top: 60px;
     }
@@ -118,7 +118,7 @@
   #secondmap.half {
     z-index: 0;
 
-    .leaflet-right .leaflet-control {
+    .leaflet-right {
       margin-right: 10px;
       margin-top: 60px;
     }
