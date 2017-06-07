@@ -214,7 +214,7 @@ app.controller('MapCtrl', [
           icon: 'glyphicon-home'
         }]
       }).addTo($scope.secondMapObj);
-      
+
     });
 
     $scope.sidebar = L.control.sidebar('info-sidebar', {

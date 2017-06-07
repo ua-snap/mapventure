@@ -33,12 +33,6 @@ app.controller('AlaskaWildfiresCtrl', [
         }
     );
 
-    /*,
-    maxBounds: new L.latLngBounds(
-      L.latLng(70, 220),
-      L.latLng(55, 180)
-    )*/
-
     // General options for Leaflet configuration.
     $scope.mapOptions = {
       zoom: 0,
