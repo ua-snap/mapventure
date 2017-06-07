@@ -19,6 +19,9 @@ app.controller('AlaskaWildfiresCtrl', [
   '$q',
   function($scope, Map, Fire, $http, $q) {
 
+    // Hide menu by default
+    $scope.minimized = true;
+
     $scope.defaultLayers = ['fires_2017'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
@@ -38,7 +41,7 @@ app.controller('AlaskaWildfiresCtrl', [
       zoom: 0,
       minZoom: 0,
       maxZoom: 5,
-      center: [65, -158.5]
+      center: [65, -152.5]
     };
 
     // Base layer configuration.

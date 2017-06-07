@@ -2,13 +2,13 @@
   <div class="billboard">
     <div class="abstract" ng-bind-html="abstract"></div>
     <div class="buttons">
-      <button type="button" class="btn btn-lg btn-success" ng-click="hideSplash=true; startTour(tour._current)" ng-disabled="showMapButtonDisabled" disabled="disabled">
+      <button type="button" class="mobile-hidden btn btn-lg btn-success" ng-click="hideSplash=true; startTour(tour._current)" ng-disabled="showMapButtonDisabled" disabled="disabled">
         <span ng-show="tour._current == null || tour._current == undefined">Take a tour of this map&hellip;</span>
         <span ng-show="tour._current != null && tour._current >= 0">Continue tour&hellip;</span>
       </button>
-      <a ng-click="hideSplash=true; endTour()" ng-disabled="showMapButtonDisabled" disabled="disabled">
-        No thanks, just show me the map.
-      </a>
+      <button ng-click="hideSplash=true; endTour()" class="btn btn-lg btn-default" ng-disabled="showMapButtonDisabled" disabled="disabled">
+        Show map
+      </button>
     </div>
   </div>
 </div>
