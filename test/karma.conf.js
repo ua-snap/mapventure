@@ -51,6 +51,7 @@ module.exports = function(config) {
       'bower_components/angular-markdown-filter/markdown.js',
       'bower_components/plotly.js/dist/plotly.js',
       'bower_components/angular-plotly/src/angular-plotly.js',
+      'bower_components/Leaflet.EasyButton/src/easy-button.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

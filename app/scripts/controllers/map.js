@@ -183,8 +183,37 @@ app.controller('MapCtrl', [
         }
       };
 
+      $scope.recenterMap = function(btn, map) {
+        map.setView($scope.mapDefaults.center,$scope.mapDefaults.zoom);
+      };
+
       new L.Control.Zoom({position: 'topright'}).addTo($scope.mapObj);
       new L.Control.Zoom({position: 'topright'}).addTo($scope.secondMapObj);
+      new L.easyButton({
+        id: 'home-button-map-left',
+        position: 'topright',
+        states: [{
+          stateName: 'go-to-center',
+          onClick: function(btn, map) {
+            map.setView($scope.mapDefaults.center, $scope.mapDefaults.zoom);
+          },
+          title: 'Re-center Map',
+          icon: 'glyphicon-home'
+        }]
+      }).addTo($scope.mapObj);
+
+      new L.easyButton({
+        id: 'home-button-map-right',
+        position: 'topright',
+        states: [{
+          stateName: 'go-to-center',
+          onClick: function(btn, map) {
+            map.setView($scope.mapDefaults.center, $scope.mapDefaults.zoom);
+          },
+          title: 'Re-center Map',
+          icon: 'glyphicon-home'
+        }]
+      }).addTo($scope.secondMapObj);
 
     });
 
