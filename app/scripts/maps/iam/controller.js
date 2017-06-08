@@ -32,11 +32,13 @@ angular.module('mapventureApp')
         _.each($scope.hotspots, function(e) {
           L.marker(e.latlng).bindPopup(
             '<h1>' + e.name + '</h1>' +
-            e.description
+            e.description, {
+              maxWidth: 600
+            }
           ).on('click', function zoomToMarker(e) {
             $scope.mapObj.setView([
-              e.latlng.lat + 4,
-              e.latlng.lng - 15
+              e.latlng.lat,
+              e.latlng.lng
             ]);
             $scope.activateAllLayers();
           }).addTo(mapObj);
