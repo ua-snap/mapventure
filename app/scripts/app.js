@@ -25,7 +25,8 @@ angular
     'config',
     'angularMoment',
     'markdown',
-    'plotly'
+    'plotly',
+    'ng.deviceDetector'
   ])
   .config(function($routeProvider, MapProvider, FireProvider, ENV) {
     $routeProvider

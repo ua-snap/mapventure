@@ -20,7 +20,8 @@ app.controller('MapCtrl', [
   'ngDialog',
   'Map',
   'MapRegistry',
-  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry) {
+  'deviceDetector',
+  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry, deviceDetector) {
 
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
     var GEONODE_API_URL = Map.geonodeApiUrl();
@@ -41,11 +42,23 @@ app.controller('MapCtrl', [
     controllers.
     */
 
+    // Detect device running application
+    $scope.device = deviceDetector;
+
+    console.log($scope.device)
+    console.log($scope.device.isMobile())
+    console.log($scope.device.isDesktop())
+
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
     // Toggle for layer menu to be minimized
     $scope.minimized = false;
+
+    // Minimize the menu by default in mobile
+    if ($scope.device.isMobile()) {
+      $scope.minimized = true;
+    }
 
     // Dual maps boolean
     $scope.dualMaps = false;
