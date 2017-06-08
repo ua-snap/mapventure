@@ -45,10 +45,6 @@ app.controller('MapCtrl', [
     // Detect device running application
     $scope.device = deviceDetector;
 
-    console.log($scope.device)
-    console.log($scope.device.isMobile())
-    console.log($scope.device.isDesktop())
-
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
