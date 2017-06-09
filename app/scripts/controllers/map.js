@@ -20,7 +20,8 @@ app.controller('MapCtrl', [
   'ngDialog',
   'Map',
   'MapRegistry',
-  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry) {
+  'deviceDetector',
+  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry, deviceDetector) {
 
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
     var GEONODE_API_URL = Map.geonodeApiUrl();
@@ -41,11 +42,19 @@ app.controller('MapCtrl', [
     controllers.
     */
 
+    // Detect device running application
+    $scope.device = deviceDetector;
+
     // Will contain L.Layer.wms objects, keyed by layer name
     $scope.layers = {};
 
     // Toggle for layer menu to be minimized
     $scope.minimized = false;
+
+    // Minimize the menu by default in mobile
+    if ($scope.device.isMobile()) {
+      $scope.minimized = true;
+    }
 
     // Dual maps boolean
     $scope.dualMaps = false;
@@ -183,8 +192,37 @@ app.controller('MapCtrl', [
         }
       };
 
+      $scope.recenterMap = function(btn, map) {
+        map.setView($scope.mapDefaults.center,$scope.mapDefaults.zoom);
+      };
+
       new L.Control.Zoom({position: 'topright'}).addTo($scope.mapObj);
       new L.Control.Zoom({position: 'topright'}).addTo($scope.secondMapObj);
+      new L.easyButton({
+        id: 'home-button-map-left',
+        position: 'topright',
+        states: [{
+          stateName: 'go-to-center',
+          onClick: function(btn, map) {
+            map.setView($scope.mapDefaults.center, $scope.mapDefaults.zoom);
+          },
+          title: 'Re-center Map',
+          icon: 'glyphicon-home'
+        }]
+      }).addTo($scope.mapObj);
+
+      new L.easyButton({
+        id: 'home-button-map-right',
+        position: 'topright',
+        states: [{
+          stateName: 'go-to-center',
+          onClick: function(btn, map) {
+            map.setView($scope.mapDefaults.center, $scope.mapDefaults.zoom);
+          },
+          title: 'Re-center Map',
+          icon: 'glyphicon-home'
+        }]
+      }).addTo($scope.secondMapObj);
 
     });
 

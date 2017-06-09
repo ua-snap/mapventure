@@ -17,6 +17,21 @@
   }
 }
 
+/* Some fixups for mobile */
+@media screen and (max-width: 768px) {
+    .mobile-hidden {
+        display:none !important;
+    }
+
+    #mapTitle {
+        font-size: 14pt !important;
+    }
+
+    #minimize-layer-div, .layer-menu {
+      top: 2em !important;
+    }
+}
+
 #tools-wrapper {
   position: relative;
   z-index: 500;
@@ -100,7 +115,7 @@
     right: 50%;
     border-right: 2px solid rgba(0, 0, 0, .5);
 
-    .leaflet-right .leaflet-control {
+    .leaflet-right {
       margin-right: 10px;
       margin-top: 60px;
     }
@@ -118,7 +133,7 @@
   #secondmap.half {
     z-index: 0;
 
-    .leaflet-right .leaflet-control {
+    .leaflet-right {
       margin-right: 10px;
       margin-top: 60px;
     }
@@ -148,12 +163,13 @@
 }
 
 .splash-screen {
-  position: fixed;
+  position: absolute;
   left: 0;
   height: 100%;
   width: 100%;
   background-color: rgba(150, 168, 48, 0.8);
   z-index:5000;
+
   .billboard {
     padding: 2rem;
     background-color: rgba(255, 255, 255, .8);
@@ -161,11 +177,20 @@
     margin: 4rem auto;
 
     @media screen and (max-height: 480px), screen and (max-width: 480px) {
-      padding-bottom: 6rem;
+
       position: absolute;
-      left: 10%;
-      height: 100%;
-      overflow-y: scroll;
+      top: 0;
+      left: 0;
+      margin: 0;
+      padding: 1em 0 60px 0;
+      overflow-y: scroll !important;
+      width: 100%;
+      height: 110%;
+
+      h1 {
+        font-size: 16pt !important;
+        width: auto !important;
+      }
     }
 
     h2 {

@@ -32,11 +32,13 @@ angular.module('mapventureApp')
         _.each($scope.hotspots, function(e) {
           L.marker(e.latlng).bindPopup(
             '<h1>' + e.name + '</h1>' +
-            e.description
+            e.description, {
+              maxWidth: 600
+            }
           ).on('click', function zoomToMarker(e) {
             $scope.mapObj.setView([
-              e.latlng.lat + 4,
-              e.latlng.lng - 15
+              e.latlng.lat,
+              e.latlng.lng
             ]);
             $scope.activateAllLayers();
           }).addTo(mapObj);
@@ -100,11 +102,7 @@ angular.module('mapventureApp')
         zoom: 0,
         minZoom: 0,
         maxZoom: 5,
-        center: [64, -165],
-        maxBounds: new L.latLngBounds(
-          L.latLng(70, 220),
-          L.latLng(55, 180)
-        )
+        center: [64, -165]
       };
 
       // Base layer configuration for pan-Arctic map.

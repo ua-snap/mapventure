@@ -41,29 +41,29 @@
       &nbsp;
       About this map&hellip;
     </label>
-    <a ng-show="map.distribution_url" id="downloadMap" class="btn btn-primary info" ng-href="{{map.distribution_url}}">
+    <a ng-show="map.distribution_url" id="downloadMap" class="mobile-hidden btn btn-primary info" ng-href="{{map.distribution_url}}">
       <span class="glyphicon glyphicon-download-alt"></span>
       &nbsp;
       Download data
     </a>
-    <label id="showDualMaps" class="btn btn-primary info" ng-click="toggleDualMaps()">
+    <label id="showDualMaps" class="mobile-hidden btn btn-primary info" ng-click="toggleDualMaps()">
       <span ng-hide="dualMaps" class="glyphicon glyphicon-unchecked"></span>
       <span ng-hide="dualMaps">|</span>
       <span class="glyphicon glyphicon-unchecked"></span>
       &nbsp;
       Split / single map
     </label>
-    <label id="syncDualMaps" class="btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="toggleSynchronizeMaps()">
+    <label id="syncDualMaps" class="mobile-hidden btn btn-primary info" ng-class="{'btn-success': syncMaps}" ng-show="dualMaps" ng-click="toggleSynchronizeMaps()">
       <span class="glyphicon glyphicon-flash"></span>
       &nbsp;
       Synchronize maps
     </label>
-    <label id="showGraph" class="btn btn-primary" ng-click="showGraph()" ng-show="graphButtonText">
+    <label id="showGraph" class="mobile-hidden btn btn-primary" ng-click="showGraph()" ng-show="graphButtonText">
       <span class="glyphicon glyphicon-signal"></span>
       &nbsp;
       {{ graphButtonText }}&hellip;
     </label>
-    <label class="btn btn-primary" ng-click="startTour()">
+    <label class="mobile-hidden btn btn-primary" ng-click="startTour()">
       <span class="glyphicon glyphicon-question-sign"></span>
       &nbsp;
       Take a tour of this map&hellip;
