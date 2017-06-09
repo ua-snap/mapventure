@@ -99,7 +99,7 @@ angular.module('mapventureApp')
           {
             title: 'End of tour!',
             orphan: true,
-            content: 'Thanks for checking this out! This map is for general information only. If you need the newest information on current fires, <a target="_blank" href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire">visit the AICC web map</a>.  If you have feedback, we’d love to hear from you!  Email us at uaf-mapventure@alaska.edu!'
+            content: 'Thanks for checking this out! This map is for general information only. If you need the newest information on current fires, <a target="_blank" href="http://afsmaps.blm.gov/imf_fire/imf.jsp?site=fire">visit the AICC web map</a>.  If you have feedback, we’d love to hear from you at uaf-mapventure@alaska.edu!'
           }
         ]
       });
