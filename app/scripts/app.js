@@ -1,7 +1,7 @@
 'use strict';
 
 // Will be updated by `grunt-version` task to current version in package.json
-var version = '1.13.0';
+var version = '1.14.0';
 
 /**
  * @ngdoc overview
@@ -26,9 +26,10 @@ angular
     'angularMoment',
     'markdown',
     'plotly',
-    'ng.deviceDetector'
+    'ng.deviceDetector',
+    'angular-google-analytics'
   ])
-  .config(function($routeProvider, MapProvider, FireProvider, ENV) {
+  .config(function($routeProvider, MapProvider, FireProvider, AnalyticsProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -40,7 +41,9 @@ angular
         controller: 'MapCtrl',
         controllerAs: 'map'
       })
-      .otherwise({
+      .when('/fires', {
+        redirectTo: '/map/5'
+      }).otherwise({
         redirectTo: '/'
       });
 
@@ -80,4 +83,11 @@ angular
     } else {
       FireProvider.setTimeSeriesUrl(ENV.FIRE_TIME_SERIES_URL);
     }
-  });
+
+    if (ENV.GOOGLE_ANALYTICS_TOKEN) {
+      AnalyticsProvider.setAccount(ENV.GOOGLE_ANALYTICS_TOKEN);
+    } else {
+      AnalyticsProvider.startOffline(true);
+    }
+  })
+  .run(['Analytics', function(Analytics) {}]);

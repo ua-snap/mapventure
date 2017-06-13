@@ -14,6 +14,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-jscs");
   grunt.loadNpmTasks('grunt-sass-globbing');
   grunt.loadNpmTasks('grunt-version');
+  grunt.loadNpmTasks('grunt-confirm');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -33,6 +34,36 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+    confirm: {
+      build: {
+        options: {
+          // Static text.
+          question: function() {
+            var text = 'Check that these env variables are correct for building MV for production:\n\n';
+            text += 'GOOGLE_ANALYTICS_TOKEN: "' + process.env.GOOGLE_ANALYTICS_TOKEN + '"\n';
+            text += 'GEONODE_URL: "' + process.env.GEONODE_URL + '"\n';
+            text += 'GEOSERVER_URL: "' + process.env.GEOSERVER_URL + '"\n';
+            text += 'FIRE_FEATURES_URL: "' + process.env.FIRE_FEATURES_URL + '"\n';
+            text += 'FIRE_TIME_SERIES_URL: "' + process.env.FIRE_TIME_SERIES_URL + '"\n';
+            text += 'LEAFLET_IMAGE_PATH: "' + process.env.MV_LEAFLET_IMAGE_PATH + '"\n\n';
+            text += 'OK?  y/n';
+            return text;
+          },
+          input: '_key:y'
+        }
+      },
+      analytics: {
+        options: {
+          question: function() {
+            if(process.env.GOOGLE_ANALYTICS_TOKEN) {
+              return false; // It's set, it's OK
+            }
+            return 'The Google Analytics token is unset, are you sure you want to build without it?\n\nOK?  y/n';
+          },
+          input: '_key:y'
+        }
+      }
+    },
 
     version: {
       defaults: {
@@ -211,6 +242,7 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
+            GOOGLE_ANALYTICS_TOKEN: process.env.GOOGLE_ANALYTICS_TOKEN,
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
             FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
@@ -225,6 +257,7 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
+            GOOGLE_ANALYTICS_TOKEN: process.env.GOOGLE_ANALYTICS_TOKEN,
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
             FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
@@ -572,6 +605,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'ngconstant:development',
     'ngconstant:production',
+    'confirm',
     'sass_globbing', // Needs to come before concurrent:dist
     'concurrent:dist',
     'autoprefixer',

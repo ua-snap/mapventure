@@ -175,7 +175,8 @@ app.controller('AlaskaWildfiresCtrl', [
                 acres: feature.properties.acres,
                 cause: feature.properties.GENERALCAUSE,
                 updated: feature.properties.updated,
-                outdate: feature.properties.OUTDATE
+                outdate: feature.properties.OUTDATE,
+                discovered: feature.properties.discovered
               }, popupOptions))
           );
         }
@@ -257,7 +258,8 @@ app.controller('AlaskaWildfiresCtrl', [
           acres: geoJson.properties.acres,
           cause: geoJson.properties.GENERALCAUSE,
           updated: geoJson.properties.updated,
-          outdate: geoJson.properties.OUTDATE
+          outdate: geoJson.properties.OUTDATE,
+          discovered: geoJson.properties.discovered
         }, popupOptions));
     };
 
@@ -268,10 +270,12 @@ app.controller('AlaskaWildfiresCtrl', [
       var updated = fireInfo.updated ? '<p class="updated">Updated ' + fireInfo.updated + '</p>' : '';
       var out = fireInfo.outdate ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
       var cause = fireInfo.cause ? '<h3>Cause: ' + fireInfo.cause + '</h3>' : '';
+      var discovered = fireInfo.discovered ? '<h3 class="discovered">Discovered ' + fireInfo.discovered + '</h3>' : '';
 
       return _.template('\
 <h1><%= title %></h1>\
 <h2><%= acres %></h2>\
+<%= discovered %>\
 <%= cause %>\
 <%= out %>\
 <%= updated %>')(
@@ -280,7 +284,8 @@ app.controller('AlaskaWildfiresCtrl', [
           acres: acres,
           cause: cause,
           updated: updated,
-          out: out
+          out: out,
+          discovered: discovered
         }
       );
     };
@@ -342,7 +347,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // Acres-burned time series graph configuration
     $scope.graphButtonText = 'Graph large fire seasons';
     $scope.graphLayout = $scope.graphLayout || {};
-    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since daily records began in 2004. Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
+    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since daily tally records began in 2004. <br/>Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
 
     $.extend($scope.graphLayout, {
       title: 'Cumulative Acres Burned',
