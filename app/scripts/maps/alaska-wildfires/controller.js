@@ -342,7 +342,7 @@ app.controller('AlaskaWildfiresCtrl', [
     // Acres-burned time series graph configuration
     $scope.graphButtonText = 'Graph large fire seasons';
     $scope.graphLayout = $scope.graphLayout || {};
-    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since daily records began in 2004. Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
+    $scope.graphDescription = 'This graph compares this year to all of the years when more than 1 million acres burned since daily tally records began in 2004. <br/>Source: <a target="_blank" href="https://fire.ak.blm.gov/">Alaska Interagency Coordination Center (AICC)</a>.';
 
     $.extend($scope.graphLayout, {
       title: 'Cumulative Acres Burned',
