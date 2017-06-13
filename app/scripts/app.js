@@ -40,7 +40,9 @@ angular
         controller: 'MapCtrl',
         controllerAs: 'map'
       })
-      .otherwise({
+      .when('/fires', {
+        redirectTo: '/map/5'
+      }).otherwise({
         redirectTo: '/'
       });
 
