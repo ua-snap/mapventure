@@ -26,9 +26,10 @@ angular
     'angularMoment',
     'markdown',
     'plotly',
-    'ng.deviceDetector'
+    'ng.deviceDetector',
+    'angular-google-analytics'
   ])
-  .config(function($routeProvider, MapProvider, FireProvider, ENV) {
+  .config(function($routeProvider, MapProvider, FireProvider, AnalyticsProvider, ENV) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -80,4 +81,11 @@ angular
     } else {
       FireProvider.setTimeSeriesUrl(ENV.FIRE_TIME_SERIES_URL);
     }
-  });
+
+    if (ENV.GOOGLE_ANALYTICS_TOKEN) {
+      AnalyticsProvider.setAccount(ENV.GOOGLE_ANALYTICS_TOKEN);
+    } else {
+      AnalyticsProvider.startOffline(true);
+    }
+  })
+  .run(['Analytics', function(Analytics) {}]);

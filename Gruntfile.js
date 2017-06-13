@@ -211,6 +211,7 @@ module.exports = function (grunt) {
         },
         constants: {
           ENV: {
+            GOOGLE_ANALYTICS_TOKEN: process.env.GOOGLE_ANALYTICS_TOKEN,
             GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
             FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
