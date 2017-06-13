@@ -477,7 +477,9 @@ app.controller('MapCtrl', [
         return layer.name === layerName;
       });
 
-      var converter = new showdown.Converter();
+      var converter = new showdown.Converter({
+        openLinksInNewWindow: true
+      });
       var content = '<h3>' + layer.capability.title + '</h3>';
       if (false !== layer.capability.legend) {
         content = content.concat(
