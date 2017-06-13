@@ -98,7 +98,9 @@ app.controller('MapCtrl', [
         $scope.abstract = $scope.getAbstract();
       } else {
         $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-          var converter = new showdown.Converter();
+          var converter = new showdown.Converter({
+            openLinksInNewWindow: true
+          });
           $scope.abstract = converter.makeHtml(data.abstract);
         });
       }
@@ -413,7 +415,9 @@ app.controller('MapCtrl', [
 
     $scope.showMapInformation = function(mapId) {
       $http.get(GEONODE_API_URL + '/maps/' + mapId).success(function(data) {
-        var converter = new showdown.Converter();
+        var converter = new showdown.Converter({
+          openLinksInNewWindow: true
+        });
         var content = '<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>';
         content = content.concat(converter.makeHtml(data.abstract));
         $scope.sidebar.setContent(content).show();
