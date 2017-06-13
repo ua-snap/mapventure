@@ -17,6 +17,11 @@
     h3 {
       font-size: .75rem;
       margin-bottom: 0;
+
+      &.discovered {
+        margin-top: 0;
+        font-weight: 500;
+      }
     }
 
     p.updated {
