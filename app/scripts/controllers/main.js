@@ -15,7 +15,12 @@ angular.module('mapventureApp')
 
     Map.all()
       .success(function(data) {
-        $scope.maps = data.objects;
+        $scope.maps = [];
+        _.each(data.objects, function(map) {
+          if(map.distribution_description !== 'draft') {
+            $scope.maps.push(map);
+          }
+        });
       })
       .error(function(err) {
         console.log(err);
