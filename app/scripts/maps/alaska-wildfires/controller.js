@@ -161,10 +161,18 @@ app.controller('AlaskaWildfiresCtrl', [
         maxWidth: 200,
       };
       _.each(geoJson.features, function(feature) {
-        if (feature.geometry.type == 'Polygon') {
+        if (feature.geometry.type == 'Polygon' || feature.geometry.type == 'MultiPolygon') {
+
+          // If this is a MultiPolygon, we need to "flatten" the array
+          // of polygons into a single polygon before we can calculate
+          // the centroid.  The use of `[].concat.apply` accomplishes
+          // this flattening by concatenating the array of polygons.
+          var polygonCoordinates = (feature.geometry.type == 'MultiPolygon') ?
+            [].concat.apply([], feature.geometry.coordinates[0])
+            : feature.geometry.coordinates[0]
 
           // Reverse order from what we need
-          var coords = getCentroid2(feature.geometry.coordinates[0]);
+          var coords = getCentroid2(polygonCoordinates);
           var icon = isFireActive(feature.properties) ?
                 activeFireIcon : inactiveFireIcon;
 
