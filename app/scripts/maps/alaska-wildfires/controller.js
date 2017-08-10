@@ -266,8 +266,13 @@ app.controller('AlaskaWildfiresCtrl', [
     // fireInfo must contain properties title, acres, cause, updated, outdate
     var getFireMarkerPopupContents = function(fireInfo) {
 
+      // Convert updated to "days ago" format; not all fires have
+      // updated info, in which case, leave that blank.
+      var updated = '';
+      if (fireInfo.updated) {
+        updated = '<p class="updated">Updated ' + moment(fireInfo.updated, 'MMMM DD, h:m a').fromNow() + '.</p>';
+      }
       var acres = fireInfo.acres + ' acres';
-      var updated = fireInfo.updated ? '<p class="updated">Updated ' + fireInfo.updated + '</p>' : '';
       var out = fireInfo.outdate ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
       var cause = fireInfo.cause ? '<h3>Cause: ' + fireInfo.cause + '</h3>' : '';
       var discovered = fireInfo.discovered ? '<h3 class="discovered">Discovered ' + fireInfo.discovered + '</h3>' : '';
