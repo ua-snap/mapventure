@@ -169,7 +169,7 @@ app.controller('AlaskaWildfiresCtrl', [
           // this flattening by concatenating the array of polygons.
           var polygonCoordinates = (feature.geometry.type == 'MultiPolygon') ?
             [].concat.apply([], feature.geometry.coordinates[0])
-            : feature.geometry.coordinates[0]
+            : feature.geometry.coordinates[0];
 
           // Reverse order from what we need
           var coords = getCentroid2(polygonCoordinates);

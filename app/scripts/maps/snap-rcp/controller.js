@@ -24,7 +24,8 @@ angular.module('mapventureApp')
       // scope (Controllers/Map).  mapObj and secondMapObj
       // are both instances of Leaflet maps.
       $scope.onLoad = function(mapObj, secondMapObj) {
-
+        $('<a type="button" href="https://github.com/ua-snap/data-recipes/tree/master/extract_by_polygon" target="_blank" class="info-button btn btn-primary"> <span class="glyphicon glyphicon-wrench"></span> &nbsp; How to use these data in R</a>')
+          .appendTo('.mapTools');
       };
 
       // We need to modify the default pan-Arctic
