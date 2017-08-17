@@ -39,13 +39,13 @@ angular.module('mapventureApp')
             '<li><strong>RCPs 4.5 and 6.0</strong>: Forcing stabilizes soon after 2100 at 4.5 and 6.0 W/m&sup2;, respectively, due to efforts that curb emissions.</li>' +
             '<li><strong>RCP 8.5</strong>: Very high greenhouse gas concentrations. Radiative forcing values reach 8.5 W/m&sup2; by 2100 and continue to rise into the next century. Very high greenhouse gas concentrations.</li>' +
             '</ul>' +
-            '<figure><img src="images/rcp-variation.png"/><figcaption>Atmospheric concentrations of carbon dioxide, methane, and nitrous oxide for each RCP through 2100.</figcaption></figure>',
+            '<figure class="text-center"><img src="images/rcp-variation.png"/><figcaption>Atmospheric concentrations of carbon dioxide, methane, and nitrous oxide for each RCP through 2100.</figcaption></figure>',
           },
           {
             backdrop: true,
             title: 'Uncertainty in climate projections',
             content: '<p>Because estimating climate trajectories is a very uncertain business, it&rsquo;s best to look at multiple scenarios when using climate data to inform research or public policy. This approach provides the most complete picture of possible&mdash;and varying&mdash;future trends. Sometimes, however, analysis must be limited to a single RCP. In this case, the one chosen depends on the location in question and the time period for which projections are needed.</p>'
-            + '<figure><img src="images/F9.large.jpg"/><figcaption>(a) Response of the annual mean surface temperature and (b) precipitation to Special Report on Emission Scenarios A1B emissions, in 21 climate models that contributed to the IPCC Fourth Assessment Report. The solid black line is the multi-model mean.  <a target="_blank" href="http://rsta.royalsocietypublishing.org/content/369/1956/4751">Source.</a></figcaption></figure>',
+            + '<figure class="text-center"><img src="images/F9.large.jpg"/><figcaption>(a) Response of the annual mean surface temperature and (b) precipitation to Special Report on Emission Scenarios A1B emissions, in 21 climate models that contributed to the IPCC Fourth Assessment Report. The solid black line is the multi-model mean.  <a target="_blank" href="http://rsta.royalsocietypublishing.org/content/369/1956/4751">Source.</a></figcaption></figure>',
 
           },
           {
@@ -57,7 +57,7 @@ angular.module('mapventureApp')
             backdrop: true,
             title: 'What makes SNAP data different from Global Circulation Model data?',
             content: '<p>Climate scientists at SNAP <a href="https://www.snap.uaf.edu/methods/downscaling" target="_blank">downscale global climate data</a> from GCMs to generate locally relevant data. Then we can connect global-scale projections with smaller-scale dynamics to create regionally specific forecasts.</p>'
-            + '<figure><img src="images/downscaled_cru.jpg"/><figcaption>Downscaling results. Original CRU data at 0.5 x 0.5 degrees (right). At right, the same CRU data downscaled to 2 x 2 km.</figcaption></figure>',
+            + '<figure class="text-center"><img src="images/downscaled_cru.jpg"/><figcaption>Downscaling results. Original CRU data at 0.5 x 0.5 degrees (right). At right, the same CRU data downscaled to 2 x 2 km.</figcaption></figure>',
           },
           {
             title: 'Side by side maps showing changing temperature',
