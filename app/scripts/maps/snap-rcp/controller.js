@@ -28,6 +28,12 @@ angular.module('mapventureApp')
           .appendTo('.mapTools');
       };
 
+      $scope.getAbstract = function() {
+        return '<h1>How might different future climates affect Alaska?</h1><div class="abstractWrapper">'
+        + '<p>This map shows how temperature and length of growing season data&mdash;critical to many ecosystem processes&mdash;can vary over time within a single climate scenario (here, RCP 6.0).</p>'
+        +'<p>The tour for this map explains what RCP 6.0 means and where to get additional data. You can also see an example of how to use the R programming language with this data for your own spatial analyses.</p></div>'
+      }
+
       // We need to modify the default pan-Arctic
       // projection to avoid a bug.
       var proj = new L.Proj.CRS('EPSG:3572',

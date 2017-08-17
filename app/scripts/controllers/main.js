@@ -17,7 +17,7 @@ angular.module('mapventureApp')
       .success(function(data) {
         $scope.maps = [];
         _.each(data.objects, function(map) {
-          if (map.distribution_description !== 'draft') {
+          if (map.distribution_description !== 'draft') { // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
             $scope.maps.push(map);
           }
         });
