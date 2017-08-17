@@ -480,6 +480,7 @@ app.controller('MapCtrl', [
       var converter = new showdown.Converter({
         openLinksInNewWindow: true
       });
+
       var content = '<h3>' + layer.capability.title + '</h3>';
       if (false !== layer.capability.legend) {
         content = content.concat(
