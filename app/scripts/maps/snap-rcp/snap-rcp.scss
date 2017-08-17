@@ -4,11 +4,13 @@
     // when doing several "introduction" steps
     #step-0, #step-1, #step-2, #step-3, #step-4 {
         position: absolute;
-        width: 80%;
+        width: 50%;
         max-width: none;
-        left: 10% !important;
+        left: 25% !important;
         top: 2em !important;
-
+        img {
+          max-width: 100%;
+        }
         .popover-content {
           p, li {
             font-size: 16px;
