@@ -7,9 +7,13 @@
  * # footer
  */
 angular.module('mapventureApp')
-  .directive('mvFooter', function() {
+  .directive('mvFooter', ['version', function() {
     return {
       templateUrl: 'views/footer.html',
-      restrict: 'E'
+      restrict: 'E',
+      controller: ['$scope', 'version', function($scope, version) {
+        $scope.version = version;
+        $scope.year = new Date().getFullYear();
+      }]
     };
-  });
+  }]);

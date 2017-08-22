@@ -9,6 +9,7 @@
  */
 angular.module('mapventureApp')
   .controller('MainCtrl', ['$scope', 'Map', function($scope, Map) {
+    $scope.year = new Date().getFullYear();
 
     // Needed for navigation between maps.
     angular.element('title').text('MapVentures: Interactive maps of Arctic data');

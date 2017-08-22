@@ -95,6 +95,18 @@ body, .middle, .middle .container-fluid {
     margin: 0 0 0 1ex;
   }
 
+  & span.version span.number {
+    display: inline-block;
+    padding-right: 1em;
+    color: #333;
+  }
+
+  & span.identity {
+    float: right;
+    display: inline-block;
+    padding-right: 1em;
+  }
+
   @media (max-width: 768px) {
     font-size: 8pt;
     padding: .25ex;

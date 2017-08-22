@@ -11,7 +11,7 @@ var version = '1.15.0';
  *
  * Main module of the application.
  */
-angular
+var app = angular
   .module('mapventureApp', [
     'ngAnimate',
     'ngCookies',
@@ -46,8 +46,6 @@ angular
       }).otherwise({
         redirectTo: '/'
       });
-
-    $('.version .number').text(version);
 
     if (ENV.GEONODE_URL === undefined) {
       // Set the default GeoNode URL here if environment variable isn't set during Grunt build
@@ -91,3 +89,5 @@ angular
     }
   })
   .run(['Analytics', function(Analytics) {}]);
+
+app.value('version', version);
