@@ -92,9 +92,6 @@ app.controller('MapCtrl', [
       if ($http.pendingRequests.length === 0) {
         $scope.loadingData = false;
         $interval.cancel(requestChecker);
-        console.log('No more requests open');
-      } else {
-        console.log($http.pendingRequests.length, 'requests still open!');
       }
     }, 100);
 
