@@ -210,6 +210,19 @@
         font-size: 10pt;
       }
     }
+
+    .logos {
+      padding-bottom: 10px;
+      .snap {
+        margin-left: 15px;
+      }
+      .snap, .iarc, .uaf {
+        margin-right: 20px;
+      }
+      .uaf {
+        margin-top: 3px;
+      }
+    }
   }
 }
 
