@@ -12,6 +12,7 @@ var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
   '$scope',
+  '$interval',
   '$rootScope',
   '$controller',
   '$http',
@@ -21,7 +22,7 @@ app.controller('MapCtrl', [
   'Map',
   'MapRegistry',
   'deviceDetector',
-  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry, deviceDetector) {
+  function($scope, $interval, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry, deviceDetector) {
 
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
     var GEONODE_API_URL = Map.geonodeApiUrl();
@@ -62,9 +63,8 @@ app.controller('MapCtrl', [
     // Sync maps boolean
     $scope.syncMaps = false;
 
-    // The Proceed button on the splash screen
-    // should be dimmed until Map is loaded.
-    $scope.showMapButtonDisabled = true;
+    // Hide the splash screen until the resources it needs are loaded
+    $scope.hideSplash = true;
 
     // Clean up when we leave a specific map.
     $rootScope.$on('$locationChangeStart', function() {
@@ -84,8 +84,25 @@ app.controller('MapCtrl', [
       return null;
     };
 
+    // If the application is still loading background data
+    // (open AJAX request) then block the user from accessing
+    // the map.
+    $scope.loadingData = true;
+    var requestChecker = $interval(function() {
+      if ($http.pendingRequests.length === 0) {
+        $scope.loadingData = false;
+        $interval.cancel(requestChecker);
+        console.log('No more requests open');
+      } else {
+        console.log($http.pendingRequests.length, 'requests still open!');
+      }
+    }, 100);
+
     Map.layers($routeParams.mapId).success(function(data) {
       $scope.map = data;
+
+      // Show the loading/splash screen
+      $scope.hideSplash = false;
 
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
@@ -172,7 +189,6 @@ app.controller('MapCtrl', [
       // This checks for the 'load' event from Leaflet which means that the basemap
       // has completely loaded.
       baseLayer.on('load', function() {
-      $scope.showMapButtonDisabled = false;
       $scope.$apply();
     });
 
