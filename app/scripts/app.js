@@ -1,7 +1,7 @@
 'use strict';
 
 // Will be updated by `grunt-version` task to current version in package.json
-var version = '1.15.0';
+var version = '1.16.0';
 
 /**
  * @ngdoc overview
