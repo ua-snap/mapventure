@@ -29,11 +29,11 @@ angular.module('mapventureApp')
             backdrop: true,
             title: 'What do RCPs describe?',
             content:
-            '<p>RCPs illustrate three major values:</p>'
-            + '<ul>'
-            + '<li><strong>Radiative forcing</strong>&mdash;how much sunlight is trapped in Earth’s atmosphere vs. being reflected back into space</li>'
-            + '<li><strong>Emission rates</strong>&mdash;how fast we add greenhouse gases into the atmosphere</li>'
-            + '<li><strong>Emission concentrations</strong>&mdash;measured in parts per million for CO2, methane, and other greenhouse gases</li>' + '</ul>' + '<p>RCP2.6, RCP4.5, RCP6, and RCP8.5 are the four major pathways. The numbers refer to levels of radiative forcings, measured in watts per square meter (W/m^2), by the year 2100.</p>' +
+            '<p>RCPs illustrate three major values:</p>' +
+            '<ul>' +
+            '<li><strong>Radiative forcing</strong>&mdash;how much sunlight is trapped in Earth’s atmosphere vs. being reflected back into space</li>' +
+            '<li><strong>Emission rates</strong>&mdash;how fast we add greenhouse gases into the atmosphere</li>' +
+            '<li><strong>Emission concentrations</strong>&mdash;measured in parts per million for CO2, methane, and other greenhouse gases</li>' + '</ul>' + '<p>RCP2.6, RCP4.5, RCP6, and RCP8.5 are the four major pathways. The numbers refer to levels of radiative forcings, measured in watts per square meter (W/m^2), by the year 2100.</p>' +
             '<ul>' +
             '<li><strong>RCP 2.6</strong>: Forcing peaks at ~3 W/m&sup2; mid-century and drops to 2.6 W/m&sup2; by 2100. Greenhouse gas emissions drop substantially over time.</li>' +
             '<li><strong>RCPs 4.5 and 6.0</strong>: Forcing stabilizes soon after 2100 at 4.5 and 6.0 W/m&sup2;, respectively, due to efforts that curb emissions.</li>' +
@@ -44,8 +44,8 @@ angular.module('mapventureApp')
           {
             backdrop: true,
             title: 'Uncertainty in climate projections',
-            content: '<p>Because estimating climate trajectories is a very uncertain business, it&rsquo;s best to look at multiple scenarios when using climate data to inform research or public policy. This approach provides the most complete picture of possible&mdash;and varying&mdash;future trends. Sometimes, however, analysis must be limited to a single RCP. In this case, the one chosen depends on the location in question and the time period for which projections are needed.</p>'
-            + '<figure class="text-center"><img src="images/F9.large.jpg"/><figcaption>(a) Response of the annual mean surface temperature and (b) precipitation to Special Report on Emission Scenarios A1B emissions, in 21 climate models that contributed to the IPCC Fourth Assessment Report. The solid black line is the multi-model mean.  <a target="_blank" href="http://rsta.royalsocietypublishing.org/content/369/1956/4751">Source.</a></figcaption></figure>',
+            content: '<p>Because estimating climate trajectories is a very uncertain business, it&rsquo;s best to look at multiple scenarios when using climate data to inform research or public policy. This approach provides the most complete picture of possible&mdash;and varying&mdash;future trends. Sometimes, however, analysis must be limited to a single RCP. In this case, the one chosen depends on the location in question and the time period for which projections are needed.</p>' +
+            '<figure class="text-center"><img src="images/F9.large.jpg"/><figcaption>(a) Response of the annual mean surface temperature and (b) precipitation to Special Report on Emission Scenarios A1B emissions, in 21 climate models that contributed to the IPCC Fourth Assessment Report. The solid black line is the multi-model mean.  <a target="_blank" href="http://rsta.royalsocietypublishing.org/content/369/1956/4751">Source.</a></figcaption></figure>',
 
           },
           {
@@ -56,8 +56,8 @@ angular.module('mapventureApp')
           {
             backdrop: true,
             title: 'What makes SNAP data different from Global Circulation Model data?',
-            content: '<p>Climate scientists at SNAP <a href="https://www.snap.uaf.edu/methods/downscaling" target="_blank">downscale global climate data</a> from GCMs to generate locally relevant data. Then we can connect global-scale projections with smaller-scale dynamics to create regionally specific forecasts.</p>'
-            + '<figure class="text-center"><img src="images/downscaled_cru.jpg"/><figcaption>Downscaling results. Original CRU data at 0.5 x 0.5 degrees (right). At right, the same CRU data downscaled to 2 x 2 km.</figcaption></figure>',
+            content: '<p>Climate scientists at SNAP <a href="https://www.snap.uaf.edu/methods/downscaling" target="_blank">downscale global climate data</a> from GCMs to generate locally relevant data. Then we can connect global-scale projections with smaller-scale dynamics to create regionally specific forecasts.</p>' +
+            '<figure class="text-center"><img src="images/downscaled_cru.jpg"/><figcaption>Downscaling results. Original CRU data at 0.5 x 0.5 degrees (right). At right, the same CRU data downscaled to 2 x 2 km.</figcaption></figure>',
           },
           {
             title: 'Side by side maps showing changing temperature',

@@ -319,11 +319,9 @@ app.controller('AlaskaWildfiresCtrl', [
         'title': 'All fires, 2017',
         'getObject': $scope.getFireLayerGroup,
         'local': true,
-        'capability': {
-          'title': 'All fires, 2017',
-          'legend': false,
-          'abstract': '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p><p>We update our map each hour from the source data available at the <a href="https://fire.ak.blm.gov" target="_blank" rel="externa">AICC</a> web site.</p><p><em>Where do most fires occur?  Where do most of the large fires occur?</em></p>'
-        }
+        'title': 'All fires, 2017',
+        'legend': false,
+        'abstract': '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p><p>We update our map each hour from the source data available at the <a href="https://fire.ak.blm.gov" target="_blank" rel="externa">AICC</a> web site.</p><p><em>Where do most fires occur?  Where do most of the large fires occur?</em></p>'
       });
     };
 

@@ -37,6 +37,7 @@ angular.module('mapventureApp')
           return $http.get(TIME_SERIES_URL).then(function(res) {
             return res.data;
           }, function(err) {
+            console.error(err);
             // TODO: What do we do if this fails to load?
           });
         }

@@ -95,8 +95,28 @@ app.controller('MapCtrl', [
       }
     }, 100);
 
-    Map.layers($routeParams.mapId).success(function(data) {
+    var mapData = {
+        'abstract': 'With this tool you can see current locations and sizes of wildfires and explore them in the context of long term fire history, land cover types, and other interesting data layers.\n\nFor the most current fire management information, we direct you to the following websites:\n\n * [Alaska Interagency Coordination Center (AICC)](https://fire.ak.blm.gov/)\n * [Current AICC Situation Report](http://fire.ak.blm.gov/content/aicc/sitreport/current.pdf)\n * [Alaska Wildland Fire Information](https://akfireinfo.com/)\n\nWe thank the Alaska Fire Service, State of Alaska,  and the Alaska Interagency Coordination Center for all their hard work fighting fires and maintaining the data!',
+        'title': 'Alaska Wildfires: Past and Present',
+        'uuid': 'd5a90928-2119-11e6-92e2-08002742f21f',
+        'layers': [
+          {
+            'abstract': 'This layer provides a generalized view of the physical cover on land at a spatial resolution of 250 meters.  Land cover classifications are used by scientists to determine what is growing on the landscape. These are made by looking at satellite imagery and categorizing the images into land cover types. \n\nThe dominant land cover varies across the landscape and influences how flammable a region is. When wildfires burn, they often alter the dominant land cover. Many fires have occurred since this layer was created in 2010.  _What landcover burns the most?_\n\nTo access and learn more about this dataset, visit the [Commission for Environmental Cooperation](http://www.cec.org/tools-and-resources/map-files/land-cover-2010).\n',
+            'name': 'geonode:alaska_landcover_2010',
+            'title': 'Land cover, 2010'
+          },
+          {
+            'abstract': 'This layer shows historical fire perimeters from 1940-2016.  _More recent wildfires often stop fires from spreading due to the lack of fuel, but does this always hold true?_\n\nTo access and learn more about this dataset, visit the [AICC](https://fire.ak.blm.gov).\n',
+            'name': 'geonode:fireareahistory',
+            'title': 'Historical extent, 1940-2016'
+          }
+        ]
+      };
+
+    $scope.processMapData = function(data) {
+
       $scope.map = data;
+      console.log($scope.map);
 
       // Show the loading/splash screen
       $scope.hideSplash = false;
@@ -147,14 +167,14 @@ app.controller('MapCtrl', [
       );
 
       $scope.setDefaultView = function() {
-      $scope.mapObj.setView(
-        $scope.mapDefaults.center,
-        $scope.mapDefaults.zoom,
-        {
-          reset: true
-        }
-      );
-    };
+        $scope.mapObj.setView(
+          $scope.mapDefaults.center,
+          $scope.mapDefaults.zoom,
+          {
+            reset: true
+          }
+        );
+      };
 
       // Don't add the place layer if not defined
       var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
@@ -186,8 +206,8 @@ app.controller('MapCtrl', [
       // This checks for the 'load' event from Leaflet which means that the basemap
       // has completely loaded.
       baseLayer.on('load', function() {
-      $scope.$apply();
-    });
+        $scope.$apply();
+      });
 
       $scope.addLayers();
 
@@ -238,8 +258,7 @@ app.controller('MapCtrl', [
           icon: 'glyphicon-home'
         }]
       }).addTo($scope.secondMapObj);
-
-    });
+    };
 
     $scope.sidebar = L.control.sidebar('info-sidebar', {
       position: 'left',
@@ -269,6 +288,7 @@ app.controller('MapCtrl', [
       }, $scope.layerOptions());
 
       angular.forEach($scope.map.layers, function(layer) {
+        console.log(layer);
         layer.name = layer.name.replace('geonode:','');
         $scope.layers[layer.name] = {};
 
@@ -287,6 +307,7 @@ app.controller('MapCtrl', [
           $scope.layers[layer.name].secondObj = layer.getObject();
         }
       });
+      console.log($scope.layers);
       Map.setReady(true);
     };
 
@@ -494,8 +515,8 @@ app.controller('MapCtrl', [
         openLinksInNewWindow: true
       });
 
-      var content = '<h3>' + layer.capability.title + '</h3>';
-      if (false !== layer.capability.legend) {
+      var content = '<h3>' + layer.title + '</h3>';
+      if (false !== layer.legend) {
         content = content.concat(
           '<img id= "legend" src="' +
           GEOSERVER_WMS_URL +
@@ -504,7 +525,7 @@ app.controller('MapCtrl', [
           '" onerror="this.style.display=\'none\'" />'
         );
       }
-      content = content.concat(converter.makeHtml(layer.capability.abstract));
+      content = content.concat(converter.makeHtml(layer.abstract));
       $scope.sidebar.setContent(content).show();
     };
 
@@ -517,6 +538,13 @@ app.controller('MapCtrl', [
     $scope.endTour = function() {
       $scope.$emit('end-tour');
     };
+
+    // Finally, kick of the process of fetching & displaying this map;
+    // this is wrapped in a `$timeout` so it's applied to the next
+    // digest cycle (i.e. app has time to catch changes to `$scope.map`)
+    $timeout(function() {
+      $scope.processMapData.apply(this, [mapData]);
+    });
 
   }
 ]);

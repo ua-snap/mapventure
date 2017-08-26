@@ -26,6 +26,7 @@ angular.module('mapventureApp')
     // Public API here
     return {
       getControllerName: function(uuid) {
+        console.log('fetching', registry[uuid]);
         if (undefined !== registry[uuid]) {
           return registry[uuid] + 'Ctrl';
         }
