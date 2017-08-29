@@ -19,6 +19,26 @@ app.controller('AlaskaWildfiresCtrl', [
   '$q',
   function($scope, Map, Fire, $http, $q) {
 
+    $scope.getMapData = function() {
+      return {
+        'abstract': 'With this tool you can see current locations and sizes of wildfires and explore them in the context of long term fire history, land cover types, and other interesting data layers.\n\nFor the most current fire management information, we direct you to the following websites:\n\n * [Alaska Interagency Coordination Center (AICC)](https://fire.ak.blm.gov/)\n * [Current AICC Situation Report](http://fire.ak.blm.gov/content/aicc/sitreport/current.pdf)\n * [Alaska Wildland Fire Information](https://akfireinfo.com/)\n\nWe thank the Alaska Fire Service, State of Alaska,  and the Alaska Interagency Coordination Center for all their hard work fighting fires and maintaining the data!',
+        'title': 'Alaska Wildfires: Past and Present',
+        'uuid': 'd5a90928-2119-11e6-92e2-08002742f21f',
+        'layers': [
+          {
+            'abstract': 'This layer provides a generalized view of the physical cover on land at a spatial resolution of 250 meters.  Land cover classifications are used by scientists to determine what is growing on the landscape. These are made by looking at satellite imagery and categorizing the images into land cover types. \n\nThe dominant land cover varies across the landscape and influences how flammable a region is. When wildfires burn, they often alter the dominant land cover. Many fires have occurred since this layer was created in 2010.  _What landcover burns the most?_\n\nTo access and learn more about this dataset, visit the [Commission for Environmental Cooperation](http://www.cec.org/tools-and-resources/map-files/land-cover-2010).\n',
+            'name': 'geonode:alaska_landcover_2010',
+            'title': 'Land cover, 2010'
+          },
+          {
+            'abstract': 'This layer shows historical fire perimeters from 1940-2016.  _More recent wildfires often stop fires from spreading due to the lack of fuel, but does this always hold true?_\n\nTo access and learn more about this dataset, visit the [AICC](https://fire.ak.blm.gov).\n',
+            'name': 'geonode:fireareahistory',
+            'title': 'Historical extent, 1940-2016'
+          }
+        ]
+      };
+    };
+
     $scope.defaultLayers = ['fires_2017'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',

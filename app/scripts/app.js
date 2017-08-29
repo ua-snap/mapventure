@@ -47,13 +47,6 @@ var app = angular
         redirectTo: '/'
       });
 
-    if (ENV.GEONODE_URL === undefined) {
-      // Set the default GeoNode URL here if environment variable isn't set during Grunt build
-      MapProvider.setGeonodeUrl('http://localhost:8000');
-    } else {
-      MapProvider.setGeonodeUrl(ENV.GEONODE_URL);
-    }
-
     if (ENV.GEOSERVER_URL === undefined) {
       // Set the default Geoserver URL here if environment variable isn't set during Grunt build
       MapProvider.setGeoserverUrl('http://localhost:8080/geoserver');
