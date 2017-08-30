@@ -172,9 +172,14 @@
 
   .billboard {
     padding: 2rem;
-    background-color: rgba(255, 255, 255, .8);
+    background-color: rgba(0, 0, 0, .8);
+    color: rgba(235, 235, 255, 1);
     width: 80%;
     margin: 4rem auto;
+
+    a {
+      color: #86bffe;
+    }
 
     @media screen and (max-height: 480px), screen and (max-width: 480px) {
 
@@ -194,6 +199,7 @@
     }
 
     h2 {
+      color: #fff;
       margin: 0 0 2rem 0;
       line-height: 120%;
       padding: 0;
@@ -229,6 +235,25 @@
         display: inline-block;
         margin-top: 2em;
         font-size: 10pt;
+      }
+    }
+
+    .logos {
+      margin-top: 1em;
+      .snap {
+        height: 3em;
+      }
+      .iarc {
+        height: 4em;
+      }
+      .uaf {
+        display: inline-block;
+        position: relative;
+        top: .5ex;
+        height: 5em;
+      }
+      .snap, .iarc {
+        margin-right: 2em;
       }
     }
   }
