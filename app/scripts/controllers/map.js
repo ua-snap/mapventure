@@ -108,7 +108,7 @@ app.controller('MapCtrl', [
       );
 
       // Finally, kick of the process of fetching & displaying this map
-      $scope.processMapData.apply(this, [$scope.getMapData()]);
+      $scope.processMapData($scope.getMapData());
     });
 
     $scope.processMapData = function(data) {
