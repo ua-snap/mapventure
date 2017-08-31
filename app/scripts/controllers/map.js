@@ -12,6 +12,7 @@ var app = angular.module('mapventureApp');
 
 app.controller('MapCtrl', [
   '$scope',
+  '$interval',
   '$rootScope',
   '$controller',
   '$http',
@@ -21,10 +22,9 @@ app.controller('MapCtrl', [
   'Map',
   'MapRegistry',
   'deviceDetector',
-  function($scope, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry, deviceDetector) {
+  function($scope, $interval, $rootScope, $controller, $http, $routeParams, $timeout, ngDialog, Map, MapRegistry, deviceDetector) {
 
     var GEOSERVER_WMS_URL = Map.geoserverWmsUrl();
-    var GEONODE_API_URL = Map.geonodeApiUrl();
 
     /*
     These options must be defined by
@@ -62,9 +62,8 @@ app.controller('MapCtrl', [
     // Sync maps boolean
     $scope.syncMaps = false;
 
-    // The Proceed button on the splash screen
-    // should be dimmed until Map is loaded.
-    $scope.showMapButtonDisabled = true;
+    // Hide the splash screen until the resources it needs are loaded
+    $scope.hideSplash = true;
 
     // Clean up when we leave a specific map.
     $rootScope.$on('$locationChangeStart', function() {
@@ -84,25 +83,48 @@ app.controller('MapCtrl', [
       return null;
     };
 
-    Map.layers($routeParams.mapId).success(function(data) {
-      $scope.map = data;
+    // If the application is still loading background data
+    // (open AJAX request) then block the user from accessing
+    // the map.
+    $scope.loadingData = true;
+    var requestChecker = $interval(function() {
+      if ($http.pendingRequests.length === 0) {
+        $scope.loadingData = false;
+        $interval.cancel(requestChecker);
+      }
+    }, 100);
 
+    // this is wrapped in a `$timeout` so it's applied to the next
+    // digest cycle (i.e. app has time to catch changes to `$scope`)
+    $timeout(function() {
       // Create controller for map-specific functionality
       // Just invoking it will compile/execute it.
+      // This will expand the scope of this object to include
+      // functions defined in the map's controller, which will
+      // override the defaults in this file.
       var mapInstanceController = $controller(// jshint ignore:line
-        MapRegistry.getControllerName($scope.map.uuid),
+        MapRegistry.getControllerNameById($routeParams.mapId),
         {$scope: $scope}
       );
+
+      // Finally, kick of the process of fetching & displaying this map
+      $scope.processMapData($scope.getMapData());
+    });
+
+    $scope.processMapData = function(data) {
+
+      $scope.map = data;
+
+      // Show the loading/splash screen
+      $scope.hideSplash = false;
 
       if ($scope.getAbstract()) {
         $scope.abstract = $scope.getAbstract();
       } else {
-        $http.get(GEONODE_API_URL + '/maps/' + $scope.map.id).success(function(data) {
-          var converter = new showdown.Converter({
-            openLinksInNewWindow: true
-          });
-          $scope.abstract = converter.makeHtml(data.abstract);
+        var converter = new showdown.Converter({
+          openLinksInNewWindow: true
         });
+        $scope.abstract = converter.makeHtml($scope.map.abstract);
       }
 
       // Attach UUID of map ID for custom CSS hooks
@@ -113,10 +135,6 @@ app.controller('MapCtrl', [
 
       // Set title of window to this map's title
       angular.element('title').text($scope.map.title);
-
-      // Reversing the layers makes the order
-      // match what we see in GeoNode's map editor.
-      $scope.map.layers.reverse();
 
       // These need to be separate instances because we listen for events differently on each.
       var baseLayer = $scope.getBaseLayer();
@@ -133,14 +151,14 @@ app.controller('MapCtrl', [
       );
 
       $scope.setDefaultView = function() {
-      $scope.mapObj.setView(
-        $scope.mapDefaults.center,
-        $scope.mapDefaults.zoom,
-        {
-          reset: true
-        }
-      );
-    };
+        $scope.mapObj.setView(
+          $scope.mapDefaults.center,
+          $scope.mapDefaults.zoom,
+          {
+            reset: true
+          }
+        );
+      };
 
       // Don't add the place layer if not defined
       var layers = placeLayer ? [baseLayer, placeLayer] : [baseLayer];
@@ -172,9 +190,8 @@ app.controller('MapCtrl', [
       // This checks for the 'load' event from Leaflet which means that the basemap
       // has completely loaded.
       baseLayer.on('load', function() {
-      $scope.showMapButtonDisabled = false;
-      $scope.$apply();
-    });
+        $scope.$apply();
+      });
 
       $scope.addLayers();
 
@@ -225,8 +242,7 @@ app.controller('MapCtrl', [
           icon: 'glyphicon-home'
         }]
       }).addTo($scope.secondMapObj);
-
-    });
+    };
 
     $scope.sidebar = L.control.sidebar('info-sidebar', {
       position: 'left',
@@ -414,14 +430,7 @@ app.controller('MapCtrl', [
     });
 
     $scope.showMapInformation = function(mapId) {
-      $http.get(GEONODE_API_URL + '/maps/' + mapId).success(function(data) {
-        var converter = new showdown.Converter({
-          openLinksInNewWindow: true
-        });
-        var content = '<p><a href="' + data.urlsuffix + '">' + data.urlsuffix + '</a></p>';
-        content = content.concat(converter.makeHtml(data.abstract));
-        $scope.sidebar.setContent(content).show();
-      });
+      $scope.hideSplash = !$scope.hideSplash;
     };
 
     $scope.showDualMaps = function() {
@@ -480,8 +489,9 @@ app.controller('MapCtrl', [
       var converter = new showdown.Converter({
         openLinksInNewWindow: true
       });
-      var content = '<h3>' + layer.capability.title + '</h3>';
-      if (false !== layer.capability.legend) {
+
+      var content = '<h3>' + layer.title + '</h3>';
+      if (false !== layer.legend) {
         content = content.concat(
           '<img id= "legend" src="' +
           GEOSERVER_WMS_URL +
@@ -490,7 +500,7 @@ app.controller('MapCtrl', [
           '" onerror="this.style.display=\'none\'" />'
         );
       }
-      content = content.concat(converter.makeHtml(layer.capability.abstract));
+      content = content.concat(converter.makeHtml(layer.abstract));
       $scope.sidebar.setContent(content).show();
     };
 

@@ -19,6 +19,26 @@ app.controller('AlaskaWildfiresCtrl', [
   '$q',
   function($scope, Map, Fire, $http, $q) {
 
+    $scope.getMapData = function() {
+      return {
+        'abstract': 'With this tool you can see current locations and sizes of wildfires and explore them in the context of long term fire history, land cover types, and other interesting data layers.\n\nFor the most current fire management information, we direct you to the following websites:\n\n * [Alaska Interagency Coordination Center (AICC)](https://fire.ak.blm.gov/)\n * [Current AICC Situation Report](http://fire.ak.blm.gov/content/aicc/sitreport/current.pdf)\n * [Alaska Wildland Fire Information](https://akfireinfo.com/)\n\nWe thank the Alaska Fire Service, State of Alaska,  and the Alaska Interagency Coordination Center for all their hard work fighting fires and maintaining the data!',
+        'title': 'Alaska Wildfires: Past and Present',
+        'uuid': 'd5a90928-2119-11e6-92e2-08002742f21f',
+        'layers': [
+          {
+            'abstract': 'This layer provides a generalized view of the physical cover on land at a spatial resolution of 250 meters.  Land cover classifications are used by scientists to determine what is growing on the landscape. These are made by looking at satellite imagery and categorizing the images into land cover types. \n\nThe dominant land cover varies across the landscape and influences how flammable a region is. When wildfires burn, they often alter the dominant land cover. Many fires have occurred since this layer was created in 2010.  _What landcover burns the most?_\n\nTo access and learn more about this dataset, visit the [Commission for Environmental Cooperation](http://www.cec.org/tools-and-resources/map-files/land-cover-2010).\n',
+            'name': 'geonode:alaska_landcover_2010',
+            'title': 'Land cover, 2010'
+          },
+          {
+            'abstract': 'This layer shows historical fire perimeters from 1940-2016.  _More recent wildfires often stop fires from spreading due to the lack of fuel, but does this always hold true?_\n\nTo access and learn more about this dataset, visit the [AICC](https://fire.ak.blm.gov).\n',
+            'name': 'geonode:fireareahistory',
+            'title': 'Historical extent, 1940-2016'
+          }
+        ]
+      };
+    };
+
     $scope.defaultLayers = ['fires_2017'];
     $scope.crs = new L.Proj.CRS('EPSG:3338',
       '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
@@ -161,10 +181,18 @@ app.controller('AlaskaWildfiresCtrl', [
         maxWidth: 200,
       };
       _.each(geoJson.features, function(feature) {
-        if (feature.geometry.type == 'Polygon') {
+        if (feature.geometry.type == 'Polygon' || feature.geometry.type == 'MultiPolygon') {
+
+          // If this is a MultiPolygon, we need to "flatten" the array
+          // of polygons into a single polygon before we can calculate
+          // the centroid.  The use of `[].concat.apply` accomplishes
+          // this flattening by concatenating the array of polygons.
+          var polygonCoordinates = (feature.geometry.type == 'MultiPolygon') ?
+            [].concat.apply([], feature.geometry.coordinates[0])
+            : feature.geometry.coordinates[0];
 
           // Reverse order from what we need
-          var coords = getCentroid2(feature.geometry.coordinates[0]);
+          var coords = getCentroid2(polygonCoordinates);
           var icon = isFireActive(feature.properties) ?
                 activeFireIcon : inactiveFireIcon;
 
@@ -266,8 +294,13 @@ app.controller('AlaskaWildfiresCtrl', [
     // fireInfo must contain properties title, acres, cause, updated, outdate
     var getFireMarkerPopupContents = function(fireInfo) {
 
+      // Convert updated to "days ago" format; not all fires have
+      // updated info, in which case, leave that blank.
+      var updated = '';
+      if (fireInfo.updated) {
+        updated = '<p class="updated">Updated ' + moment(fireInfo.updated, 'MMMM DD, h:m a').fromNow() + '.</p>';
+      }
       var acres = fireInfo.acres + ' acres';
-      var updated = fireInfo.updated ? '<p class="updated">Updated ' + fireInfo.updated + '</p>' : '';
       var out = fireInfo.outdate ? '<p class="out">Out date: ' + moment.utc(moment.unix(fireInfo.outdate / 1000)).format('MMMM Do, h:mm a') + '</p>' : '';
       var cause = fireInfo.cause ? '<h3>Cause: ' + fireInfo.cause + '</h3>' : '';
       var discovered = fireInfo.discovered ? '<h3 class="discovered">Discovered ' + fireInfo.discovered + '</h3>' : '';
@@ -306,11 +339,9 @@ app.controller('AlaskaWildfiresCtrl', [
         'title': 'All fires, 2017',
         'getObject': $scope.getFireLayerGroup,
         'local': true,
-        'capability': {
-          'title': 'All fires, 2017',
-          'legend': false,
-          'abstract': '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p><p>We update our map each hour from the source data available at the <a href="https://fire.ak.blm.gov" target="_blank" rel="externa">AICC</a> web site.</p><p><em>Where do most fires occur?  Where do most of the large fires occur?</em></p>'
-        }
+        'title': 'All fires, 2017',
+        'legend': false,
+        'abstract': '<img src="images/legend3.svg"/><p>This layer shows fires that occurred or are actively burning this year.</p><p>We update our map each hour from the source data available at the <a href="https://fire.ak.blm.gov" target="_blank" rel="externa">AICC</a> web site.</p><p><em>Where do most fires occur?  Where do most of the large fires occur?</em></p>'
       });
     };
 

@@ -41,7 +41,6 @@ module.exports = function (grunt) {
           question: function() {
             var text = 'Check that these env variables are correct for building MV for production:\n\n';
             text += 'GOOGLE_ANALYTICS_TOKEN: "' + process.env.GOOGLE_ANALYTICS_TOKEN + '"\n';
-            text += 'GEONODE_URL: "' + process.env.GEONODE_URL + '"\n';
             text += 'GEOSERVER_URL: "' + process.env.GEOSERVER_URL + '"\n';
             text += 'FIRE_FEATURES_URL: "' + process.env.FIRE_FEATURES_URL + '"\n';
             text += 'FIRE_TIME_SERIES_URL: "' + process.env.FIRE_TIME_SERIES_URL + '"\n';
@@ -243,7 +242,6 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             GOOGLE_ANALYTICS_TOKEN: process.env.GOOGLE_ANALYTICS_TOKEN,
-            GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
             FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
             FIRE_TIME_SERIES_URL: process.env.FIRE_TIME_SERIES_URL,
@@ -258,7 +256,6 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             GOOGLE_ANALYTICS_TOKEN: process.env.GOOGLE_ANALYTICS_TOKEN,
-            GEONODE_URL: process.env.GEONODE_URL,
             GEOSERVER_URL: process.env.GEOSERVER_URL,
             FIRE_FEATURES_URL: process.env.FIRE_FEATURES_URL,
             FIRE_TIME_SERIES_URL: process.env.FIRE_TIME_SERIES_URL,

@@ -2,11 +2,12 @@
 
 <tour></tour>
 <map-splash-screen></map-splash-screen>
+<map-loading-indicator></map-loading-indicator>
 <graph></graph>
 
 <menu-toggle></menu-toggle>
 
-<div class="layer-menu" ng-hide="minimized">
+<div class="layer-menu" ng-hide="minimized || loadingData">
   <div class="layer-list" ui-sortable="sortableOptions" ng-model="map.layers">
     <div id="{{ layer.name }}" class="layer" data-toggle="buttons" ng-repeat="layer in map.layers">
       <!-- Buttons for first map -->
@@ -35,7 +36,7 @@
     </div>
   </div>
 
-  <div class="mapTools form-inline">
+  <div ng-hide="loadingData" class="mapTools form-inline">
     <label id="showMapInformation" class="btn btn-primary info" ng-click="showMapInformation(map.id)">
       <span class="glyphicon glyphicon-question-sign"></span>
       &nbsp;
